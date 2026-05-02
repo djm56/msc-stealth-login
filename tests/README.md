@@ -78,7 +78,7 @@ WP_TESTS_DIR=/tmp/msc-testing/wordpress-tests-lib vendor/bin/phpunit --testdox
 
 ### Run specific test file
 ```bash
-WP_TESTS_DIR=/tmp/msc-testing/wordpress-tests-lib vendor/bin/phpunit tests/test-settings.php
+WP_TESTS_DIR=/tmp/msc-testing/wordpress-tests-lib vendor/bin/phpunit tests/settings-test.php
 ```
 
 ### Run specific test
@@ -94,10 +94,10 @@ WP_TESTS_DIR=/tmp/msc-testing/wordpress-tests-lib vendor/bin/phpunit --coverage-
 ## Test Structure
 
 - `bootstrap.php` - Bootstrap file that loads WordPress test suite and the plugin
-- `test-settings.php` - Tests for settings/options functionality
-- `test-core.php` - Tests for core plugin functionality
-- `test-security.php` - Tests for security features (brute force, XML-RPC, REST API)
-- `test-module.php` - Tests for module behavior (URL rewriting, redirects)
+- `settings-test.php` - Tests for settings/options functionality
+- `core-test.php` - Tests for core plugin functionality
+- `security-test.php` - Tests for security features (brute force, XML-RPC, REST API)
+- `module-test.php` - Tests for module behavior (URL rewriting, redirects)
 
 ## Writing Tests
 

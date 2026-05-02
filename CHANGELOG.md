@@ -2,6 +2,21 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.0.2] - 2026-05-01
+
+### Fixed
+- Plugin Check errors for unescaped database parameters in query methods.
+- Plugin Check error for fclose() on php://output stream — added phpcs:ignore.
+- DROP TABLE query now uses direct query instead of prepare() (table names cannot be prepared).
+- Added phpcs:ignore comments for nonce verification warnings in frontend security filters.
+- Added cleanup of flush rewrite rules transient in uninstall.
+
+## [1.0.1] - 2026-04-20
+
+### Fixed
+- Custom login URL now works immediately after plugin activation without manual permalink flush.
+- Custom login URL now works immediately after changing the slug in settings.
+
 ## [1.0.0] - 2026-04-15
 
 ### Added

@@ -8,7 +8,7 @@
 /**
  * PHPUnit bootstrap file
  */
-define( 'MSCSL_PLUGIN_VERSION', '1.0.0' );
+define( 'MSCSL_PLUGIN_VERSION', '1.0.2' );
 define( 'MSCSL_PLUGIN_FILE', dirname( __DIR__ ) . '/msc-stealth-login.php' );
 define( 'MSCSL_PLUGIN_DIR', dirname( __DIR__ ) . '/' );
 define( 'MSCSL_PLUGIN_URL', 'http://example.org/wp-content/plugins/msc-stealth-login/' );
