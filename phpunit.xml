@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         cacheResultFile=".phpunit.result.cache"
+         executionOrder="depends,defects"
+         forceCoversAnnotation="false"
+         beStrictAboutCoversAnnotation="true"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         verbose="true"
+         colors="true">
+    <testsuites>
+        <testsuite name="MSC Stealth Login Test Suite">
+            <directory suffix="-test.php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./includes/</directory>
+            <file>./msc-stealth-login.php</file>
+        </include>
+    </coverage>
+    <php>
+        <env name="WP_TESTS_DIR" value="/tmp/msc-testing/wordpress-develop/tests/phpunit"/>
+    </php>
+</phpunit>

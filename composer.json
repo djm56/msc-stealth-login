@@ -1,0 +1,26 @@
+{
+  "name": "anomalous/msc-stealth-login",
+  "description": "Hide your login page, block brute force attacks, and protect your WordPress site.",
+  "type": "wordpress-plugin",
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+    "squizlabs/php_codesniffer": "^3.10",
+    "phpcsstandards/phpcsextra": "^1.2",
+    "phpcsstandards/phpcsutils": "^1.1",
+    "wp-coding-standards/wpcs": "^3.1",
+    "phpunit/phpunit": "^9.6",
+    "yoast/phpunit-polyfills": "^2.0"
+  },
+  "scripts": {
+    "lint": "phpcs .",
+    "lint-fix": "phpcbf .",
+    "i18n:pot": "wp i18n make-pot . languages/msc-stealth-login.pot --domain=msc-stealth-login --exclude=node_modules,vendor,.git,tests",
+    "test": "phpunit",
+    "test:coverage": "phpunit --coverage-html coverage"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

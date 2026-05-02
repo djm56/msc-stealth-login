@@ -1,0 +1,25 @@
+/**
+ * MSC Stealth Login Admin Styles
+ */
+
+/* WordPress native styles are used - custom styles below for specific needs */
+
+.form-table td {
+	padding: 12px 0;
+}
+
+.form-table th {
+	padding: 16px 0 16px 0;
+	width: 250px;
+}
+
+.form-table p.description {
+	margin: 5px 0 0;
+	color: #646970;
+}
+
+code {
+	background: #f6f7f7;
+	padding: 2px 6px;
+	border-radius: 3px;
+}
