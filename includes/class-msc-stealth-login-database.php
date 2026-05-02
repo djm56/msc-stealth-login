@@ -23,6 +23,13 @@ class Database {
 	const TABLE_NAME = 'mscsl_login_attempts';
 
 	/**
+	 * Allowed attempt types for filtering.
+	 *
+	 * @var array
+	 */
+	const ALLOWED_TYPES = array( 'success', 'failure', 'lockout', 'whitelisted' );
+
+	/**
 	 * Create the login attempts table.
 	 *
 	 * @return bool True on success.
@@ -136,54 +143,72 @@ class Database {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		// Build where clause with placeholders and corresponding values.
-		$where_parts = array();
-		$values      = array();
+		// Scalar type validation – default non-strings to empty string.
+		$ip        = is_string( $args['ip'] ) ? $args['ip'] : '';
+		$username  = is_string( $args['username'] ) ? $args['username'] : '';
+		$type      = is_string( $args['type'] ) ? $args['type'] : '';
+		$date_from = is_string( $args['date_from'] ) ? $args['date_from'] : '';
+		$date_to   = is_string( $args['date_to'] ) ? $args['date_to'] : '';
 
-		if ( ! empty( $args['ip'] ) ) {
-			$where_parts[] = 'ip_address = %s';
-			$values[]      = $args['ip'];
+		// Input validation.
+		if ( '' !== $ip && false === filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			$ip = '';
 		}
-
-		if ( ! empty( $args['username'] ) ) {
-			$where_parts[] = 'user_login = %s';
-			$values[]      = $args['username'];
+		if ( '' !== $type && ! in_array( $type, self::ALLOWED_TYPES, true ) ) {
+			$type = '';
 		}
-
-		if ( ! empty( $args['type'] ) ) {
-			$where_parts[] = 'attempt_type = %s';
-			$values[]      = $args['type'];
+		if ( '' !== $date_from && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_from ) ) {
+			$date_from = '';
 		}
-
-		if ( ! empty( $args['date_from'] ) ) {
-			$where_parts[] = 'created_at >= %s';
-			$values[]      = $args['date_from'] . ' 00:00:00';
+		if ( '' !== $date_to && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_to ) ) {
+			$date_to = '';
 		}
+		$username  = sanitize_text_field( $username );
 
-		if ( ! empty( $args['date_to'] ) ) {
-			$where_parts[] = 'created_at <= %s';
-			$values[]      = $args['date_to'] . ' 23:59:59';
-		}
+		// Apply time boundaries to validated date strings.
+		$date_from = ! empty( $date_from ) ? $date_from . ' 00:00:00' : '';
+		$date_to   = ! empty( $date_to ) ? $date_to . ' 23:59:59' : '';
 
-		$limit  = absint( $args['limit'] );
+		// Cap limit to prevent excessive result sets.
+		$limit  = min( absint( $args['limit'] ), 1000 );
 		$offset = absint( $args['offset'] );
 
-		// Append limit/offset values for the query.
-		$values[] = $limit;
-		$values[] = $offset;
+		// Build dynamic WHERE clause — include conditions only for non-empty filters.
+		$where_parts  = array();
+		$prepare_args = array();
 
-		if ( ! empty( $where_parts ) ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table with dynamic filters, caching not applicable
-			return $wpdb->get_results(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table prefix from $wpdb, where built from safe %s/%d placeholders
-				$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE " . implode( ' AND ', $where_parts ) . ' ORDER BY created_at DESC LIMIT %d OFFSET %d', ...$values ),
-				ARRAY_A
-			);
+		if ( ! empty( $ip ) ) {
+			$where_parts[] = 'ip_address = %s';
+			$prepare_args[] = $ip;
+		}
+		if ( ! empty( $username ) ) {
+			$where_parts[] = 'user_login = %s';
+			$prepare_args[] = $username;
+		}
+		if ( ! empty( $type ) ) {
+			$where_parts[] = 'attempt_type = %s';
+			$prepare_args[] = $type;
+		}
+		if ( ! empty( $date_from ) ) {
+			$where_parts[] = 'created_at >= %s';
+			$prepare_args[] = $date_from;
+		}
+		if ( ! empty( $date_to ) ) {
+			$where_parts[] = 'created_at <= %s';
+			$prepare_args[] = $date_to;
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table query, caching not applicable
+		$where_sql = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
+
+		$prepare_args[] = $limit;
+		$prepare_args[] = $offset;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table with filters, caching not applicable
 		return $wpdb->get_results(
-			$wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts ORDER BY created_at DESC LIMIT %d OFFSET %d", ...$values ),
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d",
+				$prepare_args
+			),
 			ARRAY_A
 		);
 	}
@@ -207,45 +232,72 @@ class Database {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		// Build where clause with placeholders and corresponding values.
-		$where_parts = array();
-		$values      = array();
+		// Scalar type validation – default non-strings to empty string.
+		$ip        = is_string( $args['ip'] ) ? $args['ip'] : '';
+		$username  = is_string( $args['username'] ) ? $args['username'] : '';
+		$type      = is_string( $args['type'] ) ? $args['type'] : '';
+		$date_from = is_string( $args['date_from'] ) ? $args['date_from'] : '';
+		$date_to   = is_string( $args['date_to'] ) ? $args['date_to'] : '';
 
-		if ( ! empty( $args['ip'] ) ) {
+		// Input validation.
+		if ( '' !== $ip && false === filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			$ip = '';
+		}
+		if ( '' !== $type && ! in_array( $type, self::ALLOWED_TYPES, true ) ) {
+			$type = '';
+		}
+		if ( '' !== $date_from && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_from ) ) {
+			$date_from = '';
+		}
+		if ( '' !== $date_to && ! preg_match( '/^\d{4}-\d{2}-\d{2}$/', $date_to ) ) {
+			$date_to = '';
+		}
+		$username  = sanitize_text_field( $username );
+
+		// Apply time boundaries to validated date strings.
+		$date_from = ! empty( $date_from ) ? $date_from . ' 00:00:00' : '';
+		$date_to   = ! empty( $date_to ) ? $date_to . ' 23:59:59' : '';
+
+		// Build dynamic WHERE clause — include conditions only for non-empty filters.
+		$where_parts  = array();
+		$prepare_args = array();
+
+		if ( ! empty( $ip ) ) {
 			$where_parts[] = 'ip_address = %s';
-			$values[]      = $args['ip'];
+			$prepare_args[] = $ip;
 		}
-
-		if ( ! empty( $args['username'] ) ) {
+		if ( ! empty( $username ) ) {
 			$where_parts[] = 'user_login = %s';
-			$values[]      = $args['username'];
+			$prepare_args[] = $username;
 		}
-
-		if ( ! empty( $args['type'] ) ) {
+		if ( ! empty( $type ) ) {
 			$where_parts[] = 'attempt_type = %s';
-			$values[]      = $args['type'];
+			$prepare_args[] = $type;
 		}
-
-		if ( ! empty( $args['date_from'] ) ) {
+		if ( ! empty( $date_from ) ) {
 			$where_parts[] = 'created_at >= %s';
-			$values[]      = $args['date_from'] . ' 00:00:00';
+			$prepare_args[] = $date_from;
 		}
-
-		if ( ! empty( $args['date_to'] ) ) {
+		if ( ! empty( $date_to ) ) {
 			$where_parts[] = 'created_at <= %s';
-			$values[]      = $args['date_to'] . ' 23:59:59';
+			$prepare_args[] = $date_to;
 		}
 
-		if ( ! empty( $where_parts ) && ! empty( $values ) ) {
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table count with dynamic filters
+		$where_sql = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table count with filters
+		if ( empty( $prepare_args ) ) {
 			return (int) $wpdb->get_var(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- table prefix from $wpdb, where built from safe %s placeholders
-				$wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE " . implode( ' AND ', $where_parts ), ...$values )
+				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts"
 			);
 		}
 
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- custom table count, static query with no user input
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts" );
+		return (int) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts {$where_sql}",
+				$prepare_args
+			)
+		);
 	}
 
 	/**

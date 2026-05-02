@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-02T09:19:53+00:00\n"
+"POT-Creation-Date: 2026-05-02T09:55:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: msc-stealth-login\n"
@@ -36,11 +36,11 @@ msgstr ""
 msgid "Anomalous Developers"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:328
+#: includes/class-msc-stealth-login-database.php:380
 msgid "ID"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:329
+#: includes/class-msc-stealth-login-database.php:381
 #: includes/class-msc-stealth-login-settings.php:153
 #: includes/class-msc-stealth-login-settings.php:681
 #: includes/class-msc-stealth-login-settings.php:884
@@ -48,25 +48,25 @@ msgstr ""
 msgid "IP Address"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:330
+#: includes/class-msc-stealth-login-database.php:382
 #: includes/class-msc-stealth-login-settings.php:154
 #: includes/class-msc-stealth-login-settings.php:890
 #: includes/class-msc-stealth-login-settings.php:939
 msgid "Username"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:331
+#: includes/class-msc-stealth-login-database.php:383
 #: includes/class-msc-stealth-login-settings.php:155
 #: includes/class-msc-stealth-login-settings.php:940
 msgid "Result"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:332
+#: includes/class-msc-stealth-login-database.php:384
 #: includes/class-msc-stealth-login-settings.php:156
 msgid "User Agent"
 msgstr ""
 
-#: includes/class-msc-stealth-login-database.php:333
+#: includes/class-msc-stealth-login-database.php:385
 #: includes/class-msc-stealth-login-settings.php:157
 #: includes/class-msc-stealth-login-settings.php:941
 msgid "Date/Time"
