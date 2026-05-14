@@ -1,0 +1,30 @@
+.git/
+.gitignore
+.github/
+.editorconfig
+.php-cs-fixer.php
+
+# Development & Testing
+tests/
+phpunit.xml
+phpcs.xml.dist
+
+# Node
+node_modules/
+package.json
+package-lock.json
+npm-debug.log
+
+# Composer
+composer.json
+composer.lock
+vendor/
+
+# Build & Scripts
+scripts/
+
+# Documentation
+CHANGELOG.md
+
+# This file
+.distignore
