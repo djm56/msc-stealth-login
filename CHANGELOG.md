@@ -2,6 +2,20 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.0.4] - 2026-05-13
+
+### Changed
+- Inlined CSS styles directly on HTML elements for error pages, eliminating external stylesheet dependency.
+- Removed `register_frontend_styles()` method and `wp_enqueue_scripts`/`login_enqueue_scripts` hooks (no longer needed).
+- Deleted `assets/css/mscsl-frontend.css` (styles now inline in templates).
+
+## [1.0.3] - 2026-05-13
+
+### Fixed
+- Extracted inline CSS from lockout and blocked error pages to external stylesheet per WordPress.org review requirements.
+- Created template files for error pages to separate presentation from logic.
+- Added X-Frame-Options and X-Content-Type-Options security headers to error pages.
+
 ## [1.0.2] - 2026-05-01
 
 ### Fixed

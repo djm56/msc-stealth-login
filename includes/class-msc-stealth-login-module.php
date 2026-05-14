@@ -266,7 +266,6 @@ class Module {
 		// Check if locked out first.
 		if ( $this->is_locked_out() ) {
 			$this->show_lockout_message();
-			exit;
 		}
 
 		// If this is a POST request (form submission), let wp-login.php handle it.
@@ -369,7 +368,6 @@ class Module {
 
 		// Block access - show 404 or redirect.
 		$this->show_blocked_message();
-		exit;
 		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 	}
 
@@ -684,7 +682,7 @@ class Module {
 
 		return sprintf(
 			/* translators: %d is the number of minutes */
-			esc_html__( 'Too many failed login attempts. Please try again in %d minutes.', 'msc-stealth-login' ),
+			__( 'Too many failed login attempts. Please try again in %d minutes.', 'msc-stealth-login' ),
 			absint( $lockout_duration )
 		);
 	}
@@ -882,107 +880,39 @@ If this is not expected behavior, you may want to investigate this IP address.',
 
 	/**
 	 * Show lockout message.
+	 *
+	 * @since 1.0.0
+	 * @since 1.0.3 Moved HTML to template, extracted CSS to external file.
+	 * @since 1.0.4 Inlined CSS styles directly on elements, removed external CSS dependency.
 	 */
 	private function show_lockout_message() {
 		nocache_headers();
 		header( 'Content-Type: text/html; charset=utf-8' );
-		?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" <?php if ( function_exists( 'language_attributes' ) ) { language_attributes(); } else { echo 'dir="ltr"'; } ?>>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width" />
-	<title><?php esc_html_e( 'Locked Out', 'msc-stealth-login' ); ?></title>
-	<style>
-		body {
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-			background: #f7f7f7;
-			color: #444;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			margin: 0;
-		}
-		.message {
-			background: #fff;
-			padding: 40px;
-			border-radius: 4px;
-			box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-			text-align: center;
-			max-width: 400px;
-		}
-		h1 {
-			margin: 0 0 20px;
-			font-size: 24px;
-		}
-		p {
-			margin: 0 0 20px;
-			line-height: 1.6;
-		}
-	</style>
-</head>
-<body>
-	<div class="message">
-		<h1><?php esc_html_e( 'Locked Out', 'msc-stealth-login' ); ?></h1>
-		<p><?php echo esc_html( $this->get_lockout_message() ); ?></p>
-	</div>
-</body>
-</html>
-		<?php
+		header( 'X-Frame-Options: SAMEORIGIN' );
+		header( 'X-Content-Type-Options: nosniff' );
+
+		$lockout_message = $this->get_lockout_message();
+
+		include MSCSL_PLUGIN_DIR . 'templates/lockout.php';
+		exit;
 	}
 
 	/**
 	 * Show blocked message for wp-login.php access.
+	 *
+	 * @since 1.0.0
+	 * @since 1.0.3 Moved HTML to template, extracted CSS to external file.
+	 * @since 1.0.4 Inlined CSS styles directly on elements, removed external CSS dependency.
 	 */
 	private function show_blocked_message() {
 		nocache_headers();
 		header( 'Content-Type: text/html; charset=utf-8' );
 		header( 'HTTP/1.1 403 Forbidden' );
-		?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" <?php if ( function_exists( 'language_attributes' ) ) { language_attributes(); } else { echo 'dir="ltr"'; } ?>>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="viewport" content="width=device-width" />
-	<title><?php esc_html_e( 'Access Denied', 'msc-stealth-login' ); ?></title>
-	<style>
-		body {
-			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-			background: #f7f7f7;
-			color: #444;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100vh;
-			margin: 0;
-		}
-		.message {
-			background: #fff;
-			padding: 40px;
-			border-radius: 4px;
-			box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-			text-align: center;
-			max-width: 400px;
-		}
-		h1 {
-			margin: 0 0 20px;
-			font-size: 24px;
-		}
-		p {
-			margin: 0 0 20px;
-			line-height: 1.6;
-		}
-	</style>
-</head>
-<body>
-	<div class="message">
-		<h1><?php esc_html_e( 'Access Denied', 'msc-stealth-login' ); ?></h1>
-		<p><?php esc_html_e( 'The login page you are trying to access has been hidden for security reasons. Please use the correct login URL to access this site.', 'msc-stealth-login' ); ?></p>
-	</div>
-</body>
-</html>
-		<?php
+		header( 'X-Frame-Options: SAMEORIGIN' );
+		header( 'X-Content-Type-Options: nosniff' );
+
+		include MSCSL_PLUGIN_DIR . 'templates/blocked.php';
+		exit;
 	}
 
 	/**

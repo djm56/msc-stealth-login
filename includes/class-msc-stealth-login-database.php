@@ -111,6 +111,10 @@ class Database {
 			)
 		);
 
+		if ( false !== $result ) {
+			wp_cache_set( 'last_changed', microtime(), 'mscsl' );
+		}
+
 		return false !== $result;
 	}
 
@@ -173,44 +177,45 @@ class Database {
 		$limit  = min( absint( $args['limit'] ), 1000 );
 		$offset = absint( $args['offset'] );
 
-		// Build dynamic WHERE clause — include conditions only for non-empty filters.
-		$where_parts  = array();
-		$prepare_args = array();
+		// Cache lookup — use last_changed key to auto-invalidate when data changes.
+		$last_changed = wp_cache_get_last_changed( 'mscsl' );
+		$cache_key    = "get_attempts:{$last_changed}:" . md5( wp_json_encode( array( $ip, $username, $type, $date_from, $date_to, $limit, $offset ) ) );
+		$cached       = wp_cache_get( $cache_key, 'mscsl' );
 
-		if ( ! empty( $ip ) ) {
-			$where_parts[] = 'ip_address = %s';
-			$prepare_args[] = $ip;
-		}
-		if ( ! empty( $username ) ) {
-			$where_parts[] = 'user_login = %s';
-			$prepare_args[] = $username;
-		}
-		if ( ! empty( $type ) ) {
-			$where_parts[] = 'attempt_type = %s';
-			$prepare_args[] = $type;
-		}
-		if ( ! empty( $date_from ) ) {
-			$where_parts[] = 'created_at >= %s';
-			$prepare_args[] = $date_from;
-		}
-		if ( ! empty( $date_to ) ) {
-			$where_parts[] = 'created_at <= %s';
-			$prepare_args[] = $date_to;
+		if ( false !== $cached ) {
+			return $cached;
 		}
 
-		$where_sql = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
-
-		$prepare_args[] = $limit;
-		$prepare_args[] = $offset;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table with filters, caching not applicable
-		return $wpdb->get_results(
+		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d",
-				$prepare_args
+				// Fixed placeholder query — each filter uses (%s = '' OR column = %s) so
+				// inactive filters (empty string) always evaluate to TRUE.
+				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts
+				WHERE ( %s = '' OR ip_address = %s )
+				AND ( %s = '' OR user_login = %s )
+				AND ( %s = '' OR attempt_type = %s )
+				AND ( %s = '' OR created_at >= %s )
+				AND ( %s = '' OR created_at <= %s )
+				ORDER BY created_at DESC LIMIT %d OFFSET %d",
+				$ip,
+				$ip,
+				$username,
+				$username,
+				$type,
+				$type,
+				$date_from,
+				$date_from,
+				$date_to,
+				$date_to,
+				$limit,
+				$offset
 			),
 			ARRAY_A
 		);
+
+		wp_cache_set( $cache_key, $results, 'mscsl' );
+
+		return $results;
 	}
 
 	/**
@@ -258,46 +263,39 @@ class Database {
 		$date_from = ! empty( $date_from ) ? $date_from . ' 00:00:00' : '';
 		$date_to   = ! empty( $date_to ) ? $date_to . ' 23:59:59' : '';
 
-		// Build dynamic WHERE clause — include conditions only for non-empty filters.
-		$where_parts  = array();
-		$prepare_args = array();
+		// Cache lookup — use last_changed key to auto-invalidate when data changes.
+		$last_changed = wp_cache_get_last_changed( 'mscsl' );
+		$cache_key    = "get_attempt_count:{$last_changed}:" . md5( wp_json_encode( array( $ip, $username, $type, $date_from, $date_to ) ) );
+		$cached       = wp_cache_get( $cache_key, 'mscsl' );
 
-		if ( ! empty( $ip ) ) {
-			$where_parts[] = 'ip_address = %s';
-			$prepare_args[] = $ip;
-		}
-		if ( ! empty( $username ) ) {
-			$where_parts[] = 'user_login = %s';
-			$prepare_args[] = $username;
-		}
-		if ( ! empty( $type ) ) {
-			$where_parts[] = 'attempt_type = %s';
-			$prepare_args[] = $type;
-		}
-		if ( ! empty( $date_from ) ) {
-			$where_parts[] = 'created_at >= %s';
-			$prepare_args[] = $date_from;
-		}
-		if ( ! empty( $date_to ) ) {
-			$where_parts[] = 'created_at <= %s';
-			$prepare_args[] = $date_to;
+		if ( false !== $cached ) {
+			return $cached;
 		}
 
-		$where_sql = ! empty( $where_parts ) ? 'WHERE ' . implode( ' AND ', $where_parts ) : '';
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table count with filters
-		if ( empty( $prepare_args ) ) {
-			return (int) $wpdb->get_var(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts"
-			);
-		}
-
-		return (int) $wpdb->get_var(
+		$count = (int) $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts {$where_sql}",
-				$prepare_args
+				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts
+				WHERE ( %s = '' OR ip_address = %s )
+				AND ( %s = '' OR user_login = %s )
+				AND ( %s = '' OR attempt_type = %s )
+				AND ( %s = '' OR created_at >= %s )
+				AND ( %s = '' OR created_at <= %s )",
+				$ip,
+				$ip,
+				$username,
+				$username,
+				$type,
+				$type,
+				$date_from,
+				$date_from,
+				$date_to,
+				$date_to
 			)
 		);
+
+		wp_cache_set( $cache_key, $count, 'mscsl' );
+
+		return $count;
 	}
 
 	/**
@@ -310,6 +308,8 @@ class Database {
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- admin-only truncation of custom table
 		$deleted = $wpdb->query( "TRUNCATE TABLE {$wpdb->prefix}mscsl_login_attempts" );
+
+		wp_cache_set( 'last_changed', microtime(), 'mscsl' );
 
 		return false !== $deleted ? $deleted : 0;
 	}
@@ -332,6 +332,8 @@ class Database {
 				$cutoff
 			)
 		);
+
+		wp_cache_set( 'last_changed', microtime(), 'mscsl' );
 
 		return false !== $deleted ? $deleted : 0;
 	}

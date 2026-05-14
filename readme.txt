@@ -4,7 +4,7 @@ Tags: security, login, brute-force, wp-admin, stealth
 Requires at least: 5.9
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,16 @@ No, all features are included in the free version. There is no premium version o
 
 == Changelog ==
 
+= 1.0.4 =
+* Changed: Inlined CSS styles on error page elements for simpler standalone page rendering.
+* Removed: External CSS file for error pages (no longer needed).
+* Removed: Frontend style registration hooks (no longer needed).
+
+= 1.0.3 =
+* Fixed: Extracted inline CSS to external stylesheet file per WordPress.org review requirements.
+* Fixed: Created template files for lockout and blocked error pages.
+* Added: X-Frame-Options and X-Content-Type-Options security headers to error pages.
+
 = 1.0.2 =
 * Fixed: Plugin Check errors for unescaped database parameters in query methods.
 * Fixed: Plugin Check error for fclose() on php://output stream — added phpcs:ignore.
@@ -133,6 +143,12 @@ No, all features are included in the free version. There is no premium version o
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.0.4 =
+Simplified error page rendering with inline CSS — no external stylesheet dependency.
+
+= 1.0.3 =
+Fixes WordPress.org review feedback — inline styles are now properly enqueued.
 
 = 1.0.2 =
 Fixes Plugin Check errors for WordPress.org submission readiness.
