@@ -17,6 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Module {
 
 	/**
+	 * Active plugin conflicts for the admin notice.
+	 *
+	 * @var array<string>
+	 */
+	private $active_conflicts = array();
+
+	/**
 	 * Main plugin instance.
 	 *
 	 * @var Plugin
@@ -56,6 +63,11 @@ class Module {
 	 * Check for conflicting plugins and show notices.
 	 */
 	private function check_conflicts() {
+		// is_plugin_active() is only available in admin context.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$conflicting = array(
 			'w3-total-cache/w3-total-cache.php' => 'W3 Total Cache',
 			'wp-super-cache/wp-cache.php'       => 'WP Super Cache',
@@ -74,18 +86,29 @@ class Module {
 		}
 
 		if ( ! empty( $active_conflicts ) ) {
-			add_action( 'admin_notices', function() use ( $active_conflicts ) {
-				$list = implode( ', ', $active_conflicts );
-				echo '<div class="notice notice-warning is-dismissible"><p>';
-				echo '<strong>MSC Stealth Login:</strong> ';
-				printf(
-					/* translators: %s: list of detected plugins */
-					esc_html__( 'The following plugins were detected: %s. You may need to configure cache or security exclusions for your custom login URL.', 'msc-stealth-login' ),
-					esc_html( $list )
-				);
-				echo '</p></div>';
-			} );
+			$this->active_conflicts = $active_conflicts;
+			add_action( 'admin_notices', array( $this, 'show_conflict_notice' ) );
 		}
+	}
+
+	/**
+	 * Display admin notice about conflicting plugins.
+	 *
+	 * @since 1.0.7
+	 */
+	public function show_conflict_notice() {
+		if ( empty( $this->active_conflicts ) ) {
+			return;
+		}
+		$list = implode( ', ', $this->active_conflicts );
+		echo '<div class="notice notice-warning is-dismissible"><p>';
+		echo '<strong>MSC Stealth Login:</strong> ';
+		printf(
+			/* translators: %s: list of detected plugins */
+			esc_html__( 'The following plugins were detected: %s. You may need to configure cache or security exclusions for your custom login URL.', 'msc-stealth-login' ),
+			esc_html( $list )
+		);
+		echo '</p></div>';
 	}
 
 	/**
@@ -151,6 +174,10 @@ class Module {
 		// Handle regenerate recovery token.
 		add_action( 'admin_post_mscsl_regenerate_recovery_token', array( $this, 'handle_regenerate_recovery_token' ) );
 
+		// Data tracking notice.
+		add_action( 'admin_notices', array( $this, 'show_data_tracking_notice' ) );
+		add_action( 'wp_ajax_mscsl_dismiss_data_notice', array( $this, 'dismiss_data_tracking_notice' ) );
+
 		// Flush rewrite rules if scheduled by activation or settings save.
 		// Runs at priority 99, after register_rewrite_rules() at priority 1.
 		add_action( 'init', array( $this, 'maybe_flush_rewrite_rules' ), 99 );
@@ -166,10 +193,10 @@ class Module {
 			return;
 		}
 
-		$recovery_token = get_option( 'msc_recovery_token', '' );
+		$recovery_token = get_option( 'mscsl_recovery_token', '' );
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- token-based auth, not a form submission
-		if ( empty( $recovery_token ) || $_GET['msc_recovery'] !== $recovery_token ) {
+		if ( empty( $recovery_token ) || ! hash_equals( $recovery_token, sanitize_text_field( wp_unslash( $_GET['msc_recovery'] ) ) ) ) {
 			return;
 		}
 
@@ -188,7 +215,7 @@ class Module {
 	 * @return string
 	 */
 	public function recovery_login_url( $login_url ) {
-		return home_url( '/wp-login.php?msc_recovery=' . get_option( 'msc_recovery_token', '' ) );
+		return add_query_arg( 'msc_recovery', get_option( 'mscsl_recovery_token', '' ), wp_login_url() );
 	}
 
 	/**
@@ -202,7 +229,7 @@ class Module {
 		check_admin_referer( 'mscsl_regenerate_recovery_token' );
 
 		$new_token = wp_generate_password( 32, false );
-		update_option( 'msc_recovery_token', $new_token );
+		update_option( 'mscsl_recovery_token', $new_token );
 
 		wp_safe_redirect(
 			add_query_arg(
@@ -311,7 +338,10 @@ class Module {
 		// Check if this is the custom login URL.
 		$slug         = $this->plugin->get_option( 'custom_login_slug', 'secure-login' );
 		$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-		$request_path = wp_parse_url( $request_uri, PHP_URL_PATH );
+		$request_path = wp_parse_url( $request_uri, PHP_URL_PATH ) ?? '';
+		if ( empty( $request_path ) ) {
+			$request_path = '/';
+		}
 
 		// Use precise regex matching for custom slug.
 		$slug_pattern = '/' . preg_quote( $slug, '/' ) . '/?$';
@@ -356,11 +386,6 @@ class Module {
 			return;
 		}
 
-		// Check if it's wp-login.php with a redirect_to.
-		if ( isset( $_GET['redirect_to'] ) ) {
-			return;
-		}
-
 		// CRITICAL FIX: Allow WordPress reauthentication and interim login params.
 		if ( isset( $_GET['reauth'] ) || isset( $_GET['interim-login'] ) || isset( $_GET['customize-login'] ) ) {
 			return;
@@ -387,10 +412,10 @@ class Module {
 
 		// Get current path.
 		$request_uri  = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-		$request_path = wp_parse_url( $request_uri, PHP_URL_PATH );
+		$request_path = wp_parse_url( $request_uri, PHP_URL_PATH ) ?? '';
 
 		// Check if accessing wp-admin.
-		if ( false === strpos( $request_path, '/wp-admin' ) ) {
+		if ( empty( $request_path ) || false === strpos( $request_path, '/wp-admin' ) ) {
 			return;
 		}
 
@@ -409,8 +434,10 @@ class Module {
 		if ( empty( $redirect_url ) ) {
 			$redirect_url = home_url();
 		}
+		// Validate redirect URL is local to prevent open redirect attacks.
+		$redirect_url = wp_validate_redirect( $redirect_url, home_url() );
 
-		wp_safe_redirect( esc_url( $redirect_url ), 302 );
+		wp_safe_redirect( $redirect_url, 302 );
 		exit;
 	}
 
@@ -421,7 +448,7 @@ class Module {
 		$redirect_url = $this->plugin->get_option( 'logout_redirect_url', home_url() );
 
 		if ( ! empty( $redirect_url ) ) {
-			wp_safe_redirect( esc_url( $redirect_url ), 302 );
+			wp_safe_redirect( $redirect_url, 302 );
 			exit;
 		}
 	}
@@ -682,7 +709,7 @@ class Module {
 
 		return sprintf(
 			/* translators: %d is the number of minutes */
-			__( 'Too many failed login attempts. Please try again in %d minutes.', 'msc-stealth-login' ),
+			esc_html__( 'Too many failed login attempts. Please try again in %d minutes.', 'msc-stealth-login' ),
 			absint( $lockout_duration )
 		);
 	}
@@ -836,7 +863,7 @@ class Module {
 		} else {
 			$subject = sprintf(
 				/* translators: %s is the site name */
-				esc_html__( '[%s] Brute Force Lockout Alert', 'msc-stealth-login' ),
+				__( '[%s] Brute Force Lockout Alert', 'msc-stealth-login' ),
 				get_bloginfo( 'name' )
 			);
 		}
@@ -853,8 +880,8 @@ class Module {
 			$message = str_replace( '{site_url}', home_url(), $message );
 		} else {
 			$message = sprintf(
-				/* translators: 1 is the site name, 2 is the IP address, 3 is the number of attempts */
-				esc_html__( 'A brute force lockout has occurred on %1$s.
+				/* translators: 1: site name, 2: IP address, 3: number of failed attempts, 4: time */
+				__( 'A brute force lockout has occurred on %1$s.
 
 IP Address: %2$s
 Failed Attempts: %3$d
@@ -879,76 +906,89 @@ If this is not expected behavior, you may want to investigate this IP address.',
 	}
 
 	/**
-	 * Show lockout message.
+	 * Redirect locked-out users to homepage.
+	 *
+	 * Instead of displaying a custom lockout page that hijacks the admin
+	 * experience (violating WordPress.org Guideline #11), we silently
+	 * redirect to the homepage. The lockout message is still communicated
+	 * via WP_Error through the authenticate filter when users attempt
+	 * to log in via the custom URL.
 	 *
 	 * @since 1.0.0
 	 * @since 1.0.3 Moved HTML to template, extracted CSS to external file.
 	 * @since 1.0.4 Inlined CSS styles directly on elements, removed external CSS dependency.
+	 * @since 1.0.5 Changed from template rendering to silent redirect via wp_safe_redirect().
 	 */
 	private function show_lockout_message() {
 		nocache_headers();
-		header( 'Content-Type: text/html; charset=utf-8' );
-		header( 'X-Frame-Options: SAMEORIGIN' );
-		header( 'X-Content-Type-Options: nosniff' );
-
-		$lockout_message = $this->get_lockout_message();
-
-		include MSCSL_PLUGIN_DIR . 'templates/lockout.php';
+		wp_safe_redirect( home_url(), 302 );
 		exit;
 	}
 
 	/**
-	 * Show blocked message for wp-login.php access.
+	 * Redirect blocked wp-login.php access to homepage.
+	 *
+	 * Instead of displaying a custom error page that hijacks the admin
+	 * experience (violating WordPress.org Guideline #11), we silently
+	 * redirect to the configured homepage URL.
 	 *
 	 * @since 1.0.0
 	 * @since 1.0.3 Moved HTML to template, extracted CSS to external file.
 	 * @since 1.0.4 Inlined CSS styles directly on elements, removed external CSS dependency.
+	 * @since 1.0.5 Changed from template rendering to silent redirect via wp_safe_redirect().
 	 */
 	private function show_blocked_message() {
 		nocache_headers();
-		header( 'Content-Type: text/html; charset=utf-8' );
-		header( 'HTTP/1.1 403 Forbidden' );
-		header( 'X-Frame-Options: SAMEORIGIN' );
-		header( 'X-Content-Type-Options: nosniff' );
-
-		include MSCSL_PLUGIN_DIR . 'templates/blocked.php';
+		$redirect_url = $this->plugin->get_option( 'wp_admin_redirect', home_url() );
+		if ( empty( $redirect_url ) ) {
+			$redirect_url = home_url();
+		}
+		// Validate redirect URL is local to prevent open redirect attacks.
+		$redirect_url = wp_validate_redirect( $redirect_url, home_url() );
+		wp_safe_redirect( $redirect_url, 302 );
 		exit;
 	}
 
 	/**
 	 * Get client IP address.
 	 *
-	 * @return string
+	 * Only trusts proxy headers when the trust_proxy option is explicitly enabled,
+	 * preventing IP spoofing attacks on brute force protection.
+	 *
+	 * @since 1.0.7 Refactored to default to REMOTE_ADDR for security.
+	 *
+	 * @return string Validated IP address or empty string.
 	 */
 	private function get_client_ip() {
-		$ip_keys = array(
-			'HTTP_CF_CONNECTING_IP',
-			'HTTP_X_FORWARDED_FOR',
-			'HTTP_X_FORWARDED',
-			'HTTP_X_CLUSTER_CLIENT_IP',
-			'HTTP_FORWARDED_FOR',
-			'HTTP_FORWARDED',
-			'REMOTE_ADDR',
-		);
+		$ip      = '';
+		$options = $this->plugin->get_options();
 
-		foreach ( $ip_keys as $key ) {
-			if ( ! isset( $_SERVER[ $key ] ) ) {
-				continue;
+		if ( ! empty( $options['trust_proxy'] ) ) {
+			// Only trust proxy headers when explicitly enabled by admin.
+			$headers = array(
+				'HTTP_CF_CONNECTING_IP', // Cloudflare.
+				'HTTP_X_FORWARDED_FOR',
+				'HTTP_X_FORWARDED',
+				'HTTP_FORWARDED_FOR',
+				'HTTP_FORWARDED',
+				'HTTP_CLIENT_IP',
+			);
+			foreach ( $headers as $header ) {
+				if ( ! empty( $_SERVER[ $header ] ) ) {
+					$ip_list = explode( ',', sanitize_text_field( wp_unslash( $_SERVER[ $header ] ) ) );
+					$ip      = trim( $ip_list[0] );
+					break;
+				}
 			}
+		}
 
-			$ip = sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
+		// Always fall back to REMOTE_ADDR.
+		if ( empty( $ip ) && ! empty( $_SERVER['REMOTE_ADDR'] ) ) {
+			$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+		}
 
-			if ( empty( $ip ) ) {
-				continue;
-			}
-
-			// Handle comma-separated IPs.
-			$ips = explode( ',', $ip );
-			$ip  = trim( $ips[0] );
-
-			if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-				return $ip;
-			}
+		if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return $ip;
 		}
 
 		return '';
@@ -986,13 +1026,13 @@ If this is not expected behavior, you may want to investigate this IP address.',
 
 		$subject = sprintf(
 			/* translators: %s is the site name */
-			esc_html__( '[%s] Your Login URL Recovery', 'msc-stealth-login' ),
+			__( '[%s] Your Login URL Recovery', 'msc-stealth-login' ),
 			get_bloginfo( 'name' )
 		);
 
 		$message = sprintf(
-			/* translators: 1 is the site name, 2 is the login URL */
-			esc_html__( 'You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s', 'msc-stealth-login' ),
+			/* translators: 1: site name, 2: login URL */
+			__( 'You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s', 'msc-stealth-login' ),
 			get_bloginfo( 'name' ),
 			$login_url
 		);
@@ -1017,6 +1057,10 @@ If this is not expected behavior, you may want to investigate this IP address.',
 	 * Show recovery notice.
 	 */
 	public function show_recovery_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		if ( ! isset( $_GET['recovery'] ) ) {
 			return;
 		}
@@ -1034,6 +1078,61 @@ If this is not expected behavior, you may want to investigate this IP address.',
 		} elseif ( 'failed' === $type ) {
 			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Failed to send recovery email.', 'msc-stealth-login' ) . '</p></div>';
 		}
+	}
+
+	/**
+	 * Show data tracking admin notice.
+	 *
+	 * Informs administrators about data collection by the plugin,
+	 * as required by WordPress.org Guideline 7.
+	 *
+	 * @since 1.0.5
+	 */
+	public function show_data_tracking_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_msc-stealth-login' !== $screen->id ) {
+			return;
+		}
+
+		// Show once — dismissible via AJAX.
+		if ( get_user_meta( get_current_user_id(), 'mscsl_data_notice_dismissed', true ) ) {
+			return;
+		}
+
+		?>
+		<div class="notice notice-info is-dismissible mscsl-data-tracking-notice">
+			<p>
+				<strong><?php esc_html_e( 'MSC Stealth Login:', 'msc-stealth-login' ); ?></strong>
+				<?php
+				printf(
+					/* translators: %s: Link to plugin settings page */
+					esc_html__( 'This plugin collects IP addresses, usernames, user agents, and login attempt history for security features (brute force protection, login alerts). This data is stored in your WordPress database and is not sent externally. You can manage settings on the %s page.', 'msc-stealth-login' ),
+					'<a href="' . esc_url( admin_url( 'options-general.php?page=msc-stealth-login' ) ) . '">' . esc_html__( 'plugin settings', 'msc-stealth-login' ) . '</a>'
+				);
+				?>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Dismiss data tracking notice via AJAX.
+	 *
+	 * Stores a user meta flag indicating the notice has been dismissed.
+	 *
+	 * @since 1.0.5
+	 */
+	public function dismiss_data_tracking_notice() {
+		check_ajax_referer( 'mscsl_dismiss_data_notice', '_wpnonce' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'msc-stealth-login' ) );
+		}
+		update_user_meta( get_current_user_id(), 'mscsl_data_notice_dismissed', true );
+		wp_die();
 	}
 
 	/**
@@ -1097,13 +1196,13 @@ If this is not expected behavior, you may want to investigate this IP address.',
 
 		$subject = sprintf(
 			/* translators: %s is the site name */
-			esc_html__( '[%s] User Login Alert', 'msc-stealth-login' ),
+			__( '[%s] User Login Alert', 'msc-stealth-login' ),
 			get_bloginfo( 'name' )
 		);
 
 		$message = sprintf(
-			/* translators: 1 is the username, 2 is the IP address, 3 is the time */
-			esc_html__( 'User: %1$s
+			/* translators: 1: username, 2: IP address, 3: time */
+			__( 'User: %1$s
 IP Address: %2$s
 Time: %3$s
 
@@ -1150,13 +1249,13 @@ This is an automated alert from your WordPress security plugin.', 'msc-stealth-l
 
 			$subject = sprintf(
 				/* translators: %s is the site name */
-				esc_html__( '[%s] New Login Location Detected', 'msc-stealth-login' ),
+				__( '[%s] New Login Location Detected', 'msc-stealth-login' ),
 				get_bloginfo( 'name' )
 			);
 
 			$message = sprintf(
-				/* translators: 1 is the display name, 2 is the IP address, 3 is the time */
-				esc_html__( 'Hello %1$s,
+				/* translators: 1: display name, 2: IP address, 3: time */
+				__( 'Hello %1$s,
 
 We detected a login to your account from a new IP address:
 

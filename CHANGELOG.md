@@ -2,6 +2,69 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.0.8] - 2026-05-21
+
+### Fixed
+* Updated plugin compatibility metadata to `Tested up to: 7.0` for current WordPress directory requirements.
+* Renamed global plugin init callback to a prefixed function for naming convention compliance.
+* Removed discouraged `load_plugin_textdomain()` bootstrap call for WordPress.org-hosted translation handling.
+* Refactored login history query construction to remove interpolated dynamic WHERE fragments and ensure valid `$wpdb->prepare()` placeholder replacement counts.
+* Replaced direct uninstall usermeta cleanup queries with `delete_metadata()` API calls.
+
+### Updated
+* Version bump to 1.0.8.
+
+## [1.0.7] - 2026-05-21
+
+### Security
+* Fixed IP spoofing vulnerability in `get_client_ip()` — now defaults to REMOTE_ADDR; proxy headers only trusted when `trust_proxy` option is enabled.
+* Removed broad `redirect_to` exception that allowed bypassing login block on any request with a `redirect_to` parameter.
+* Added CSV formula injection prevention for CSV exports.
+* Fixed double-escaping in login URL display (`esc_html()` inside `esc_url()`).
+* Fixed `esc_attr_e()` in JavaScript onclick handlers — replaced with `esc_js()` to prevent broken quote encoding.
+* Fixed `esc_html__()` in plain text email bodies — replaced with `__()` to prevent HTML entities in plain text emails.
+* Fixed `esc_html__()` in `wp_localize_script()` data — replaced with `__()` to prevent double-encoding.
+
+### Fixed
+* Added `load_plugin_textdomain()` call so translation files are actually loaded.
+* Converted unnamed closures to named methods/functions for removability.
+* Added `settings_errors()` output to settings page.
+* Refactored SQL sentinel pattern `( %s = '' OR column = %s )` to dynamic WHERE clauses for index utilisation and PluginCheck compliance.
+* Added URL-safe validation for custom login slug (strips non-URL-safe characters).
+* Synchronized reserved slug list between PHP and JavaScript.
+* Fixed `esc_url()` used in input value attributes — replaced with `esc_attr()`.
+* Fixed timezone-sensitive date calculation in `delete_old_attempts()` — replaced `strtotime()` with `gmdate()` + `DAY_IN_SECONDS`.
+* Fixed incomplete translator comment in lockout email (now documents all 4 placeholders).
+* Changed `delete_option()` to `delete_transient()` for `mscsl_flush_rewrite_rules`.
+* Added orphan user meta cleanup (`mscsl_data_notice_dismissed`, `mscsl_known_ips`) to uninstall.
+* Added `trust_proxy` admin setting for proxy header trust control.
+* Added `.distignore` to exclude vendor/, tests/, and dev files from WordPress.org builds.
+
+## [1.0.6] - 2026-05-20
+
+### Fixed
+* Removed inline `<script>` from data tracking notice and moved dismiss logic to admin.js with localized nonce (WordPress.org review compliance).
+* Fixed hardcoded `/wp-login.php` paths to use `wp_login_url()` with `add_query_arg()` for subdirectory WordPress compatibility.
+* Added missing translators comment for data tracking notice string (Plugin Check compliance).
+* Added phpcs:ignore comments for custom table direct database queries (Plugin Check compliance).
+
+### Updated
+* Version bump to 1.0.6.
+
+## [1.0.5] - 2026-05-19
+
+### Fixed
+* CIDR IP whitelist matching now works correctly for subnet ranges.
+* Recovery token comparison now uses timing-safe comparison (hash_equals).
+* Lockout message output now properly escaped.
+* Recovery token option key renamed from msc_recovery_token to mscsl_recovery_token for namespace consistency, with automatic migration.
+* Plugin header tab character removed for parser compatibility.
+
+### Added
+* Privacy admin notice informing administrators about data collection (IP addresses, usernames, user agents, login history).
+* Database schema version tracking for future upgrade path.
+* Privacy Policy section to plugin documentation.
+
 ## [1.0.4] - 2026-05-13
 
 ### Changed

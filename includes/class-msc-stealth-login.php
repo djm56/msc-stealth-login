@@ -64,9 +64,13 @@ class Plugin {
 			update_option( self::OPTION_KEY, self::default_options() );
 		}
 
-		// Generate recovery token if not exists.
-		if ( ! get_option( 'msc_recovery_token' ) ) {
-			update_option( 'msc_recovery_token', wp_generate_password( 32, false ) );
+		// Migrate from old option key if it exists.
+		$old_token = get_option( 'msc_recovery_token' );
+		if ( $old_token ) {
+			update_option( 'mscsl_recovery_token', $old_token );
+			delete_option( 'msc_recovery_token' );
+		} elseif ( ! get_option( 'mscsl_recovery_token' ) ) {
+			update_option( 'mscsl_recovery_token', wp_generate_password( 32, false ) );
 		}
 
 		// Create login attempts table.
@@ -96,6 +100,9 @@ class Plugin {
 	private function __construct() {
 		$this->settings = new Settings( $this );
 		$this->module   = new Module( $this );
+
+		// Run database upgrades if needed.
+		Database::maybe_upgrade();
 	}
 
 	/**
@@ -133,6 +140,9 @@ class Plugin {
 			// Login alerts.
 			'login_alert_admin'        => 0,
 			'login_alert_new_ip'       => 0,
+
+			// Proxy trust.
+			'trust_proxy'              => 0,
 		);
 	}
 
@@ -172,8 +182,10 @@ class Plugin {
 	/**
 	 * Check if an IP is whitelisted.
 	 *
-	 * @param string $ip IP address.
-	 * @return bool
+	 * Supports exact IP matches and CIDR range notation (e.g., 192.168.1.0/24).
+	 *
+	 * @param string $ip IP address to check.
+	 * @return bool True if IP is whitelisted.
 	 */
 	public function is_ip_whitelisted( $ip ) {
 		$whitelist = $this->get_option( 'ip_whitelist', '' );
@@ -182,24 +194,117 @@ class Plugin {
 			return false;
 		}
 
-		// Support both comma and newline separated IPs.
-		$whitelist_ips = array_filter(
-			array_map( 'trim', preg_split( '/[,\n\r]/', $whitelist ) ),
-			function( $entry ) {
-				// Validate each entry as either a valid IP or CIDR range.
-				if ( empty( $entry ) ) {
-					return false;
-				}
-				// Check for CIDR notation.
-				if ( strpos( $entry, '/' ) !== false ) {
-					$parts = explode( '/', $entry );
-					return filter_var( $parts[0], FILTER_VALIDATE_IP ) && is_numeric( $parts[1] ) && $parts[1] >= 0 && $parts[1] <= 128;
-				}
-				return (bool) filter_var( $entry, FILTER_VALIDATE_IP );
-			}
-		);
+		if ( empty( $ip ) || ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
 
-		return in_array( $ip, $whitelist_ips, true );
+		// Support both comma and newline separated IPs.
+		$entries = array_filter( array_map( 'trim', preg_split( '/[,\n\r]/', $whitelist ) ) );
+
+		foreach ( $entries as $entry ) {
+			if ( empty( $entry ) ) {
+				continue;
+			}
+
+			// CIDR range notation.
+			if ( strpos( $entry, '/' ) !== false ) {
+				if ( $this->ip_in_cidr( $ip, $entry ) ) {
+					return true;
+				}
+			} else {
+				// Exact IP match.
+				if ( $ip === $entry && filter_var( $entry, FILTER_VALIDATE_IP ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if an IP address falls within a CIDR range.
+	 *
+	 * @since 1.0.5
+	 *
+	 * @param string $ip   IP address to check.
+	 * @param string $cidr CIDR range (e.g., '192.168.1.0/24' or '2001:db8::/32').
+	 * @return bool True if IP is within the CIDR range.
+	 */
+	private function ip_in_cidr( $ip, $cidr ) {
+		// Validate IP address format.
+		if ( ! filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return false;
+		}
+
+		$parts = explode( '/', $cidr );
+		if ( 2 !== count( $parts ) ) {
+			return false;
+		}
+
+		$subnet   = $parts[0];
+		$prefix   = is_numeric( $parts[1] ) ? (int) $parts[1] : -1;
+		$ip_is_v4 = filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
+		$sub_is_v4 = filter_var( $subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 );
+
+		// IP and subnet must be the same type (both IPv4 or both IPv6).
+		if ( $ip_is_v4 !== $sub_is_v4 ) {
+			return false;
+		}
+
+		if ( $ip_is_v4 ) {
+			// IPv4 CIDR matching.
+			if ( $prefix < 0 || $prefix > 32 ) {
+				return false;
+			}
+
+			$ip_long     = ip2long( $ip );
+			$subnet_long = ip2long( $subnet );
+
+			if ( false === $ip_long || false === $subnet_long ) {
+				return false;
+			}
+
+			$mask = $prefix > 0 ? ( 0xFFFFFFFF << ( 32 - $prefix ) ) & 0xFFFFFFFF : 0;
+
+			return ( $ip_long & $mask ) === ( $subnet_long & $mask );
+		} else {
+			// IPv6 CIDR matching.
+			if ( $prefix < 0 || $prefix > 128 ) {
+				return false;
+			}
+
+			$ip_bin   = inet_pton( $ip );
+			$subnet_bin = inet_pton( $subnet );
+
+			if ( false === $ip_bin || false === $subnet_bin ) {
+				return false;
+			}
+
+			// Compare byte by byte using bitmask.
+			$full_bytes = (int) floor( $prefix / 8 );
+			$remaining_bits = $prefix % 8;
+
+			for ( $i = 0; $i < 16; $i++ ) {
+				if ( $i < $full_bytes ) {
+					// Full byte — must match exactly.
+					if ( $ip_bin[ $i ] !== $subnet_bin[ $i ] ) {
+						return false;
+					}
+				} elseif ( $i === $full_bytes && $remaining_bits > 0 ) {
+					// Partial byte — apply bitmask.
+					$bitmask = chr( ( 0xFF << ( 8 - $remaining_bits ) ) & 0xFF );
+					if ( ( $ip_bin[ $i ] & $bitmask ) !== ( $subnet_bin[ $i ] & $bitmask ) ) {
+						return false;
+					}
+				} else {
+					// Beyond prefix length — no need to compare.
+					break;
+				}
+			}
+
+			return true;
+		}
 	}
 
 	/**

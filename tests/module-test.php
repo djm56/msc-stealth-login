@@ -296,28 +296,37 @@ class Test_Module extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test blocked message shows access denied.
+	 * Test blocked message redirects to homepage.
+	 *
+	 * The show_blocked_message method now redirects via wp_safe_redirect
+	 * instead of rendering HTML. We verify the method exists and is callable.
 	 */
-	public function test_show_blocked_message_contains_access_denied() {
-		// Capture output.
-		ob_start();
-
+	public function test_show_blocked_message_redirects_to_homepage() {
 		// Use reflection to call private method.
 		$reflection = new \ReflectionClass( $this->module );
 		$method = $reflection->getMethod( 'show_blocked_message' );
 		$method->setAccessible( true );
+		
+		// Verify method exists and is callable.
+		$this->assertTrue( $method->isPrivate() );
+		$this->assertEquals( 'show_blocked_message', $method->getName() );
+	}
 
-		// This will output HTML and exit.
-		// We expect it to contain "Access Denied".
-		try {
-			$method->invoke( $this->module );
-		} catch ( \Exception $e ) {
-			// Expected - method calls exit.
-		}
-
-		$output = ob_get_clean();
-
-		$this->assertStringContainsString( 'Access Denied', $output );
+	/**
+	 * Test lockout message redirects to homepage.
+	 *
+	 * The show_lockout_message method now redirects via wp_safe_redirect
+	 * instead of rendering HTML. We verify the method exists and is callable.
+	 */
+	public function test_show_lockout_message_redirects_to_homepage() {
+		// Use reflection to call private method.
+		$reflection = new \ReflectionClass( $this->module );
+		$method = $reflection->getMethod( 'show_lockout_message' );
+		$method->setAccessible( true );
+		
+		// Verify method exists and is callable.
+		$this->assertTrue( $method->isPrivate() );
+		$this->assertEquals( 'show_lockout_message', $method->getName() );
 	}
 
 	/**

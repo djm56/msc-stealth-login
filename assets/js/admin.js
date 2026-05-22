@@ -153,6 +153,14 @@
 				}, 2000);
 			}
 		});
+
+		// Dismiss data tracking notice via AJAX.
+		$(document).on('click', '.mscsl-data-tracking-notice .notice-dismiss', function() {
+			$.post(ajaxurl, {
+				action: 'mscsl_dismiss_data_notice',
+				_wpnonce: mscslAdmin.dismissNonce
+			});
+		});
 	});
 
 })(jQuery);

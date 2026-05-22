@@ -1,10 +1,10 @@
 # MSC Stealth Login
 
-![Version](https://img.shields.io/badge/version-1.0.4-blue)
+![Version](https://img.shields.io/badge/version-1.0.8-blue)
 ![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![WordPress](https://img.shields.io/badge/WordPress-5.9%2B-blue)
-![Tested up to](https://img.shields.io/badge/tested%20up%20to-6.9-blue)
+![Tested up to](https://img.shields.io/badge/tested%20up%20to-7.0-blue)
 
 Hide your WordPress login page from attackers. Protect against brute force with custom URLs, lockouts, and email alerts.
 
@@ -111,7 +111,7 @@ If you lose access to your custom login URL:
 
 | Constant | Value | Description |
 |----------|-------|-------------|
-| `MSCSL_PLUGIN_VERSION` | `'1.0.4'` | Current plugin version |
+| `MSCSL_PLUGIN_VERSION` | `'1.0.8'` | Current plugin version |
 | `MSCSL_PLUGIN_FILE` | `__FILE__` | Absolute path to main plugin file |
 | `MSCSL_PLUGIN_DIR` | Plugin directory path | Absolute path to plugin directory |
 | `MSCSL_PLUGIN_URL` | Plugin directory URL | URL to plugin directory |
@@ -141,28 +141,29 @@ $value  = $plugin->get_option( 'custom_login_slug', 'secure-login' );
 | `logout_redirect_url` | `string` | `''` | Redirect URL after logout (empty = homepage) |
 | `advanced_security_enabled` | `int` | `0` | Master toggle for advanced features (1/0) |
 | `disable_xmlrpc` | `int` | `1` | Block XML-RPC requests (1/0) |
-| `disable_rest_api_users` | `int` | `1` | Block REST API user enumeration (1/0) |
+| `disable_rest_api` | `int` | `1` | Block REST API user enumeration (1/0) |
 | `brute_force_enabled` | `int` | `1` | Enable brute force protection (1/0) |
 | `max_login_attempts` | `int` | `3` | Failed attempts before lockout (1–10) |
 | `lockout_duration` | `int` | `15` | Lockout duration in minutes (5–60) |
 | `login_logging_enabled` | `int` | `1` | Log login attempts to database (1/0) |
 | `ip_whitelist` | `string` | `''` | Comma/newline separated IPs (CIDR supported) |
+| `trust_proxy` | `int` | `0` | Trust proxy headers for IP detection (1/0) |
 | `progressive_lockout_enabled` | `int` | `0` | Enable progressive lockout delays (1/0) |
 | `max_lockout_duration` | `int` | `60` | Max lockout minutes with progressive (60–1440) |
 | `email_notifications_enabled` | `int` | `0` | Master toggle for email notifications (1/0) |
 | `lockout_email_enabled` | `int` | `1` | Send email on lockout (1/0) |
-| `notification_email` | `string` | `''` | Lockout notification recipient (empty = admin email) |
+| `lockout_email_recipient` | `string` | `''` | Lockout notification recipient (empty = admin email) |
 | `lockout_email_subject` | `string` | `''` | Custom lockout email subject (empty = default) |
 | `lockout_email_body` | `string` | `''` | Custom lockout email body (empty = default) |
-| `admin_login_alert` | `int` | `0` | Email admin on every login (1/0) |
-| `new_ip_alert` | `int` | `0` | Email user on login from new IP (1/0) |
+| `login_alert_admin` | `int` | `0` | Email admin on every login (1/0) |
+| `login_alert_new_ip` | `int` | `0` | Email user on login from new IP (1/0) |
 
 ### Recovery Token
 
 The recovery token is stored separately:
 
 ```php
-$token = get_option( 'msc_recovery_token' );
+$token = get_option( 'mscsl_recovery_token' );
 // 32-character random string, generated on activation
 ```
 
@@ -224,9 +225,11 @@ Any slug starting with `wp-` is also blocked.
 On plugin deletion (not deactivation), the plugin removes:
 
 - `mscsl_options` from `wp_options`
-- `msc_recovery_token` from `wp_options`
+- `mscsl_recovery_token` from `wp_options`
 - `mscsl_flush_rewrite_rules` transient
+- `mscsl_db_version` from `wp_options`
 - All `mscsl_login_attempts_*` transients
+- `mscsl_data_notice_dismissed` and `mscsl_known_ips` user meta
 - The `{prefix}mscsl_login_attempts` database table
 - Scheduled `mscsl_brute_force_cleanup` cron event
 
@@ -325,6 +328,12 @@ Translation dictionaries are maintained in `scripts/generate-translations.php`. 
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
+
+### Version History
+
+## 1.0.5
+* **Fix**: Removed custom blocked and lockout error page templates to comply with WordPress.org Plugin Guideline #11 (plugins should not hijack the admin dashboard). Blocked and locked-out users are now silently redirected to the homepage instead of being shown a custom error page.
+* The lockout message is still communicated via the standard WordPress login error flow when users attempt to log in.
 
 ## License
 

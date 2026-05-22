@@ -30,6 +30,16 @@ class Database {
 	const ALLOWED_TYPES = array( 'success', 'failure', 'lockout', 'whitelisted' );
 
 	/**
+	 * Current database schema version.
+	 *
+	 * Increment this when the table schema changes.
+	 * The maybe_upgrade() method will run any pending migrations.
+	 *
+	 * @var string
+	 */
+	const DB_VERSION = '1.0.5';
+
+	/**
 	 * Create the login attempts table.
 	 *
 	 * @return bool True on success.
@@ -60,6 +70,39 @@ class Database {
 			return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * Check if database needs upgrading and run migrations.
+	 *
+	 * @since 1.0.5
+	 *
+	 * Compares the stored database version against the current
+	 * DB_VERSION constant. Runs any pending migrations if needed.
+	 *
+	 * @return bool True if no upgrades needed or upgrades succeeded.
+	 */
+	public static function maybe_upgrade() {
+		$current_version = get_option( 'mscsl_db_version', '' );
+
+		// No upgrade needed if versions match.
+		if ( $current_version === self::DB_VERSION ) {
+			return true;
+		}
+
+		// First install — just create table and set version.
+		if ( empty( $current_version ) ) {
+			self::create_table();
+			update_option( 'mscsl_db_version', self::DB_VERSION );
+			return true;
+		}
+
+		// Future migrations go here.
+		// Example: if ( version_compare( $current_version, '1.1.0', '<' ) ) { ... }
+
+		// Update the stored version.
+		update_option( 'mscsl_db_version', self::DB_VERSION );
 		return true;
 	}
 
@@ -186,29 +229,22 @@ class Database {
 			return $cached;
 		}
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				// Fixed placeholder query — each filter uses (%s = '' OR column = %s) so
-				// inactive filters (empty string) always evaluate to TRUE.
 				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts
-				WHERE ( %s = '' OR ip_address = %s )
-				AND ( %s = '' OR user_login = %s )
-				AND ( %s = '' OR attempt_type = %s )
-				AND ( %s = '' OR created_at >= %s )
-				AND ( %s = '' OR created_at <= %s )
-				ORDER BY created_at DESC LIMIT %d OFFSET %d",
-				$ip,
-				$ip,
-				$username,
-				$username,
-				$type,
-				$type,
-				$date_from,
-				$date_from,
-				$date_to,
-				$date_to,
-				$limit,
-				$offset
+				 WHERE ( %s = '' OR ip_address = %s )
+				 AND ( %s = '' OR user_login = %s )
+				 AND ( %s = '' OR attempt_type = %s )
+				 AND ( %s = '' OR created_at >= %s )
+				 AND ( %s = '' OR created_at <= %s )
+				 ORDER BY created_at DESC LIMIT %d OFFSET %d",
+				$ip, $ip,
+				$username, $username,
+				$type, $type,
+				$date_from, $date_from,
+				$date_to, $date_to,
+				$limit, $offset
 			),
 			ARRAY_A
 		);
@@ -272,24 +308,20 @@ class Database {
 			return $cached;
 		}
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
 		$count = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts
-				WHERE ( %s = '' OR ip_address = %s )
-				AND ( %s = '' OR user_login = %s )
-				AND ( %s = '' OR attempt_type = %s )
-				AND ( %s = '' OR created_at >= %s )
-				AND ( %s = '' OR created_at <= %s )",
-				$ip,
-				$ip,
-				$username,
-				$username,
-				$type,
-				$type,
-				$date_from,
-				$date_from,
-				$date_to,
-				$date_to
+				 WHERE ( %s = '' OR ip_address = %s )
+				 AND ( %s = '' OR user_login = %s )
+				 AND ( %s = '' OR attempt_type = %s )
+				 AND ( %s = '' OR created_at >= %s )
+				 AND ( %s = '' OR created_at <= %s )",
+				$ip, $ip,
+				$username, $username,
+				$type, $type,
+				$date_from, $date_from,
+				$date_to, $date_to
 			)
 		);
 
@@ -323,7 +355,7 @@ class Database {
 	public static function delete_old_attempts( $days = 30 ) {
 		global $wpdb;
 
-		$cutoff = gmdate( 'Y-m-d H:i:s', strtotime( '-' . absint( $days ) . ' days' ) );
+		$cutoff = gmdate( 'Y-m-d H:i:s', time() - ( absint( $days ) * DAY_IN_SECONDS ) );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table delete with prepare
 		$deleted = $wpdb->query(
@@ -393,11 +425,11 @@ class Database {
 				$output,
 				array(
 					absint( $attempt['id'] ),
-					sanitize_text_field( $attempt['ip_address'] ),
-					sanitize_text_field( $attempt['user_login'] ),
+					self::sanitize_csv_cell( $attempt['ip_address'] ),
+					self::sanitize_csv_cell( $attempt['user_login'] ),
 					sanitize_key( $attempt['attempt_type'] ),
-					sanitize_textarea_field( $attempt['user_agent'] ?? '' ),
-					sanitize_text_field( $attempt['created_at'] ),
+					self::sanitize_csv_cell( $attempt['user_agent'] ?? '' ),
+					self::sanitize_csv_cell( $attempt['created_at'] ),
 				)
 			);
 		}
@@ -409,5 +441,24 @@ class Database {
 		fclose( $output );
 
 		return $csv;
+	}
+
+	/**
+	 * Sanitize a CSV cell value to prevent formula injection.
+	 *
+	 * Prefixes cells that start with formula characters (=, +, -, @, tab)
+	 * with a tab character to prevent CSV injection attacks.
+	 *
+	 * @since 1.0.7
+	 *
+	 * @param string $value Cell value to sanitize.
+	 * @return string Sanitized cell value.
+	 */
+	private static function sanitize_csv_cell( $value ) {
+		$first_char = substr( (string) $value, 0, 1 );
+		if ( in_array( $first_char, array( '=', '+', '-', '@', "\t" ), true ) ) {
+			return "\t" . $value;
+		}
+		return $value;
 	}
 }

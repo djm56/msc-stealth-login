@@ -72,7 +72,8 @@ class Settings {
 			'msc-stealth-login-admin',
 			'mscslAdmin',
 			array(
-				'reservedSlug' => esc_html__( 'This slug is reserved. Please choose a different one.', 'msc-stealth-login' ),
+				'reservedSlug'  => __( 'This slug is reserved. Please choose a different one.', 'msc-stealth-login' ),
+				'dismissNonce'  => wp_create_nonce( 'mscsl_dismiss_data_notice' ),
 			)
 		);
 	}
@@ -160,11 +161,11 @@ class Settings {
 		// CSV Data.
 		foreach ( $logs as $log ) {
 			fputcsv( $output, array(
-				$log['ip_address'],
-				$log['user_login'],
-				$log['attempt_type'],
-				$log['user_agent'] ?? '',
-				$log['created_at'],
+				$this->sanitize_csv_cell( $log['ip_address'] ),
+				$this->sanitize_csv_cell( $log['user_login'] ),
+				$this->sanitize_csv_cell( $log['attempt_type'] ),
+				$this->sanitize_csv_cell( $log['user_agent'] ?? '' ),
+				$this->sanitize_csv_cell( $log['created_at'] ),
 			) );
 		}
 
@@ -193,11 +194,19 @@ class Settings {
 			$options['module_enabled']     = isset( $_POST['module_enabled'] ) ? 1 : 0;
 			$options['custom_login_slug']   = sanitize_text_field( wp_unslash( $_POST['custom_login_slug'] ?? '' ) );
 			$options['hide_wp_admin']       = isset( $_POST['hide_wp_admin'] ) ? 1 : 0;
-			$options['wp_admin_redirect']   = esc_url_raw( wp_unslash( $_POST['wp_admin_redirect'] ?? '' ) );
+			$raw_redirect = esc_url_raw( wp_unslash( $_POST['wp_admin_redirect'] ?? '' ) );
+			// Validate that the redirect URL is local to this site.
+			if ( ! empty( $raw_redirect ) && ! wp_validate_redirect( $raw_redirect ) ) {
+				// External URL — force to homepage.
+				add_settings_error( 'mscsl_settings', 'invalid_redirect', __( 'Redirect URL must be a local URL. Using homepage instead.', 'msc-stealth-login' ) );
+				$raw_redirect = home_url();
+			}
+			$options['wp_admin_redirect']   = $raw_redirect;
 			$options['logout_redirect_url'] = esc_url_raw( wp_unslash( $_POST['logout_redirect_url'] ?? '' ) );
 
 			// Validate login slug.
-			$slug = $options['custom_login_slug'];
+			$slug = sanitize_text_field( wp_unslash( $_POST['custom_login_slug'] ?? '' ) );
+			$slug = preg_replace( '/[^a-z0-9\-_]/', '', strtolower( $slug ) );
 			$slug = trim( $slug );
 			$slug = ltrim( $slug, '/' );
 
@@ -206,8 +215,9 @@ class Settings {
 			}
 
 			// Prevent conflicting with existing WordPress routes.
-			$reserved = array( 'wp-admin', 'wp-login', 'wp-login.php', 'login', 'admin' );
+			$reserved = array( 'wp-admin', 'wp-login', 'wp-login.php', 'login', 'admin', 'dashboard', 'wp' );
 			if ( in_array( $slug, $reserved, true ) || preg_match( '/^wp-/i', $slug ) ) {
+				add_settings_error( 'mscsl_settings', 'reserved_slug', __( 'That slug is reserved. Please choose a different one.', 'msc-stealth-login' ) );
 				$slug = 'secure-login';
 			}
 
@@ -222,6 +232,7 @@ class Settings {
 			$options['lockout_duration']           = absint( $_POST['lockout_duration'] ?? 15 );
 			$options['login_logging_enabled']      = isset( $_POST['login_logging_enabled'] ) ? 1 : 0;
 			$options['ip_whitelist']               = sanitize_textarea_field( wp_unslash( $_POST['ip_whitelist'] ?? '' ) );
+			$options['trust_proxy']                  = isset( $_POST['trust_proxy'] ) ? 1 : 0;
 			$options['progressive_lockout_enabled'] = isset( $_POST['progressive_lockout_enabled'] ) ? 1 : 0;
 			$options['max_lockout_duration']       = absint( $_POST['max_lockout_duration'] ?? 60 );
 
@@ -295,6 +306,8 @@ class Settings {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'MSC Stealth Login', 'msc-stealth-login' ); ?></h1>
+
+			<?php settings_errors( 'mscsl_settings' ); ?>
 
 			<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- nonce already verified in handle_save() which sets this param via redirect. ?>
 			<?php if ( isset( $_GET['updated'] ) && '1' === $_GET['updated'] ) : ?>
@@ -376,7 +389,7 @@ class Settings {
 									<label for="wp_admin_redirect"><?php esc_html_e( 'wp-admin Redirect URL', 'msc-stealth-login' ); ?></label>
 								</th>
 								<td>
-									<input type="url" id="wp_admin_redirect" name="wp_admin_redirect" value="<?php echo esc_url( $options['wp_admin_redirect'] ); ?>" class="regular-text" />
+									<input type="url" id="wp_admin_redirect" name="wp_admin_redirect" value="<?php echo esc_attr( $options['wp_admin_redirect'] ); ?>" class="regular-text" />
 									<p class="description">
 										<?php esc_html_e( 'Where to redirect users when they try to access wp-admin directly. Defaults to homepage.', 'msc-stealth-login' ); ?>
 									</p>
@@ -388,7 +401,7 @@ class Settings {
 									<label for="logout_redirect_url"><?php esc_html_e( 'Logout Redirect URL', 'msc-stealth-login' ); ?></label>
 								</th>
 								<td>
-									<input type="url" id="logout_redirect_url" name="logout_redirect_url" value="<?php echo esc_url( $options['logout_redirect_url'] ); ?>" class="regular-text" />
+									<input type="url" id="logout_redirect_url" name="logout_redirect_url" value="<?php echo esc_attr( $options['logout_redirect_url'] ); ?>" class="regular-text" />
 									<p class="description">
 										<?php esc_html_e( 'Where to redirect users after logging out. Defaults to homepage.', 'msc-stealth-login' ); ?>
 									</p>
@@ -409,8 +422,8 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Emergency Recovery URL', 'msc-stealth-login' ); ?></th>
 							<td>
 								<?php
-								$recovery_token = get_option( 'msc_recovery_token', '' );
-								$recovery_url   = home_url( '/wp-login.php?msc_recovery=' . $recovery_token );
+								$recovery_token = get_option( 'mscsl_recovery_token', '' );
+								$recovery_url   = add_query_arg( 'msc_recovery', $recovery_token, wp_login_url() );
 								?>
 								<p><strong><?php esc_html_e( 'Current Recovery URL:', 'msc-stealth-login' ); ?></strong></p>
 								<code id="mscsl-recovery-url" style="padding: 10px; background: #f0f0f1; display: block; font-size: 14px; margin-bottom: 10px;"><?php echo esc_url( $recovery_url ); ?></code>
@@ -424,7 +437,7 @@ class Settings {
 									<?php esc_html_e( 'Bookmark this URL! If you lose access to your custom login URL, use this recovery URL to access wp-login.php and then navigate to settings to find your custom URL.', 'msc-stealth-login' ); ?>
 								</p>
 								<p style="margin-top: 15px;">
-									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=mscsl_regenerate_recovery_token' ), 'mscsl_regenerate_recovery_token' ) ); ?>" class="button button-secondary" onclick="return confirm('<?php esc_attr_e( 'Are you sure? This will invalidate the current recovery URL.', 'msc-stealth-login' ); ?>');">
+									<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=mscsl_regenerate_recovery_token' ), 'mscsl_regenerate_recovery_token' ) ); ?>" class="button button-secondary" onclick="return confirm('<?php echo esc_js( __( 'Are you sure? This will invalidate the current recovery URL.', 'msc-stealth-login' ) ); ?>');">
 										<?php esc_html_e( 'Regenerate Recovery URL', 'msc-stealth-login' ); ?>
 									</a>
 								</p>
@@ -568,6 +581,18 @@ class Settings {
 								<p class="description">
 									<?php esc_html_e( 'Enter IP addresses that should bypass brute force protection. Enter one IP per line or separate with commas. Examples:', 'msc-stealth-login' ); ?>
 									<br><code>192.168.1.1</code><br><code>10.0.0.0/8</code>
+								</p>
+							</td>
+						</tr>
+						<tr class="mscsl-advanced-option" style="<?php echo $options['advanced_security_enabled'] ? '' : 'display:none;'; ?>">
+							<th scope="row"><?php esc_html_e( 'Trust Proxy Headers', 'msc-stealth-login' ); ?></th>
+							<td>
+								<label for="trust_proxy">
+									<input id="trust_proxy" type="checkbox" name="trust_proxy" value="1" <?php checked( 1, $options['trust_proxy'] ); ?> />
+									<?php esc_html_e( 'Trust X-Forwarded-For and similar proxy headers for IP detection', 'msc-stealth-login' ); ?>
+								</label>
+								<p class="description">
+									<?php esc_html_e( 'Enable this only if your site is behind a trusted reverse proxy (e.g., Cloudflare, Nginx). Disabling this provides stronger brute force protection by preventing IP spoofing.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
 						</tr>
@@ -737,7 +762,7 @@ class Settings {
 						<li><?php esc_html_e( 'Go to the Settings tab above.', 'msc-stealth-login' ); ?></li>
 						<li><?php esc_html_e( 'Enter a custom login slug (e.g., "my-secret-login" or "admin-access").', 'msc-stealth-login' ); ?></li>
 						<li><?php esc_html_e( 'Click Save Settings.', 'msc-stealth-login' ); ?></li>
-						<li><?php esc_html_e( 'Your new login URL will be:', 'msc-stealth-login' ); ?> <code><?php echo esc_url( trailingslashit( home_url() ) . esc_html( $options['custom_login_slug'] ) ); ?></code></li>
+						<li><?php esc_html_e( 'Your new login URL will be:', 'msc-stealth-login' ); ?> <code><?php echo esc_url( trailingslashit( home_url() ) . $options['custom_login_slug'] ); ?></code></li>
 						<li><?php esc_html_e( 'Bookmark this URL immediately!', 'msc-stealth-login' ); ?> <strong><?php esc_html_e( 'Important:', 'msc-stealth-login' ); ?></strong> <?php esc_html_e( 'You will no longer be able to access wp-login.php directly.', 'msc-stealth-login' ); ?></li>
 					</ol>
 
@@ -1003,7 +1028,7 @@ class Settings {
 
 				<!-- Actions -->
 				<p style="margin-top: 20px;">
-					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'options-general.php?page=msc-stealth-login&tab=history&action=clear_logs' ), 'mscsl_clear_logs' ) ); ?>" class="button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to clear all login logs?', 'msc-stealth-login' ); ?>');">
+					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'options-general.php?page=msc-stealth-login&tab=history&action=clear_logs' ), 'mscsl_clear_logs' ) ); ?>" class="button" onclick="return confirm('<?php echo esc_js( __( 'Are you sure you want to clear all login logs?', 'msc-stealth-login' ) ); ?>');">
 						<?php esc_html_e( 'Clear All Logs', 'msc-stealth-login' ); ?>
 					</a>
 					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'msc-stealth-login', 'tab' => 'history', 'action' => 'export_csv' ), admin_url( 'options-general.php' ) ), 'mscsl_export_csv' ) ); ?>" class="button button-primary">
@@ -1013,5 +1038,24 @@ class Settings {
 			<?php endif; ?>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Sanitize a CSV cell to prevent formula injection.
+	 *
+	 * Prefixes cells that start with formula characters (=, +, -, @, tab)
+	 * with a tab character to prevent CSV injection attacks.
+	 *
+	 * @since 1.0.7
+	 *
+	 * @param string $value Cell value to sanitize.
+	 * @return string Sanitized cell value.
+	 */
+	private function sanitize_csv_cell( $value ) {
+		$first_char = substr( (string) $value, 0, 1 );
+		if ( in_array( $first_char, array( '=', '+', '-', '@', "\t" ), true ) ) {
+			return "\t" . $value;
+		}
+		return $value;
 	}
 }

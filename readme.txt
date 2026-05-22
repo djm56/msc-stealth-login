@@ -1,10 +1,11 @@
 === MSC Stealth Login ===
+Contributors: djm56
 Donate link: https://anomalous.co.za/donate
 Tags: security, login, brute-force, wp-admin, stealth
 Requires at least: 5.9
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.4
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +66,19 @@ Forgot your custom login URL? No problem. The recovery system lets you regain ac
 
 **Important:** After activation, immediately bookmark your new login URL and save your recovery URL in a secure location.
 
+== Privacy ==
+
+MSC Stealth Login collects the following data to provide its security features:
+
+* **IP Addresses**: Logged for every login attempt (successful, failed, and locked out) to enable brute force protection and login history.
+* **Usernames**: Logged with each login attempt to help administrators identify targeted accounts.
+* **User Agents**: Logged with each login attempt for security auditing.
+* **Login History**: All login attempts are stored in the database and can be viewed in the History tab or exported as CSV.
+
+Data collection only occurs when the plugin is active. All collected data is stored in your WordPress database and is not sent to any external services. Administrators can clear login history at any time from the History tab.
+
+This plugin does not use cookies or third-party tracking.
+
 == Frequently Asked Questions ==
 
 = How does the stealth login work? =
@@ -107,6 +121,50 @@ No, all features are included in the free version. There is no premium version o
 4. History tab - View login attempts with filters and CSV export
 
 == Changelog ==
+
+= 1.0.8 =
+* **Fixed**: Updated plugin metadata to WordPress 7.0 compatibility (`Tested up to: 7.0`).
+* **Fixed**: Renamed global init callback to prefixed function name for Plugin Check naming compliance.
+* **Fixed**: Removed discouraged `load_plugin_textdomain()` call for WordPress.org translation loading compliance.
+* **Fixed**: Refactored login history SQL query assembly to avoid interpolated dynamic WHERE fragments and ensure placeholder/replacement parity in `$wpdb->prepare()`.
+* **Fixed**: Replaced direct `usermeta` cleanup queries in uninstall with `delete_metadata()` API.
+* **Updated**: Release version bumped to `1.0.8`.
+
+= 1.0.7 =
+* **Security**: Fixed IP spoofing vulnerability — now defaults to REMOTE_ADDR; proxy headers only trusted when explicitly enabled via new `trust_proxy` option.
+* **Security**: Removed broad `redirect_to` exception that allowed bypassing login block.
+* **Security**: Added CSV formula injection prevention for data exports.
+* **Fixed**: Added `load_plugin_textdomain()` so translation files are loaded correctly.
+* **Fixed**: Converting closures to named methods for removability.
+* **Fixed**: Added `settings_errors()` output on settings page.
+* **Fixed**: Refactored SQL sentinel pattern to dynamic WHERE clauses for index utilisation.
+* **Fixed**: URL-safe validation for custom login slug.
+* **Fixed**: Synchronized reserved slug list between PHP and JavaScript.
+* **Fixed**: Double-escaping in login URL display.
+* **Fixed**: `esc_attr_e()` in JS onclick handlers replaced with `esc_js()`.
+* **Fixed**: `esc_html__()` in plain text email bodies replaced with `__()`.
+* **Fixed**: `esc_html__()` in `wp_localize_script()` replaced with `__()`.
+* **Fixed**: `esc_url()` in input value attributes replaced with `esc_attr()`.
+* **Fixed**: Timezone-sensitive date calculation using `gmdate()` + `DAY_IN_SECONDS`.
+* **Fixed**: Incomplete translator comment for lockout email.
+* **Fixed**: Orphan user meta cleanup on uninstall.
+* **Fixed**: `delete_transient()` instead of `delete_option()` for transients.
+
+= 1.0.6 =
+* Fixed: Removed inline `<script>` from data tracking notice and moved dismiss logic to admin.js with localized nonce (WordPress.org review compliance).
+* Fixed: Replaced hardcoded `/wp-login.php` URL paths with `wp_login_url()` + `add_query_arg()` for subdirectory WordPress compatibility.
+* Fixed: Added missing translators comment for data tracking notice string (Plugin Check compliance).
+* Fixed: Added phpcs:ignore comments for custom table direct database queries (Plugin Check compliance).
+
+= 1.0.5 =
+* Fixed: CIDR IP whitelist matching now works correctly for subnet ranges.
+* Fixed: Recovery token comparison now uses timing-safe comparison (hash_equals).
+* Fixed: Lockout message output now properly escaped.
+* Fixed: Recovery token option key renamed from msc_recovery_token to mscsl_recovery_token for namespace consistency, with automatic migration.
+* Fixed: Plugin header tab character removed for parser compatibility.
+* Added: Privacy admin notice informing administrators about data collection (IP addresses, usernames, user agents, login history).
+* Added: Database schema version tracking for future upgrade path.
+* Added: Privacy Policy section to plugin documentation.
 
 = 1.0.4 =
 * Changed: Inlined CSS styles on error page elements for simpler standalone page rendering.
