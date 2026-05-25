@@ -32,7 +32,7 @@ class Test_Core extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		delete_option( 'mscsl_options' );
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		parent::tear_down();
 	}
@@ -85,11 +85,11 @@ class Test_Core extends WP_UnitTestCase {
 	 * Test plugin activation generates recovery token if not exists.
 	 */
 	public function test_plugin_activation_generates_recovery_token() {
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		MSCSL\Plugin::activate();
 
-		$token = get_option( 'msc_recovery_token' );
+		$token = get_option( 'mscsl_recovery_token' );
 		$this->assertNotEmpty( $token );
 		$this->assertEquals( 32, strlen( $token ) );
 	}
@@ -99,11 +99,11 @@ class Test_Core extends WP_UnitTestCase {
 	 */
 	public function test_plugin_activation_does_not_regenerate_existing_token() {
 		$existing_token = 'existing-token-value-123456789012';
-		update_option( 'msc_recovery_token', $existing_token );
+		update_option( 'mscsl_recovery_token', $existing_token );
 
 		MSCSL\Plugin::activate();
 
-		$token = get_option( 'msc_recovery_token' );
+		$token = get_option( 'mscsl_recovery_token' );
 		$this->assertEquals( $existing_token, $token );
 	}
 

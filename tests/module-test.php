@@ -48,7 +48,7 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		delete_option( 'mscsl_options' );
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		// Clear all transients.
 		global $wpdb;
@@ -135,12 +135,12 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function test_recovery_login_url() {
 		$token = 'test-recovery-token-12345';
-		update_option( 'msc_recovery_token', $token );
+		update_option( 'mscsl_recovery_token', $token );
 
 		$url = $this->module->recovery_login_url( home_url() . '/wp-login.php' );
 
 		$this->assertStringContainsString( 'wp-login.php', $url );
-		$this->assertStringContainsString( 'msc_recovery=' . $token, $url );
+		$this->assertStringContainsString( 'mscsl_recovery=' . $token, $url );
 	}
 
 	/**
@@ -384,7 +384,7 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function test_regenerate_recovery_token() {
 		$old_token = 'old-token-value-123456789012345';
-		update_option( 'msc_recovery_token', $old_token );
+		update_option( 'mscsl_recovery_token', $old_token );
 
 		// Create admin user for capability check.
 		$admin = self::factory()->user->create( array( 'role' => 'administrator' ) );
@@ -397,7 +397,7 @@ class Test_Module extends WP_UnitTestCase {
 
 		remove_filter( 'wp_redirect', '__return_false', 1 );
 
-		$new_token = get_option( 'msc_recovery_token' );
+		$new_token = get_option( 'mscsl_recovery_token' );
 		$this->assertNotEquals( $old_token, $new_token );
 		$this->assertEquals( 32, strlen( $new_token ) );
 	}
@@ -407,7 +407,7 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function test_handle_recovery_url_returns_early_without_param() {
 		// Make sure no recovery param is set.
-		unset( $_GET['msc_recovery'] );
+		unset( $_GET['mscsl_recovery'] );
 
 		// Use reflection to test.
 		$reflection = new \ReflectionClass( $this->module );
@@ -425,9 +425,9 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function test_handle_recovery_url_allows_valid_token() {
 		$token = 'valid-recovery-token-12345678901';
-		update_option( 'msc_recovery_token', $token );
+		update_option( 'mscsl_recovery_token', $token );
 
-		$_GET['msc_recovery'] = $token;
+		$_GET['mscsl_recovery'] = $token;
 
 		// Use reflection to test.
 		$reflection = new \ReflectionClass( $this->module );
@@ -439,7 +439,7 @@ class Test_Module extends WP_UnitTestCase {
 		// Should return null (but modifies hooks internally).
 		$this->assertNull( $result );
 
-		unset( $_GET['msc_recovery'] );
+		unset( $_GET['mscsl_recovery'] );
 	}
 
 	/**
@@ -447,9 +447,9 @@ class Test_Module extends WP_UnitTestCase {
 	 */
 	public function test_handle_recovery_url_rejects_invalid_token() {
 		$token = 'valid-recovery-token-12345678901';
-		update_option( 'msc_recovery_token', $token );
+		update_option( 'mscsl_recovery_token', $token );
 
-		$_GET['msc_recovery'] = 'invalid-token';
+		$_GET['mscsl_recovery'] = 'invalid-token';
 
 		// Use reflection to test.
 		$reflection = new \ReflectionClass( $this->module );
@@ -461,6 +461,6 @@ class Test_Module extends WP_UnitTestCase {
 		// Should return null (doesn't process invalid token).
 		$this->assertNull( $result );
 
-		unset( $_GET['msc_recovery'] );
+		unset( $_GET['mscsl_recovery'] );
 	}
 }

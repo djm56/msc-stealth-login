@@ -50,7 +50,7 @@ class Test_Security extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		delete_option( 'mscsl_options' );
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		// Clear all transients.
 		global $wpdb;

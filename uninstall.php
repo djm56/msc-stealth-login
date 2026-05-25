@@ -11,7 +11,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 
 delete_option( 'mscsl_options' );
 delete_option( 'mscsl_recovery_token' );
-delete_option( 'msc_recovery_token' );
 delete_transient( 'mscsl_flush_rewrite_rules' );
 delete_option( 'mscsl_db_version' );
 

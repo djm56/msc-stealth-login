@@ -64,12 +64,7 @@ class Plugin {
 			update_option( self::OPTION_KEY, self::default_options() );
 		}
 
-		// Migrate from old option key if it exists.
-		$old_token = get_option( 'msc_recovery_token' );
-		if ( $old_token ) {
-			update_option( 'mscsl_recovery_token', $old_token );
-			delete_option( 'msc_recovery_token' );
-		} elseif ( ! get_option( 'mscsl_recovery_token' ) ) {
+		if ( ! get_option( 'mscsl_recovery_token' ) ) {
 			update_option( 'mscsl_recovery_token', wp_generate_password( 32, false ) );
 		}
 

@@ -33,7 +33,7 @@ class Test_Settings extends WP_UnitTestCase {
 	public function tear_down() {
 		// Clean up options.
 		delete_option( 'mscsl_options' );
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		parent::tear_down();
 	}
@@ -249,11 +249,11 @@ class Test_Settings extends WP_UnitTestCase {
 	 * Test recovery token is generated on activation.
 	 */
 	public function test_recovery_token_generated_on_activation() {
-		delete_option( 'msc_recovery_token' );
+		delete_option( 'mscsl_recovery_token' );
 
 		MSCSL\Plugin::activate();
 
-		$token = get_option( 'msc_recovery_token' );
+		$token = get_option( 'mscsl_recovery_token' );
 		$this->assertNotEmpty( $token );
 		$this->assertEquals( 32, strlen( $token ) );
 	}

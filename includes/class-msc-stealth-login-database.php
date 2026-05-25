@@ -229,22 +229,40 @@ class Database {
 			return $cached;
 		}
 
+		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
+		$where  = array( '1=1' );
+		$values = array();
+
+		if ( '' !== $ip ) {
+			$where[]  = 'ip_address = %s';
+			$values[] = $ip;
+		}
+		if ( '' !== $username ) {
+			$where[]  = 'user_login = %s';
+			$values[] = $username;
+		}
+		if ( '' !== $type ) {
+			$where[]  = 'attempt_type = %s';
+			$values[] = $type;
+		}
+		if ( '' !== $date_from ) {
+			$where[]  = 'created_at >= %s';
+			$values[] = $date_from;
+		}
+		if ( '' !== $date_to ) {
+			$where[]  = 'created_at <= %s';
+			$values[] = $date_to;
+		}
+
+		$where_sql = implode( ' AND ', $where );
+		$values[]  = $limit;
+		$values[]  = $offset;
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts
-				 WHERE ( %s = '' OR ip_address = %s )
-				 AND ( %s = '' OR user_login = %s )
-				 AND ( %s = '' OR attempt_type = %s )
-				 AND ( %s = '' OR created_at >= %s )
-				 AND ( %s = '' OR created_at <= %s )
-				 ORDER BY created_at DESC LIMIT %d OFFSET %d",
-				$ip, $ip,
-				$username, $username,
-				$type, $type,
-				$date_from, $date_from,
-				$date_to, $date_to,
-				$limit, $offset
+				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE %s ORDER BY created_at DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql built from safe literals
+				$where_sql, $limit, $offset
 			),
 			ARRAY_A
 		);
@@ -308,22 +326,47 @@ class Database {
 			return $cached;
 		}
 
+		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
+		$where  = array( '1=1' );
+		$values = array();
+
+		if ( '' !== $ip ) {
+			$where[]  = 'ip_address = %s';
+			$values[] = $ip;
+		}
+		if ( '' !== $username ) {
+			$where[]  = 'user_login = %s';
+			$values[] = $username;
+		}
+		if ( '' !== $type ) {
+			$where[]  = 'attempt_type = %s';
+			$values[] = $type;
+		}
+		if ( '' !== $date_from ) {
+			$where[]  = 'created_at >= %s';
+			$values[] = $date_from;
+		}
+		if ( '' !== $date_to ) {
+			$where[]  = 'created_at <= %s';
+			$values[] = $date_to;
+		}
+
+		$where_sql = implode( ' AND ', $where );
+
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
-		$count = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts
-				 WHERE ( %s = '' OR ip_address = %s )
-				 AND ( %s = '' OR user_login = %s )
-				 AND ( %s = '' OR attempt_type = %s )
-				 AND ( %s = '' OR created_at >= %s )
-				 AND ( %s = '' OR created_at <= %s )",
-				$ip, $ip,
-				$username, $username,
-				$type, $type,
-				$date_from, $date_from,
-				$date_to, $date_to
-			)
-		);
+		if ( ! empty( $values ) ) {
+			
+			$count = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql built from safe literals
+					$where_sql
+				)
+			);
+		} else {
+			// No filters — no placeholders needed.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- safe: no user input in query
+			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts" );
+		}
 
 		wp_cache_set( $cache_key, $count, 'mscsl' );
 

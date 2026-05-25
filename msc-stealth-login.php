@@ -71,7 +71,7 @@ add_action(
  * WordPress core for WordPress.org-hosted plugins (since WP 4.6).
  *
  * @since 1.0.7
- * @since 1.0.8 Function renamed from msc_stealth_login_init() for naming compliance.
+ * @since 1.0.8
  */
 function mscsl_stealth_login_init() {
 	MSCSL\Plugin::instance();

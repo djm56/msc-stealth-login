@@ -423,7 +423,7 @@ class Settings {
 							<td>
 								<?php
 								$recovery_token = get_option( 'mscsl_recovery_token', '' );
-								$recovery_url   = add_query_arg( 'msc_recovery', $recovery_token, wp_login_url() );
+								$recovery_url   = add_query_arg( 'mscsl_recovery', $recovery_token, wp_login_url() );
 								?>
 								<p><strong><?php esc_html_e( 'Current Recovery URL:', 'msc-stealth-login' ); ?></strong></p>
 								<code id="mscsl-recovery-url" style="padding: 10px; background: #f0f0f1; display: block; font-size: 14px; margin-bottom: 10px;"><?php echo esc_url( $recovery_url ); ?></code>

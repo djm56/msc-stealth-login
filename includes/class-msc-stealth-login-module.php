@@ -189,14 +189,14 @@ class Module {
 	 */
 	public function handle_recovery_url() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- recovery URL uses token-based auth, not form submission
-		if ( ! isset( $_GET['msc_recovery'] ) ) {
+		if ( ! isset( $_GET['mscsl_recovery'] ) ) {
 			return;
 		}
 
 		$recovery_token = get_option( 'mscsl_recovery_token', '' );
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- token-based auth, not a form submission
-		if ( empty( $recovery_token ) || ! hash_equals( $recovery_token, sanitize_text_field( wp_unslash( $_GET['msc_recovery'] ) ) ) ) {
+		if ( empty( $recovery_token ) || ! hash_equals( $recovery_token, sanitize_text_field( wp_unslash( $_GET['mscsl_recovery'] ) ) ) ) {
 			return;
 		}
 
@@ -215,7 +215,7 @@ class Module {
 	 * @return string
 	 */
 	public function recovery_login_url( $login_url ) {
-		return add_query_arg( 'msc_recovery', get_option( 'mscsl_recovery_token', '' ), wp_login_url() );
+		return add_query_arg( 'mscsl_recovery', get_option( 'mscsl_recovery_token', '' ), wp_login_url() );
 	}
 
 	/**
