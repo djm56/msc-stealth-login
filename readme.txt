@@ -3,9 +3,9 @@ Contributors: djm56
 Donate link: https://anomalous.co.za/donate
 Tags: security, login, brute-force, wp-admin, stealth
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.0.2
 Requires PHP: 7.4
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,9 @@ No, all features are included in the free version. There is no premium version o
 
 == Changelog ==
 
+= 1.0.9 =
+* Tested with WordPress 7.0.2. No functional changes.
+
 = 1.0.8 =
 * **Fixed**: Updated plugin metadata to WordPress 7.0 compatibility (`Tested up to: 7.0`).
 * **Fixed**: Renamed global init callback to prefixed function name for Plugin Check naming compliance.
@@ -201,6 +204,9 @@ No, all features are included in the free version. There is no premium version o
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.0.9 =
+Tested with WordPress 7.0.2. No functional changes — safe update.
 
 = 1.0.4 =
 Simplified error page rendering with inline CSS — no external stylesheet dependency.

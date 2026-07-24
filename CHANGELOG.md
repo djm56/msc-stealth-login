@@ -2,6 +2,12 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.0.9] - 2026-07-24
+
+### Changed
+
+- Confirmed compatibility with WordPress 7.0.2 — updated "Tested up to" header to 7.0.2. No functional changes.
+
 ## [1.0.8] - 2026-05-21
 
 ### Fixed
