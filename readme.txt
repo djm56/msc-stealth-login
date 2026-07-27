@@ -1,31 +1,33 @@
 === MSC Stealth Login ===
 Contributors: djm56
 Donate link: https://anomalous.co.za/donate
-Tags: security, login, brute-force, wp-admin, stealth
+Tags: hide login, custom login url, block wp-admin, disable xml-rpc, brute force
 Requires at least: 5.9
-Tested up to: 7.0.2
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.0.9
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Hide your WordPress login page from attackers. Protect against brute force with custom URLs, lockouts, and email alerts.
+Hide wp-login.php behind a custom login URL and stop brute-force attacks — lockouts, IP allowlist, login history, email alerts. No tracking.
 
 == Description ==
 
-MSC Stealth Login provides comprehensive protection for your WordPress login page, blocking attackers while keeping your site accessible to legitimate users.
+**Move your WordPress login page to a secret URL of your choosing and make wp-login.php disappear.**
+
+Bots hammering wp-login.php and wp-admin are silently redirected away, while you log in at your own custom address. Enable Advanced Security and you also get brute-force lockouts with progressive delays, an IP allowlist with CIDR support, XML-RPC hardening, user-enumeration blocking, a full login history with CSV export, and email alerts — all free, with zero external services.
 
 **Stealth Login URL**
 
-Change your login page from `/wp-login.php` to a custom URL like `/secure-login/`. Attackers scanning for standard WordPress login pages will be blocked before they can even attempt a brute force attack.
+Change your login page from `/wp-login.php` to a custom URL like `/secure-login/`. Attackers scanning for standard WordPress login pages are redirected away before they can even attempt a brute force attack.
 
 **wp-admin Protection**
 
-Block direct access to `/wp-admin/` for users who aren't logged in. They'll be redirected to your custom login page instead, preventing exposure of your admin area.
+Block direct access to `/wp-admin/` for users who aren't logged in — they're silently redirected to a URL you choose. Logged-in users and AJAX requests are unaffected.
 
-**Brute Force Protection**
+**Brute Force Protection** *(enable Advanced Security to arm)*
 
-After failed login attempts, MSC Stealth Login progressively increases lockout durations. First-time offenders wait 15 minutes, repeat offenders face increasingly longer delays. This stops automated attacks while minimizing disruption to real users who mistype their password.
+After a configurable number of failed login attempts (default 3), the IP is locked out for a configurable duration (default 15 minutes). With progressive lockouts enabled, each successive lockout doubles the wait time, up to your configured maximum. This stops automated attacks while minimizing disruption to real users who mistype their password.
 
 **Email Notifications**
 
@@ -37,23 +39,23 @@ Stay informed about security events with configurable email alerts:
 
 **Login History & Export**
 
-Track all login attempts with detailed logging. Filter by IP address, username, result type, or date range. Export reports to CSV for security audits.
+Track login attempts with detailed logging: IP, username, result and user agent. Filter by IP address, username, result type, or date range. Export reports to CSV for security audits. Entries older than 30 days are pruned automatically.
 
 **XML-RPC & REST API Protection**
 
 Disable vulnerable XML-RPC endpoints commonly exploited for brute force attacks. Block REST API user enumeration that lets attackers harvest usernames.
 
-**IP Whitelist**
+**IP Allowlist**
 
-Bypass protection for trusted IP addresses. Add your office, home, or server IPs to ensure uninterrupted access while maintaining maximum security for everyone else.
+Bypass protection for trusted IP addresses — exact IPv4/IPv6 or CIDR ranges (e.g. `10.0.0.0/8`). Add your office, home, or server IPs to ensure uninterrupted access while maintaining maximum security for everyone else. A proxy-header trust toggle supports Cloudflare and reverse-proxy setups.
 
-**Progressive Lockout System**
+**Emergency Recovery URL**
 
-Unlike simple lockouts that reset immediately, MSC Stealth Login uses a multiplier system. Each successive lockout doubles the wait time (15 min → 30 min → 60 min → 120 min). The multiplier resets after 24 hours without an attempt, balancing security with usability.
+Forgot your custom login URL? The Settings tab shows a secure recovery URL that always reaches wp-login.php — copy it, bookmark it, or email it to yourself from the Support tab. You can regenerate it at any time.
 
-**Recovery URL**
+**Private by design**
 
-Forgot your custom login URL? No problem. The recovery system lets you regain access through a secure bypass URL that's displayed in your WordPress admin bar when logged in.
+No external services, no CDN assets, no tracking. Login data stays in your database, is clearable from the History tab, auto-pruned after 30 days, and fully removed on uninstall.
 
 == Installation ==
 
@@ -81,46 +83,80 @@ This plugin does not use cookies or third-party tracking.
 
 == Frequently Asked Questions ==
 
-= How does the stealth login work? =
+= How do I hide my WordPress login page? =
 
-MSC Stealth Login uses WordPress rewrite rules to redirect requests from the standard `/wp-login.php` to your custom URL. When visitors try to access the old login page, they're blocked and redirected. The custom URL only works when you explicitly configure it.
+Install and activate the plugin, go to Settings → MSC Stealth Login, and set a custom login slug (e.g. `my-secret-door`). Save — your login page now lives at `yoursite.com/my-secret-door` and wp-login.php no longer works for visitors. Bookmark the new URL and the Emergency Recovery URL immediately.
 
-= Will this break my site or existing plugins? =
+= What happens when someone visits wp-login.php or wp-admin? =
 
-The plugin is designed to work with standard WordPress installations and popular plugins. The custom login URL and wp-admin protection may conflict with plugins that have their own login flows. Always test on a staging site first, and keep your recovery URL bookmarked.
+They are silently redirected (HTTP 302) to a URL you choose — the homepage by default. There's no error page revealing that a protection plugin is running. Logged-in users, logout/password-reset flows, and AJAX requests keep working normally.
+
+= How do I block access to /wp-admin? =
+
+Enable "Hide wp-admin" on the Settings tab. Logged-out visitors who try to open any /wp-admin URL are silently redirected to a URL you choose (your homepage by default), while logged-in users and AJAX requests are unaffected. Combined with the custom login URL, this hides both your login page and your admin area from bots and vulnerability scanners.
 
 = What happens if I forget my custom login URL? =
 
-Use the recovery URL system. When logged in, your WordPress admin bar shows the recovery URL. Alternatively, access your site via FTP or hosting control panel and rename the plugin folder to disable it temporarily.
+Use the Emergency Recovery URL shown on the **Settings tab** — copy or bookmark it when you set up the plugin (you can also email yourself the login URL from the Support tab). The recovery URL always reaches wp-login.php. If you lose both, rename the plugin folder via FTP/SFTP or run `wp plugin deactivate msc-stealth-login` — deactivating instantly restores the standard login page.
 
 = How do I recover access if I'm locked out? =
 
-Wait for the lockout period to expire (starts at 15 minutes and increases with repeat attempts). If you need immediate access, disable the plugin via FTP by renaming the plugin folder. Your IP can also be added to the whitelist if you have database access.
+Wait for the lockout period to expire, or use the Emergency Recovery URL. For immediate access, disable the plugin via FTP by renaming the plugin folder. Your IP can also be added to the allowlist if you have database access.
+
+= How does brute-force protection work? =
+
+Enable **Advanced Security Features** on the Advanced tab (it ships disabled so nothing surprises you). Then, after the configured number of failed attempts (default 3) from one IP, that IP is locked out for the configured duration (default 15 minutes). Optional progressive lockouts double the wait after each repeat offence, capped at your configured maximum. Successful logins reset the counter.
+
+= Can I allowlist my own IP so I'm never locked out? =
+
+Yes. Add exact IPs or CIDR ranges (IPv4 and IPv6) to the whitelist on the Advanced tab. Behind Cloudflare or a reverse proxy? Enable "Trust Proxy Headers" so the plugin sees real visitor IPs instead of the proxy's.
+
+= Does it block XML-RPC attacks and user enumeration? =
+
+Yes, both are on by default once Advanced Security is enabled. XML-RPC pingback and user-listing methods are disabled, and the REST API user endpoints plus `?author=N` queries are blocked. Note: disabling XML-RPC affects the WordPress mobile app and some Jetpack features — leave it off if you use those.
 
 = Does this work with caching plugins? =
 
-Yes, but ensure your login pages aren't cached. Most caching plugins have options to exclude specific pages. You'll want to exclude your custom login URL and wp-admin directory from caching.
+Yes, but ensure your login pages aren't cached — exclude your custom login URL from caching. The plugin detects six major cache/security plugins (W3 Total Cache, WP Super Cache, WP Rocket, Wordfence, iThemes Security, Sucuri) and shows a heads-up notice when one is active.
 
-= Can I use this with Wordfence/other security plugins? =
+= Can I run it alongside Wordfence or other security plugins? =
 
-Generally yes, but some security plugins have overlapping features. You may want to disable redundant features (like brute force protection) in one plugin to avoid conflicts. Test thoroughly before deploying to production.
+Generally yes, but avoid overlapping features — if another plugin also limits login attempts or hides the login page, disable that feature in one of the two. Test on staging before production.
+
+= Does it work with WooCommerce login forms? =
+
+WooCommerce's My Account login page is separate and keeps working. The plugin protects wp-login.php and wp-admin; test your specific checkout/membership flows on staging.
 
 = How do the email notifications work? =
 
 Navigate to Settings → MSC Stealth Login → Email tab. Enable the notifications you want and customize the subject and body using placeholders: `{ip}`, `{attempts}`, `{time}`, `{site_name}`, `{site_url}`. Notifications are sent immediately when events occur.
 
-= Is there a premium version? =
+= What data does it store? Is it GDPR-friendly? =
 
-No, all features are included in the free version. There is no premium version or paid upgrade.
+Login attempts (IP, username, result, user agent, timestamp) are stored in your own database only — nothing is sent externally and there are no cookies or third-party requests. History is clearable from the History tab, auto-pruned after 30 days, and the table is removed completely on uninstall.
+
+= Is anything locked or paid? =
+
+No. Every feature is included in the plugin you download — there is nothing to unlock and no separate paid add-on.
 
 == Screenshots ==
 
-1. Settings tab - Configure your custom login URL and security options
-2. Advanced tab - Enable brute force protection and security features  
-3. Email tab - Configure email notifications for lockouts and alerts
-4. History tab - View login attempts with filters and CSV export
+1. Stealth login settings — set a custom login URL, block direct access to the wp-admin directory, and configure the redirect and emergency recovery URLs.
+2. Advanced security — disable XML-RPC, stop REST API user enumeration, and limit login attempts with brute-force lockouts.
+3. Email alerts — get notified on lockouts, admin logins and new-IP logins, with customisable subject and body placeholders.
+4. Login history — view and filter every login attempt (IP, username, result, date) and export to CSV.
 
 == Changelog ==
+
+= 1.2.0 =
+* Changed: Support now links to the plugin's WordPress.org support forum instead of the old contact button.
+
+= 1.1.0 =
+* Added: Automatic login-history pruning — entries older than 30 days are now cleaned up daily (filterable via `mscsl_log_retention_days`).
+* Added: One-time, dismissible review request on the settings page (shown 7+ days after activation).
+* Added: "Email Me My Login URL" form on the Support tab so you can keep the custom login URL on record.
+* Fixed: Documentation incorrectly said the Emergency Recovery URL appears in the admin bar — it is shown on the Settings tab.
+* Improved: WordPress.org listing rewritten — clearer title, searchable tags, expanded FAQ (incl. blocking /wp-admin), refreshed screenshot captions, and accurate description of which protections require the Advanced Security toggle.
 
 = 1.0.9 =
 * Tested with WordPress 7.0.2. No functional changes.
@@ -204,6 +240,9 @@ No, all features are included in the free version. There is no premium version o
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Adds automatic 30-day login-history pruning and a login-URL email form on the Support tab. Improved listing and docs. Safe update.
 
 = 1.0.9 =
 Tested with WordPress 7.0.2. No functional changes — safe update.

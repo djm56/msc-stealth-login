@@ -71,6 +71,11 @@ class Plugin {
 		// Create login attempts table.
 		Database::create_table();
 
+		// Schedule the daily login-log cleanup.
+		if ( ! wp_next_scheduled( 'mscsl_brute_force_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'mscsl_brute_force_cleanup' );
+		}
+
 		// Schedule rewrite rules flush for the next page load.
 		// During activation, the 'init' hook hasn't fired yet so our custom
 		// rewrite rules aren't registered. Using a transient ensures the flush
@@ -98,6 +103,96 @@ class Plugin {
 
 		// Run database upgrades if needed.
 		Database::maybe_upgrade();
+
+		// Daily login-log cleanup (self-heals if the event is missing, e.g.
+		// after an update without re-activation).
+		add_action( 'mscsl_brute_force_cleanup', array( $this, 'cleanup_old_login_logs' ) );
+		if ( ! wp_next_scheduled( 'mscsl_brute_force_cleanup' ) ) {
+			wp_schedule_event( time(), 'daily', 'mscsl_brute_force_cleanup' );
+		}
+
+		if ( ! get_option( 'mscsl_activated_time' ) ) {
+			update_option( 'mscsl_activated_time', time() );
+		}
+
+		if ( is_admin() ) {
+			add_action( 'admin_notices', array( $this, 'maybe_render_review_notice' ) );
+			add_action( 'admin_init', array( $this, 'maybe_handle_review_dismiss' ) );
+		}
+	}
+
+	/**
+	 * Shows a one-time, dismissible review request on the plugin's settings page.
+	 *
+	 * @return void
+	 */
+	public function maybe_render_review_notice() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_msc-stealth-login' !== $screen->id ) {
+			return;
+		}
+
+		if ( get_option( 'mscsl_review_dismissed' ) ) {
+			return;
+		}
+
+		$since = (int) get_option( 'mscsl_activated_time', 0 );
+		if ( $since <= 0 ) {
+			update_option( 'mscsl_activated_time', time() );
+			return;
+		}
+
+		if ( ( time() - $since ) < ( 7 * DAY_IN_SECONDS ) ) {
+			return;
+		}
+
+		$review_url  = 'https://wordpress.org/support/plugin/msc-stealth-login/reviews/#new-post';
+		$dismiss_url = wp_nonce_url( add_query_arg( 'mscsl_dismiss_review', '1' ), 'mscsl_dismiss_review' );
+		?>
+		<div class="notice notice-info is-dismissible">
+			<p>
+				<?php esc_html_e( 'Enjoying MSC Stealth Login? A quick review would really help other WordPress users find it.', 'msc-stealth-login' ); ?>
+				<a href="<?php echo esc_url( $review_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Leave a review', 'msc-stealth-login' ); ?></a>
+				&nbsp;·&nbsp;
+				<a href="<?php echo esc_url( $dismiss_url ); ?>"><?php esc_html_e( 'No thanks', 'msc-stealth-login' ); ?></a>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Permanently dismisses the review request.
+	 *
+	 * @return void
+	 */
+	public function maybe_handle_review_dismiss() {
+		if ( ! current_user_can( 'manage_options' ) || ! isset( $_GET['mscsl_dismiss_review'] ) ) {
+			return;
+		}
+
+		check_admin_referer( 'mscsl_dismiss_review' );
+		update_option( 'mscsl_review_dismissed', 1 );
+		wp_safe_redirect( remove_query_arg( array( 'mscsl_dismiss_review', '_wpnonce' ) ) );
+		exit;
+	}
+
+	/**
+	 * Cron callback: prunes login-history entries older than the retention period.
+	 *
+	 * @return void
+	 */
+	public function cleanup_old_login_logs() {
+		/**
+		 * Filters the login-history retention period in days.
+		 *
+		 * @param int $days Retention in days. Default 30.
+		 */
+		$days = (int) apply_filters( 'mscsl_log_retention_days', 30 );
+		Database::delete_old_attempts( max( 1, $days ) );
 	}
 
 	/**

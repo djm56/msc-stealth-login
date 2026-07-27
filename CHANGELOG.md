@@ -2,6 +2,28 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.2.0] - 2026-07-25
+
+### Changed
+
+- Support now links to the plugin's WordPress.org support forum instead of the old contact button.
+
+## [1.1.0] - 2026-07-24
+
+### Added
+
+- Automatic login-history pruning: a daily cron (`mscsl_brute_force_cleanup`) now prunes entries older than 30 days via `Database::delete_old_attempts()` — the event was previously cleared on deactivation but never scheduled, so logs grew forever despite documentation claiming auto-pruning. Retention filterable via `mscsl_log_retention_days`.
+- "Email Me My Login URL" form on the Support tab, wired to the existing `mscsl_send_recovery_email` handler (which previously had no UI).
+- One-time, dismissible in-plugin review request on the settings page (7+ days after activation); new options cleaned up on uninstall.
+
+### Fixed
+
+- Documentation corrections: Emergency Recovery URL is on the Settings tab (not the admin bar); blocked wp-login.php requests are silently 302-redirected (not a 403 page); recovery parameter is `mscsl_recovery` (not `msc_recovery`); Login History, IP allowlist, email alerts and progressive lockout are free features (docs wrongly labelled them "Pro" — no Pro version exists); Max Login Attempts range is 1–10; History tab paginates at 20 per page; progressive lockout cap follows the Maximum Lockout Duration setting.
+
+### Changed
+
+- WordPress.org listing rewritten: searchable title and tags, keyword-rich description, expanded 13-question FAQ, and honest framing that brute-force/XML-RPC/REST protections require the Advanced Security toggle (off by default).
+
 ## [1.0.9] - 2026-07-24
 
 ### Changed

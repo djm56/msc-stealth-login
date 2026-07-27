@@ -13,6 +13,8 @@ delete_option( 'mscsl_options' );
 delete_option( 'mscsl_recovery_token' );
 delete_transient( 'mscsl_flush_rewrite_rules' );
 delete_option( 'mscsl_db_version' );
+delete_option( 'mscsl_activated_time' );
+delete_option( 'mscsl_review_dismissed' );
 
 // Clear any scheduled events.
 wp_clear_scheduled_hook( 'mscsl_brute_force_cleanup' );

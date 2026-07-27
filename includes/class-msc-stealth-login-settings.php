@@ -813,12 +813,38 @@ class Settings {
 
 					<hr style="margin:2em 0;" />
 
-					<h2><?php esc_html_e( 'Need Help?', 'msc-stealth-login' ); ?></h2>
-					<p><?php esc_html_e( 'If you have questions, encounter bugs, or need setup assistance, we\'re here to help.', 'msc-stealth-login' ); ?></p>
+					<h2><?php esc_html_e( 'Email Me My Login URL', 'msc-stealth-login' ); ?></h2>
+					<p><?php esc_html_e( 'Send the current custom login URL to an email address so you have it on record.', 'msc-stealth-login' ); ?></p>
+
+					<?php if ( isset( $_GET['recovery'] ) && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mscsl_recovery_notice' ) ) : ?>
+						<?php $recovery_status = sanitize_key( wp_unslash( $_GET['recovery'] ) ); ?>
+						<?php if ( 'sent' === $recovery_status ) : ?>
+							<div class="notice notice-success inline"><p><?php esc_html_e( 'Recovery email sent.', 'msc-stealth-login' ); ?></p></div>
+						<?php elseif ( 'failed' === $recovery_status ) : ?>
+							<div class="notice notice-error inline"><p><?php esc_html_e( 'The email could not be sent. Check your site\'s mail configuration.', 'msc-stealth-login' ); ?></p></div>
+						<?php elseif ( 'error' === $recovery_status ) : ?>
+							<div class="notice notice-error inline"><p><?php esc_html_e( 'Please enter a valid email address.', 'msc-stealth-login' ); ?></p></div>
+						<?php endif; ?>
+					<?php endif; ?>
+
+					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-bottom:1em;">
+						<input type="hidden" name="action" value="mscsl_send_recovery_email" />
+						<?php wp_nonce_field( 'mscsl_send_recovery_email' ); ?>
+						<input type="email" name="recovery_email" class="regular-text" placeholder="<?php esc_attr_e( 'you@example.com', 'msc-stealth-login' ); ?>" value="<?php echo esc_attr( get_option( 'admin_email' ) ); ?>" />
+						<?php submit_button( __( 'Send Login URL', 'msc-stealth-login' ), 'secondary', 'submit', false ); ?>
+					</form>
+
+					<hr style="margin:2em 0;" />
+
+					<h2><?php esc_html_e( 'Support', 'msc-stealth-login' ); ?></h2>
 					<p>
-						<a class="button" href="https://anomalous.co.za" target="_blank" rel="noopener noreferrer">
-							<?php esc_html_e( 'Get Support', 'msc-stealth-login' ); ?>
-						</a>
+						<?php
+						printf(
+							/* translators: %s is the URL to the plugin support forum on WordPress.org. */
+							wp_kses_post( __( 'Need a hand? Visit the <a href="%s" target="_blank" rel="noopener noreferrer">plugin support forum on WordPress.org</a> for help, bug reports and feature requests.', 'msc-stealth-login' ) ),
+							esc_url( 'https://wordpress.org/support/plugin/msc-stealth-login/' )
+						);
+						?>
 					</p>
 				</div>
 
