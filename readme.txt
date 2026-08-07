@@ -5,7 +5,7 @@ Tags: hide login, custom login url, block wp-admin, disable xml-rpc, brute force
 Requires at least: 5.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,10 @@ Enable **Advanced Security Features** on the Advanced tab (it ships disabled so 
 
 Yes. Add exact IPs or CIDR ranges (IPv4 and IPv6) to the whitelist on the Advanced tab. Behind Cloudflare or a reverse proxy? Enable "Trust Proxy Headers" so the plugin sees real visitor IPs instead of the proxy's.
 
+= Does it work on WordPress Multisite? =
+
+Yes. Activate it network-wide or per site — either way every site gets its own custom login URL, settings, login history and emergency recovery URL, and sites created later are set up automatically. Each site's administrator configures it under Settings → MSC Stealth Login on their own site. By default failed-login counters are per site; enable "Share Lockouts Across Network" on the Advanced tab if you want a lockout earned on one site to apply across the whole network. Uninstalling removes the plugin's data from every site on the network.
+
 = Does it block XML-RPC attacks and user enumeration? =
 
 Yes, both are on by default once Advanced Security is enabled. XML-RPC pingback and user-listing methods are disabled, and the REST API user endpoints plus `?author=N` queries are blocked. Note: disabling XML-RPC affects the WordPress mobile app and some Jetpack features — leave it off if you use those.
@@ -147,6 +151,15 @@ No. Every feature is included in the plugin you download — there is nothing to
 4. Login history — view and filter every login attempt (IP, username, result, date) and export to CSV.
 
 == Changelog ==
+
+= 1.3.0 =
+* Added: Multisite support — every site on a network now gets its own login-attempts table, settings and emergency recovery token, whether activated per site or network-wide, and new sites are set up automatically.
+* Added: Optional "Share Lockouts Across Network" setting (Advanced tab, multisite only) so failed-login counters and progressive lockouts can be counted network-wide instead of per site.
+* Fixed: Login History filters (IP, username, result, date) were silently ignored in the table, the entry count and the CSV export.
+* Fixed: Fatal error when viewing Login History on WordPress 5.9–6.2 caused by calling a function that only exists in WordPress 6.3+.
+* Fixed: The Filter and Clear Filters buttons on the History tab bounced you back to the Settings tab.
+* Fixed: Export to CSV now exports the filtered view instead of everything, and no longer stops at 1,000 rows.
+* Fixed: Uninstalling on a multisite network now cleans up every site, not just the current one.
 
 = 1.2.0 =
 * Changed: Support now links to the plugin's WordPress.org support forum instead of the old contact button.
@@ -240,6 +253,9 @@ No. Every feature is included in the plugin you download — there is nothing to
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+Adds Multisite support and fixes Login History filtering, which was silently ignored. Also fixes a fatal error on WordPress 5.9–6.2. Recommended update.
 
 = 1.1.0 =
 Adds automatic 30-day login-history pruning and a login-URL email form on the Support tab. Improved listing and docs. Safe update.

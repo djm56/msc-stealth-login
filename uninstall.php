@@ -2,6 +2,9 @@
 /**
  * Uninstall MSC Stealth Login.
  *
+ * On multisite every site keeps its own options, transients and login-attempt
+ * table, so the cleanup runs once per site.
+ *
  * @return void
  */
 
@@ -9,57 +12,98 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-delete_option( 'mscsl_options' );
-delete_option( 'mscsl_recovery_token' );
-delete_transient( 'mscsl_flush_rewrite_rules' );
-delete_option( 'mscsl_db_version' );
-delete_option( 'mscsl_activated_time' );
-delete_option( 'mscsl_review_dismissed' );
+if ( ! function_exists( 'mscsl_uninstall_site' ) ) {
+	/**
+	 * Remove all plugin data belonging to the current site.
+	 *
+	 * @return void
+	 */
+	function mscsl_uninstall_site() {
+		global $wpdb;
 
-// Clear any scheduled events.
-wp_clear_scheduled_hook( 'mscsl_brute_force_cleanup' );
+		delete_option( 'mscsl_options' );
+		delete_option( 'mscsl_recovery_token' );
+		delete_option( 'mscsl_db_version' );
+		delete_option( 'mscsl_activated_time' );
+		delete_option( 'mscsl_review_dismissed' );
+		delete_transient( 'mscsl_flush_rewrite_rules' );
 
-// Delete user meta and clean up transients/table.
-global $wpdb;
+		// Clear any scheduled events.
+		wp_clear_scheduled_hook( 'mscsl_brute_force_cleanup' );
+
+		// Clear login attempt and lockout multiplier transients, including
+		// their timeout rows.
+		$transient_prefixes = array(
+			'_transient_mscsl_login_attempts_',
+			'_transient_timeout_mscsl_login_attempts_',
+			'_transient_mscsl_lockout_multiplier_',
+			'_transient_timeout_mscsl_lockout_multiplier_',
+		);
+
+		foreach ( $transient_prefixes as $prefix ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall, caching not applicable
+			$wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+					$wpdb->esc_like( $prefix ) . '%'
+				)
+			);
+		}
+
+		// Delete login attempts table.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- uninstall: removing custom table, table name from $wpdb prefix
+		$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mscsl_login_attempts" );
+	}
+}
+
+if ( is_multisite() ) {
+	global $wpdb;
+
+	// Network-wide (site) transients used when lockouts are shared.
+	$network_transient_prefixes = array(
+		'_site_transient_mscsl_login_attempts_',
+		'_site_transient_timeout_mscsl_login_attempts_',
+		'_site_transient_mscsl_lockout_multiplier_',
+		'_site_transient_timeout_mscsl_lockout_multiplier_',
+	);
+
+	foreach ( $network_transient_prefixes as $network_prefix ) {
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall, caching not applicable
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->sitemeta} WHERE meta_key LIKE %s",
+				$wpdb->esc_like( $network_prefix ) . '%'
+			)
+		);
+	}
+
+	// Walk the network in batches so large networks do not exhaust memory.
+	$batch_size = 100;
+	$offset     = 0;
+
+	do {
+		$site_ids = get_sites(
+			array(
+				'fields' => 'ids',
+				'number' => $batch_size,
+				'offset' => $offset,
+			)
+		);
+
+		$found = count( $site_ids );
+
+		foreach ( $site_ids as $site_id ) {
+			switch_to_blog( (int) $site_id );
+			mscsl_uninstall_site();
+			restore_current_blog();
+		}
+
+		$offset += $batch_size;
+	} while ( $found === $batch_size );
+} else {
+	mscsl_uninstall_site();
+}
+
+// User meta is global on multisite, so this only needs doing once.
 delete_metadata( 'user', 0, 'mscsl_data_notice_dismissed', null, true );
 delete_metadata( 'user', 0, 'mscsl_known_ips', null, true );
-
-// Clear login attempt transients.
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall, caching not applicable
-$wpdb->query(
-	$wpdb->prepare(
-		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
-		$wpdb->esc_like( '_transient_mscsl_login_attempts_' ) . '%'
-	)
-);
-
-// Clear lockout multiplier transients.
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall, caching not applicable
-$wpdb->query(
-	$wpdb->prepare(
-		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
-		$wpdb->esc_like( '_transient_mscsl_lockout_multiplier_' ) . '%'
-	)
-);
-
-// Clear transient timeout rows for login attempts.
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall, caching not applicable
-$wpdb->query(
-	$wpdb->prepare(
-		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
-		$wpdb->esc_like( '_transient_timeout_mscsl_login_attempts_' ) . '%'
-	)
-);
-
-// Clear transient timeout rows for lockout multipliers.
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- cleanup during uninstall
-$wpdb->query(
-	$wpdb->prepare(
-		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
-		$wpdb->esc_like( '_transient_timeout_mscsl_lockout_multiplier_' ) . '%'
-	)
-);
-
-// Delete login attempts table.
-// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- uninstall: removing custom table
-$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}mscsl_login_attempts" );

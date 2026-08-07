@@ -57,19 +57,45 @@ class Plugin {
 
 	/**
 	 * Activate plugin.
+	 *
+	 * On a network activation WordPress only fires this hook once, in the
+	 * context of the site the network admin happens to be on. Rather than
+	 * looping every site on the network (which does not scale), each site
+	 * installs itself on first load via install(), and new sites are handled
+	 * by the wp_initialize_site hook.
+	 *
+	 * @since 1.3.0 Delegates the per-site work to install().
 	 */
 	public static function activate() {
+		self::install();
+	}
+
+	/**
+	 * Install the plugin's data for the current site.
+	 *
+	 * Safe to call repeatedly: every step is guarded, so this doubles as the
+	 * self-heal path for sites that never saw the activation hook (network
+	 * activation, sites created later, or an update without re-activation).
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return void
+	 */
+	public static function install() {
 		$options = get_option( self::OPTION_KEY );
 		if ( ! is_array( $options ) ) {
 			update_option( self::OPTION_KEY, self::default_options() );
 		}
 
+		// Every site needs its own recovery token, otherwise the emergency
+		// recovery URL is unusable on that site.
 		if ( ! get_option( 'mscsl_recovery_token' ) ) {
 			update_option( 'mscsl_recovery_token', wp_generate_password( 32, false ) );
 		}
 
 		// Create login attempts table.
 		Database::create_table();
+		update_option( 'mscsl_db_version', Database::DB_VERSION );
 
 		// Schedule the daily login-log cleanup.
 		if ( ! wp_next_scheduled( 'mscsl_brute_force_cleanup' ) ) {
@@ -81,6 +107,26 @@ class Plugin {
 		// rewrite rules aren't registered. Using a transient ensures the flush
 		// happens after init fires and register_rewrite_rules() has run.
 		set_transient( 'mscsl_flush_rewrite_rules', true, 60 );
+	}
+
+	/**
+	 * Install the current site if it has never been installed.
+	 *
+	 * Reads a single autoloaded option in the common case, so this is cheap
+	 * enough to run on every request.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return void
+	 */
+	public static function maybe_install() {
+		if ( get_option( 'mscsl_db_version' ) && is_array( get_option( self::OPTION_KEY ) ) && get_option( 'mscsl_recovery_token' ) ) {
+			// Fully installed — only check for pending schema migrations.
+			Database::maybe_upgrade();
+			return;
+		}
+
+		self::install();
 	}
 
 	/**
@@ -98,11 +144,14 @@ class Plugin {
 	 * Constructor.
 	 */
 	private function __construct() {
+		// Install this site if it has never been installed (covers network
+		// activation, where the activation hook only runs once), and run any
+		// pending schema migrations. Runs before the modules register hooks so
+		// they read real options rather than falling back to defaults.
+		self::maybe_install();
+
 		$this->settings = new Settings( $this );
 		$this->module   = new Module( $this );
-
-		// Run database upgrades if needed.
-		Database::maybe_upgrade();
 
 		// Daily login-log cleanup (self-heals if the event is missing, e.g.
 		// after an update without re-activation).
@@ -233,7 +282,39 @@ class Plugin {
 
 			// Proxy trust.
 			'trust_proxy'              => 0,
+
+			// Multisite: share brute-force lockouts across the network.
+			'network_shared_lockout'      => 0,
 		);
+	}
+
+	/**
+	 * Whether brute-force lockouts are shared across a multisite network.
+	 *
+	 * When enabled, failed-attempt counters and progressive lockout
+	 * multipliers are stored as site (network) transients, so an attacker gets
+	 * one allowance for the whole network instead of one per site.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return bool
+	 */
+	public function uses_network_lockout() {
+		if ( ! is_multisite() ) {
+			return false;
+		}
+
+		/**
+		 * Filters whether brute-force lockouts are shared network-wide.
+		 *
+		 * Useful for network operators who want to force sharing on for every
+		 * site from an mu-plugin rather than per site.
+		 *
+		 * @since 1.3.0
+		 *
+		 * @param bool $shared Whether lockouts are shared across the network.
+		 */
+		return (bool) apply_filters( 'mscsl_network_shared_lockout', (bool) $this->get_option( 'network_shared_lockout', 0 ) );
 	}
 
 	/**

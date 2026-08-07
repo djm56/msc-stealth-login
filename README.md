@@ -1,6 +1,6 @@
 # MSC Stealth Login
 
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![WordPress](https://img.shields.io/badge/WordPress-5.9%2B-blue)
@@ -74,6 +74,7 @@ The plugin has 5 settings tabs:
 | IP Whitelist | IPs that bypass brute force (comma/newline separated, CIDR supported) | Empty |
 | Progressive Lockout Delays | Double lockout time on repeat offences | Disabled |
 | Maximum Lockout Duration | Cap for progressive lockout (60–1440 min) | 60 |
+| Share Lockouts Across Network | Multisite only — count failed attempts network-wide instead of per site | Disabled |
 
 ### Email Tab
 
@@ -104,6 +105,23 @@ If you lose access to your custom login URL:
 2. **FTP/SFTP** — Rename the plugin folder: `msc-stealth-login` → `msc-stealth-login-disabled`
 3. **WP-CLI** — Run: `wp plugin deactivate msc-stealth-login`
 4. **Database** — Set `module_enabled` to `0` in the `mscsl_options` option
+
+## Multisite
+
+The plugin is per-site aware and works with both subdomain and subdirectory networks.
+
+- **Activation** — activate network-wide or per site. Because WordPress only fires the activation hook once on a network activation, each site installs its own table, options and recovery token on first load (`MSCSL\Plugin::maybe_install()`), and sites created later are provisioned via `wp_initialize_site`.
+- **Settings** — each site's administrator configures the plugin under Settings → MSC Stealth Login on their own site (`manage_options`). There is no network-admin settings screen; slug, redirects, history and recovery URL are all per site.
+- **Recovery URL** — each site has its own recovery token, so bookmark the recovery URL per site.
+- **Lockouts** — per site by default. Enable **Share Lockouts Across Network** on the Advanced tab to count failed attempts network-wide via network transients, or force it for every site with the `mscsl_network_shared_lockout` filter:
+
+```php
+// In an mu-plugin, to share lockouts across the whole network.
+add_filter( 'mscsl_network_shared_lockout', '__return_true' );
+```
+
+- **Login history** — each site logs to its own `{prefix}mscsl_login_attempts` table (e.g. `wp_2_mscsl_login_attempts`).
+- **Uninstall** — removes the plugin's data from every site on the network.
 
 ## Developer Reference
 
@@ -157,6 +175,7 @@ $value  = $plugin->get_option( 'custom_login_slug', 'secure-login' );
 | `lockout_email_body` | `string` | `''` | Custom lockout email body (empty = default) |
 | `login_alert_admin` | `int` | `0` | Email admin on every login (1/0) |
 | `login_alert_new_ip` | `int` | `0` | Email user on login from new IP (1/0) |
+| `network_shared_lockout` | `int` | `0` | Multisite only — share lockout counters network-wide (1/0) |
 
 ### Recovery Token
 
@@ -164,7 +183,8 @@ The recovery token is stored separately:
 
 ```php
 $token = get_option( 'mscsl_recovery_token' );
-// 32-character random string, generated on activation
+// 32-character random string, generated on install.
+// On multisite each site has its own token, so each site has its own recovery URL.
 ```
 
 ### Custom Actions
@@ -191,7 +211,14 @@ The plugin hooks into the following WordPress actions and filters:
 - `admin_enqueue_scripts` — Load admin CSS/JS
 - `admin_notices` — Show conflict warnings, recovery notices
 
-**Filters:**
+**Plugin filters:**
+
+| Filter | Parameters | Description |
+|--------|------------|-------------|
+| `mscsl_log_retention_days` | `int $days` | Login-history retention in days. Default `30`. |
+| `mscsl_network_shared_lockout` | `bool $shared` | Whether brute-force lockouts are shared across a multisite network. Lets a network operator force sharing on for every site from an mu-plugin. |
+
+**WordPress filters:**
 - `login_url` — Rewrite login URL to custom slug (or recovery URL)
 - `query_vars` — Add `mscsl_login` and `mscsl_action` query vars
 - `authenticate` — Check IP whitelist (priority 1), check login attempts (priority 30), check progressive lockout (priority 32)
@@ -232,6 +259,8 @@ On plugin deletion (not deactivation), the plugin removes:
 - `mscsl_data_notice_dismissed` and `mscsl_known_ips` user meta
 - The `{prefix}mscsl_login_attempts` database table
 - Scheduled `mscsl_brute_force_cleanup` cron event
+
+On multisite this cleanup runs for every site on the network (in batches of 100), plus any network-wide lockout transients in `wp_sitemeta`. User meta is global, so it is removed once.
 
 ## Development
 

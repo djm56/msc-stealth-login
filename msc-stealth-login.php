@@ -3,7 +3,7 @@
  * Plugin Name: MSC Stealth Login
  * Plugin URI: https://github.com/djm56/msc-stealth-login
  * Description: Hide your login page, block brute force attacks, and protect your WordPress site from unauthorized access. Complete free plugin with all features included.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Author: Anomalous Developers
  * Author URI: https://anomalous.co.za
  * Text Domain: msc-stealth-login
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Current plugin version.
  */
-define( 'MSCSL_PLUGIN_VERSION', '1.2.0' );
+define( 'MSCSL_PLUGIN_VERSION', '1.3.0' );
 
 /**
  * Absolute path to the main plugin file.
@@ -59,6 +59,13 @@ register_deactivation_hook(
 	array( 'MSCSL\\Plugin', 'deactivate' )
 );
 
+// Provision newly created sites on a multisite network.
+add_action(
+	'wp_initialize_site',
+	'mscsl_stealth_login_initialize_new_site',
+	100
+);
+
 add_action(
 	'plugins_loaded',
 	'mscsl_stealth_login_init'
@@ -75,4 +82,34 @@ add_action(
  */
 function mscsl_stealth_login_init() {
 	MSCSL\Plugin::instance();
+}
+
+/**
+ * Install the plugin's per-site data on a newly created multisite site.
+ *
+ * Network activation only fires the activation hook once, so new sites
+ * created afterwards need their own table, options and recovery token.
+ *
+ * @since 1.3.0
+ *
+ * @param \WP_Site $new_site New site object.
+ * @return void
+ */
+function mscsl_stealth_login_initialize_new_site( $new_site ) {
+	if ( ! is_multisite() ) {
+		return;
+	}
+
+	// wp_initialize_site can fire outside the admin (e.g. user registration).
+	if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	if ( ! is_plugin_active_for_network( plugin_basename( MSCSL_PLUGIN_FILE ) ) ) {
+		return;
+	}
+
+	switch_to_blog( (int) $new_site->blog_id );
+	MSCSL\Plugin::install();
+	restore_current_blog();
 }

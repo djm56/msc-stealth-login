@@ -30,6 +30,17 @@ class Database {
 	const ALLOWED_TYPES = array( 'success', 'failure', 'lockout', 'whitelisted' );
 
 	/**
+	 * Maximum number of rows a single query may return.
+	 *
+	 * Sized for the CSV export, which asks for 10,000 rows.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @var int
+	 */
+	const MAX_LIMIT = 10000;
+
+	/**
 	 * Current database schema version.
 	 *
 	 * Increment this when the table schema changes.
@@ -217,11 +228,11 @@ class Database {
 		$date_to   = ! empty( $date_to ) ? $date_to . ' 23:59:59' : '';
 
 		// Cap limit to prevent excessive result sets.
-		$limit  = min( absint( $args['limit'] ), 1000 );
+		$limit  = min( absint( $args['limit'] ), self::MAX_LIMIT );
 		$offset = absint( $args['offset'] );
 
 		// Cache lookup — use last_changed key to auto-invalidate when data changes.
-		$last_changed = wp_cache_get_last_changed( 'mscsl' );
+		$last_changed = self::get_last_changed();
 		$cache_key    = "get_attempts:{$last_changed}:" . md5( wp_json_encode( array( $ip, $username, $type, $date_from, $date_to, $limit, $offset ) ) );
 		$cached       = wp_cache_get( $cache_key, 'mscsl' );
 
@@ -230,46 +241,81 @@ class Database {
 		}
 
 		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
-		$where  = array( '1=1' );
-		$values = array();
-
-		if ( '' !== $ip ) {
-			$where[]  = 'ip_address = %s';
-			$values[] = $ip;
-		}
-		if ( '' !== $username ) {
-			$where[]  = 'user_login = %s';
-			$values[] = $username;
-		}
-		if ( '' !== $type ) {
-			$where[]  = 'attempt_type = %s';
-			$values[] = $type;
-		}
-		if ( '' !== $date_from ) {
-			$where[]  = 'created_at >= %s';
-			$values[] = $date_from;
-		}
-		if ( '' !== $date_to ) {
-			$where[]  = 'created_at <= %s';
-			$values[] = $date_to;
-		}
-
-		$where_sql = implode( ' AND ', $where );
-		$values[]  = $limit;
-		$values[]  = $offset;
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE %s ORDER BY created_at DESC LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql built from safe literals
-				$where_sql, $limit, $offset
-			),
-			ARRAY_A
+		list( $where_sql, $values ) = self::build_where(
+			compact( 'ip', 'username', 'type', 'date_from', 'date_to' )
 		);
+
+		$values[] = $limit;
+		$values[] = $offset;
+
+		$sql = "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d";
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, ...$values ), ARRAY_A );
 
 		wp_cache_set( $cache_key, $results, 'mscsl' );
 
 		return $results;
+	}
+
+	/**
+	 * Build the WHERE clause and bound values for the log filters.
+	 *
+	 * The returned SQL contains only hard-coded column comparisons plus
+	 * placeholders — never a caller-supplied string — so it is safe to
+	 * interpolate into the query before handing it to $wpdb->prepare().
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param array<string,string> $filters Validated filter values.
+	 * @return array{0:string,1:array<int,string>} WHERE SQL and bound values.
+	 */
+	private static function build_where( $filters ) {
+		$columns = array(
+			'ip'        => 'ip_address = %s',
+			'username'  => 'user_login = %s',
+			'type'      => 'attempt_type = %s',
+			'date_from' => 'created_at >= %s',
+			'date_to'   => 'created_at <= %s',
+		);
+
+		$where  = array( '1=1' );
+		$values = array();
+
+		foreach ( $columns as $key => $fragment ) {
+			if ( isset( $filters[ $key ] ) && '' !== $filters[ $key ] ) {
+				$where[]  = $fragment;
+				$values[] = $filters[ $key ];
+			}
+		}
+
+		return array( implode( ' AND ', $where ), $values );
+	}
+
+	/**
+	 * Get the cache-busting "last changed" marker for the mscsl cache group.
+	 *
+	 * Core's wp_cache_get_last_changed() only exists in WordPress 6.3 and
+	 * later, and this plugin supports 5.9+, so fall back to reading the marker
+	 * directly on older versions.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return string Last changed marker.
+	 */
+	private static function get_last_changed() {
+		if ( function_exists( 'wp_cache_get_last_changed' ) ) {
+			return (string) wp_cache_get_last_changed( 'mscsl' );
+		}
+
+		$last_changed = wp_cache_get( 'last_changed', 'mscsl' );
+
+		if ( ! $last_changed ) {
+			$last_changed = microtime();
+			wp_cache_set( 'last_changed', $last_changed, 'mscsl' );
+		}
+
+		return (string) $last_changed;
 	}
 
 	/**
@@ -318,7 +364,7 @@ class Database {
 		$date_to   = ! empty( $date_to ) ? $date_to . ' 23:59:59' : '';
 
 		// Cache lookup — use last_changed key to auto-invalidate when data changes.
-		$last_changed = wp_cache_get_last_changed( 'mscsl' );
+		$last_changed = self::get_last_changed();
 		$cache_key    = "get_attempt_count:{$last_changed}:" . md5( wp_json_encode( array( $ip, $username, $type, $date_from, $date_to ) ) );
 		$cached       = wp_cache_get( $cache_key, 'mscsl' );
 
@@ -327,41 +373,15 @@ class Database {
 		}
 
 		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
-		$where  = array( '1=1' );
-		$values = array();
+		list( $where_sql, $values ) = self::build_where(
+			compact( 'ip', 'username', 'type', 'date_from', 'date_to' )
+		);
 
-		if ( '' !== $ip ) {
-			$where[]  = 'ip_address = %s';
-			$values[] = $ip;
-		}
-		if ( '' !== $username ) {
-			$where[]  = 'user_login = %s';
-			$values[] = $username;
-		}
-		if ( '' !== $type ) {
-			$where[]  = 'attempt_type = %s';
-			$values[] = $type;
-		}
-		if ( '' !== $date_from ) {
-			$where[]  = 'created_at >= %s';
-			$values[] = $date_from;
-		}
-		if ( '' !== $date_to ) {
-			$where[]  = 'created_at <= %s';
-			$values[] = $date_to;
-		}
-
-		$where_sql = implode( ' AND ', $where );
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table, caching handled above via wp_cache_get/set
 		if ( ! empty( $values ) ) {
-			
-			$count = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
-				$wpdb->prepare(
-					"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE %s", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $where_sql built from safe literals
-					$where_sql
-				)
-			);
+			$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql}";
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
+			$count = (int) $wpdb->get_var( $wpdb->prepare( $sql, ...$values ) );
 		} else {
 			// No filters — no placeholders needed.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- safe: no user input in query

@@ -68,6 +68,12 @@ class Module {
 			return;
 		}
 
+		// This runs on plugins_loaded, before wp-admin/includes/admin.php has
+		// pulled in plugin.php, so load it ourselves.
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		$conflicting = array(
 			'w3-total-cache/w3-total-cache.php' => 'W3 Total Cache',
 			'wp-super-cache/wp-cache.php'       => 'WP Super Cache',
@@ -606,7 +612,7 @@ class Module {
 		}
 
 		$transient_key = self::ATTEMPTS_TRANSIENT . md5( $ip );
-		$attempts      = get_transient( $transient_key );
+		$attempts      = $this->get_lockout_transient( $transient_key );
 
 		if ( false === $attempts ) {
 			$attempts = array(
@@ -641,7 +647,7 @@ class Module {
 			$lockout_duration = $this->plugin->get_option( 'lockout_duration', 15 ) * 60;
 		}
 
-		set_transient( $transient_key, $attempts, $lockout_duration );
+		$this->set_lockout_transient( $transient_key, $attempts, $lockout_duration );
 
 		// Log to database if logging is enabled.
 		if ( $this->plugin->get_option( 'login_logging_enabled', 1 ) ) {
@@ -696,7 +702,7 @@ class Module {
 		}
 
 		$transient_key = self::ATTEMPTS_TRANSIENT . md5( $ip );
-		return get_transient( $transient_key );
+		return $this->get_lockout_transient( $transient_key );
 	}
 
 	/**
@@ -768,7 +774,7 @@ class Module {
 		}
 
 		$key = self::LOCKOUT_MULTIPLIER_KEY . md5( $ip );
-		$val = get_transient( $key );
+		$val = $this->get_lockout_transient( $key );
 
 		if ( false === $val ) {
 			return 1;
@@ -789,7 +795,7 @@ class Module {
 		}
 
 		$key = self::LOCKOUT_MULTIPLIER_KEY . md5( $ip );
-		set_transient( $key, absint( $mult ), 24 * HOUR_IN_SECONDS );
+		$this->set_lockout_transient( $key, absint( $mult ), 24 * HOUR_IN_SECONDS );
 	}
 
 	/**
@@ -1157,8 +1163,7 @@ If this is not expected behavior, you may want to investigate this IP address.',
 			);
 
 			// Clear attempts on successful login.
-			$transient_key = self::ATTEMPTS_TRANSIENT . md5( $ip );
-			delete_transient( $transient_key );
+			$this->delete_lockout_transient( self::ATTEMPTS_TRANSIENT . md5( $ip ) );
 		}
 
 		// Send login alerts if enabled.
@@ -1308,6 +1313,64 @@ If this was not you, please contact your site administrator immediately.', 'msc-
 	 */
 	private function is_enabled() {
 		return (bool) $this->plugin->get_option( 'module_enabled', 1 );
+	}
+
+	/**
+	 * Read a lockout transient.
+	 *
+	 * On a multisite network with shared lockouts enabled the value lives in a
+	 * site (network) transient, so one attacker gets a single allowance for the
+	 * whole network instead of one per site.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $key Transient key.
+	 * @return mixed Transient value, or false when not set.
+	 */
+	private function get_lockout_transient( $key ) {
+		if ( $this->plugin->uses_network_lockout() ) {
+			return get_site_transient( $key );
+		}
+
+		return get_transient( $key );
+	}
+
+	/**
+	 * Write a lockout transient.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $key        Transient key.
+	 * @param mixed  $value      Value to store.
+	 * @param int    $expiration Expiration in seconds.
+	 * @return void
+	 */
+	private function set_lockout_transient( $key, $value, $expiration ) {
+		if ( $this->plugin->uses_network_lockout() ) {
+			set_site_transient( $key, $value, $expiration );
+			return;
+		}
+
+		set_transient( $key, $value, $expiration );
+	}
+
+	/**
+	 * Delete a lockout transient.
+	 *
+	 * Clears both storages so switching the network-shared setting on or off
+	 * cannot leave a stale counter behind.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param string $key Transient key.
+	 * @return void
+	 */
+	private function delete_lockout_transient( $key ) {
+		delete_transient( $key );
+
+		if ( is_multisite() ) {
+			delete_site_transient( $key );
+		}
 	}
 
 	/**

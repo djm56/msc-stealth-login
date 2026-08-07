@@ -2,6 +2,24 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.3.0] - 2026-08-03
+
+### Added
+
+- Multisite support. Each site on a network now installs its own login-attempts table, options and emergency recovery token, whether the plugin is activated per site or network-wide, and sites created after a network activation are provisioned automatically via `wp_initialize_site`.
+- Optional "Share Lockouts Across Network" setting (Advanced tab, multisite only, default off). When enabled, failed-attempt counters and progressive lockout multipliers are stored as network transients, so an attacker gets one allowance for the whole network instead of one per site. Also filterable network-wide via `mscsl_network_shared_lockout`.
+- Regression tests for login-history filtering (`tests/database-test.php`) and per-site installation / network lockouts (`tests/multisite-test.php`).
+
+### Fixed
+
+- **Login History filters did nothing.** `Database::get_attempts()` and `Database::get_attempt_count()` passed the entire WHERE clause to `$wpdb->prepare()` as a `%s` value, so MySQL received `WHERE '1=1 AND ip_address = %s'` — a quoted string literal it evaluates as true. Every IP, username, result and date filter was silently ignored in the table, the entry count and the CSV export. Introduced by the 1.0.8 PHPCS refactor.
+- **Fatal error on WordPress 5.9–6.2.** The History tab called `wp_cache_get_last_changed()`, which only exists in WordPress 6.3+, while the plugin declares support for 5.9+. It now falls back to reading the cache marker directly.
+- **The Filter button dropped you back to the Settings tab.** Tab selection required a nonce that the history filter form, pagination links and "Clear Filters" link never carried. Tab switching is a read-only view change and is no longer nonce-protected; saving, clearing logs, exporting and regenerating the recovery token keep their nonces.
+- "Export to CSV" now exports what is on screen — the active filters are carried into the export link — and no longer silently truncates at 1,000 rows when 10,000 were requested.
+- Uninstalling on a multisite network now removes options, transients and the login-attempts table for every site, plus any network-wide lockout transients. Previously only the current site was cleaned up.
+- `is_plugin_active()` is no longer called before `wp-admin/includes/plugin.php` is guaranteed to be loaded during the conflict-detection check.
+- The Settings tab mints a recovery token if one is missing, so it can never display a recovery URL that would be rejected.
+
 ## [1.2.0] - 2026-07-25
 
 ### Changed

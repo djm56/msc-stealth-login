@@ -51,8 +51,6 @@ class Settings {
 			return;
 		}
 
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-
 		wp_enqueue_style(
 			'msc-stealth-login-admin',
 			MSCSL_PLUGIN_URL . 'assets/css/admin.css',
@@ -92,17 +90,31 @@ class Settings {
 	}
 
 	/**
-	 * Handle tab redirect on initial load.
+	 * Handle admin_init tasks for the settings screen.
 	 */
 	public function handle_tab_redirect() {
 		// Handle CSV export.
 		$this->handle_csv_export();
+	}
 
-		if ( isset( $_GET['page'] ) && 'msc-stealth-login' === $_GET['page'] && isset( $_GET['tab'] ) ) {
-			if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mscsl_tab_switch' ) ) {
-				$this->current_tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
-			}
-		}
+	/**
+	 * Get the requested tab.
+	 *
+	 * Switching tabs is a read-only view change, so it is not nonce-protected —
+	 * requiring a nonce here meant the history filter form, the pagination
+	 * links and "Clear Filters" all silently bounced the user back to the
+	 * Settings tab. State-changing actions (save, clear logs, export,
+	 * regenerate token) keep their own nonces.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return string Sanitized tab slug.
+	 */
+	private function get_current_tab() {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only view switch on a manage_options-protected page.
+		$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+
+		return '' !== $tab ? $tab : 'settings';
 	}
 
 	/**
@@ -236,6 +248,12 @@ class Settings {
 			$options['progressive_lockout_enabled'] = isset( $_POST['progressive_lockout_enabled'] ) ? 1 : 0;
 			$options['max_lockout_duration']       = absint( $_POST['max_lockout_duration'] ?? 60 );
 
+			// Multisite-only: the field is not rendered on single-site installs,
+			// so leave the stored value alone there.
+			if ( is_multisite() ) {
+				$options['network_shared_lockout'] = isset( $_POST['network_shared_lockout'] ) ? 1 : 0;
+			}
+
 			// Validate numeric options.
 			$options['max_login_attempts']  = max( 1, min( 10, $options['max_login_attempts'] ) );
 			$options['lockout_duration']  = max( 5, min( 60, $options['lockout_duration'] ) );
@@ -297,10 +315,7 @@ class Settings {
 			return;
 		}
 
-		$this->current_tab = 'settings';
-		if ( isset( $_GET['page'] ) && 'msc-stealth-login' === $_GET['page'] && isset( $_GET['tab'] ) && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'mscsl_tab_switch' ) ) {
-			$this->current_tab = sanitize_key( wp_unslash( $_GET['tab'] ) );
-		}
+		$this->current_tab = $this->get_current_tab();
 
 		$options = $this->plugin->get_options();
 		?>
@@ -317,21 +332,24 @@ class Settings {
 			<?php endif; ?>
 
 			<nav class="nav-tab-wrapper">
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'settings', '_wpnonce' => wp_create_nonce( 'mscsl_tab_switch' ) ), admin_url( 'options-general.php?page=msc-stealth-login' ) ) ); ?>" class="nav-tab <?php echo 'settings' === $this->current_tab ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Settings', 'msc-stealth-login' ); ?>
-				</a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'advanced', '_wpnonce' => wp_create_nonce( 'mscsl_tab_switch' ) ), admin_url( 'options-general.php?page=msc-stealth-login' ) ) ); ?>" class="nav-tab <?php echo 'advanced' === $this->current_tab ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Advanced', 'msc-stealth-login' ); ?>
-				</a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'email', '_wpnonce' => wp_create_nonce( 'mscsl_tab_switch' ) ), admin_url( 'options-general.php?page=msc-stealth-login' ) ) ); ?>" class="nav-tab <?php echo 'email' === $this->current_tab ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Email', 'msc-stealth-login' ); ?>
-				</a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'history', '_wpnonce' => wp_create_nonce( 'mscsl_tab_switch' ) ), admin_url( 'options-general.php?page=msc-stealth-login' ) ) ); ?>" class="nav-tab <?php echo 'history' === $this->current_tab ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'History', 'msc-stealth-login' ); ?>
-				</a>
-				<a href="<?php echo esc_url( add_query_arg( array( 'tab' => 'support', '_wpnonce' => wp_create_nonce( 'mscsl_tab_switch' ) ), admin_url( 'options-general.php?page=msc-stealth-login' ) ) ); ?>" class="nav-tab <?php echo 'support' === $this->current_tab ? 'nav-tab-active' : ''; ?>">
-					<?php esc_html_e( 'Support', 'msc-stealth-login' ); ?>
-				</a>
+				<?php
+				$tabs = array(
+					'settings' => __( 'Settings', 'msc-stealth-login' ),
+					'advanced' => __( 'Advanced', 'msc-stealth-login' ),
+					'email'    => __( 'Email', 'msc-stealth-login' ),
+					'history'  => __( 'History', 'msc-stealth-login' ),
+					'support'  => __( 'Support', 'msc-stealth-login' ),
+				);
+
+				foreach ( $tabs as $tab_slug => $tab_label ) {
+					printf(
+						'<a href="%1$s" class="nav-tab %2$s">%3$s</a>',
+						esc_url( add_query_arg( 'tab', $tab_slug, admin_url( 'options-general.php?page=msc-stealth-login' ) ) ),
+						esc_attr( $tab_slug === $this->current_tab ? 'nav-tab-active' : '' ),
+						esc_html( $tab_label )
+					);
+				}
+				?>
 				<?php do_action( 'mscsl_tabs', $this->current_tab ); ?>
 			</nav>
 
@@ -423,7 +441,15 @@ class Settings {
 							<td>
 								<?php
 								$recovery_token = get_option( 'mscsl_recovery_token', '' );
-								$recovery_url   = add_query_arg( 'mscsl_recovery', $recovery_token, wp_login_url() );
+
+								// Never render a recovery URL without a token — it would
+								// look valid but be rejected. Mint one if it is missing.
+								if ( empty( $recovery_token ) ) {
+									$recovery_token = wp_generate_password( 32, false );
+									update_option( 'mscsl_recovery_token', $recovery_token );
+								}
+
+								$recovery_url = add_query_arg( 'mscsl_recovery', $recovery_token, wp_login_url() );
 								?>
 								<p><strong><?php esc_html_e( 'Current Recovery URL:', 'msc-stealth-login' ); ?></strong></p>
 								<code id="mscsl-recovery-url" style="padding: 10px; background: #f0f0f1; display: block; font-size: 14px; margin-bottom: 10px;"><?php echo esc_url( $recovery_url ); ?></code>
@@ -551,6 +577,23 @@ class Settings {
 							</td>
 						</tr>
 					</table>
+
+					<?php if ( is_multisite() ) : ?>
+						<table class="form-table" role="presentation">
+							<tr class="mscsl-advanced-option mscsl-bruteforce-option" style="<?php echo ( $options['advanced_security_enabled'] && $options['brute_force_enabled'] ) ? '' : 'display:none;'; ?>">
+								<th scope="row"><?php esc_html_e( 'Share Lockouts Across Network', 'msc-stealth-login' ); ?></th>
+								<td>
+									<label for="network_shared_lockout">
+										<input id="network_shared_lockout" type="checkbox" name="network_shared_lockout" value="1" <?php checked( 1, $options['network_shared_lockout'] ); ?> />
+										<?php esc_html_e( 'Count failed login attempts network-wide instead of per site', 'msc-stealth-login' ); ?>
+									</label>
+									<p class="description">
+										<?php esc_html_e( 'Multisite only. When off, an attacker gets a fresh set of attempts on every site in the network. When on, failed attempts and progressive lockout delays are shared, so a lockout earned on one site applies to all of them. Enable it on each site that should share the count.', 'msc-stealth-login' ); ?>
+									</p>
+								</td>
+							</tr>
+						</table>
+					<?php endif; ?>
 
 					<h2 class="title"><?php esc_html_e( 'Login Logging', 'msc-stealth-login' ); ?></h2>
 
@@ -917,6 +960,28 @@ class Settings {
 		$logs       = Database::get_attempts( $filters );
 		$total      = Database::get_attempt_count( $filters );
 		$total_pages = ceil( $total / $per_page );
+
+		// Carry the active filters into the CSV export link so the export
+		// matches what is on screen.
+		$export_args = array(
+			'page'   => 'msc-stealth-login',
+			'tab'    => 'history',
+			'action' => 'export_csv',
+		);
+
+		$export_filter_map = array(
+			'ip'        => 'filter_ip',
+			'username'  => 'filter_username',
+			'type'      => 'filter_type',
+			'date_from' => 'filter_date_from',
+			'date_to'   => 'filter_date_to',
+		);
+
+		foreach ( $export_filter_map as $filter_key => $query_arg ) {
+			if ( ! empty( $filters[ $filter_key ] ) ) {
+				$export_args[ $query_arg ] = $filters[ $filter_key ];
+			}
+		}
 		?>
 		<div style="margin-top: 20px;">
 			<h2><?php esc_html_e( 'Login Attempt History', 'msc-stealth-login' ); ?></h2>
@@ -1057,7 +1122,7 @@ class Settings {
 					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'options-general.php?page=msc-stealth-login&tab=history&action=clear_logs' ), 'mscsl_clear_logs' ) ); ?>" class="button" onclick="return confirm('<?php echo esc_js( __( 'Are you sure you want to clear all login logs?', 'msc-stealth-login' ) ); ?>');">
 						<?php esc_html_e( 'Clear All Logs', 'msc-stealth-login' ); ?>
 					</a>
-					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'page' => 'msc-stealth-login', 'tab' => 'history', 'action' => 'export_csv' ), admin_url( 'options-general.php' ) ), 'mscsl_export_csv' ) ); ?>" class="button button-primary">
+					<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( $export_args, admin_url( 'options-general.php' ) ), 'mscsl_export_csv' ) ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Export to CSV', 'msc-stealth-login' ); ?>
 					</a>
 				</p>
