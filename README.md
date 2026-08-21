@@ -10,6 +10,18 @@ Hide your WordPress login page from attackers. Protect against brute force with 
 
 **All features are free. There is no premium version.**
 
+## Index
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Recovery / Lockout](#recovery--lockout)
+- [Multisite](#multisite)
+- [Developer Reference](#developer-reference)
+- [Development](#development)
+- [Changelog](#changelog)
+- [License](#license)
+
 ## Features
 
 - **Custom Login URL** — Change `/wp-login.php` to any slug (e.g. `/secure-login/`)
@@ -129,7 +141,7 @@ add_filter( 'mscsl_network_shared_lockout', '__return_true' );
 
 | Constant | Value | Description |
 |----------|-------|-------------|
-| `MSCSL_PLUGIN_VERSION` | `'1.1.0'` | Current plugin version |
+| `MSCSL_PLUGIN_VERSION` | `'1.3.0'` | Current plugin version |
 | `MSCSL_PLUGIN_FILE` | `__FILE__` | Absolute path to main plugin file |
 | `MSCSL_PLUGIN_DIR` | Plugin directory path | Absolute path to plugin directory |
 | `MSCSL_PLUGIN_URL` | Plugin directory URL | URL to plugin directory |
@@ -357,12 +369,6 @@ Translation dictionaries are maintained in `scripts/generate-translations.php`. 
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
-
-### Version History
-
-## 1.0.5
-* **Fix**: Removed custom blocked and lockout error page templates to comply with WordPress.org Plugin Guideline #11 (plugins should not hijack the admin dashboard). Blocked and locked-out users are now silently redirected to the homepage instead of being shown a custom error page.
-* The lockout message is still communicated via the standard WordPress login error flow when users attempt to log in.
 
 ## License
 
