@@ -1,10 +1,10 @@
 # MSC Stealth Login
 
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.1-blue)
 ![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![WordPress](https://img.shields.io/badge/WordPress-5.9%2B-blue)
-![Tested up to](https://img.shields.io/badge/tested%20up%20to-7.0-blue)
+![Tested up to](https://img.shields.io/badge/tested%20up%20to-7.1-blue)
 
 Hide your WordPress login page from attackers. Protect against brute force with custom URLs, lockouts, and email alerts.
 
@@ -141,7 +141,7 @@ add_filter( 'mscsl_network_shared_lockout', '__return_true' );
 
 | Constant | Value | Description |
 |----------|-------|-------------|
-| `MSCSL_PLUGIN_VERSION` | `'1.3.0'` | Current plugin version |
+| `MSCSL_PLUGIN_VERSION` | `'1.3.1'` | Current plugin version |
 | `MSCSL_PLUGIN_FILE` | `__FILE__` | Absolute path to main plugin file |
 | `MSCSL_PLUGIN_DIR` | Plugin directory path | Absolute path to plugin directory |
 | `MSCSL_PLUGIN_URL` | Plugin directory URL | URL to plugin directory |

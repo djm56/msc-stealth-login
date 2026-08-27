@@ -3,9 +3,9 @@ Contributors: djm56
 Donate link: https://anomalous.co.za/donate
 Tags: hide login, custom login url, block wp-admin, disable xml-rpc, brute force
 Requires at least: 5.9
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ No. Every feature is included in the plugin you download — there is nothing to
 
 == Changelog ==
 
+= 1.3.1 =
+* Tested with WordPress 7.1. No functional changes.
+
 = 1.3.0 =
 * Added: Multisite support — every site on a network now gets its own login-attempts table, settings and emergency recovery token, whether activated per site or network-wide, and new sites are set up automatically.
 * Added: Optional "Share Lockouts Across Network" setting (Advanced tab, multisite only) so failed-login counters and progressive lockouts can be counted network-wide instead of per site.
@@ -253,6 +256,9 @@ No. Every feature is included in the plugin you download — there is nothing to
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.3.1 =
+Compatibility update: confirmed tested against WordPress 7.1. No functional changes — safe update.
 
 = 1.3.0 =
 Adds Multisite support and fixes Login History filtering, which was silently ignored. Also fixes a fatal error on WordPress 5.9–6.2. Recommended update.
