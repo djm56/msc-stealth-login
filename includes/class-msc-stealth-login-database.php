@@ -240,34 +240,56 @@ class Database {
 			return $cached;
 		}
 
-		// Static WHERE with empty-string guards — no dynamic interpolation.
-		// Each filter is wrapped in `(%s = '' OR column %s %s)` so an empty filter
-		// value short-circuits the OR to TRUE and effectively skips that filter.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table; caching handled above.
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts
-				WHERE ( %s = '' OR ip_address = %s )
-					AND ( %s = '' OR user_login = %s )
-					AND ( %s = '' OR attempt_type = %s )
-					AND ( %s = '' OR created_at >= %s )
-					AND ( %s = '' OR created_at <= %s )
-				ORDER BY created_at DESC
-				LIMIT %d OFFSET %d",
-				$ip, $ip,
-				$username, $username,
-				$type, $type,
-				$date_from, $date_from,
-				$date_to, $date_to,
-				$limit,
-				$offset
-			),
-			ARRAY_A
+		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
+		list( $where_sql, $values ) = self::build_where(
+			compact( 'ip', 'username', 'type', 'date_from', 'date_to' )
 		);
+
+		$values[] = $limit;
+		$values[] = $offset;
+
+		$sql = "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d";
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
+		$results = $wpdb->get_results( $wpdb->prepare( $sql, ...$values ), ARRAY_A );
 
 		wp_cache_set( $cache_key, $results, 'mscsl' );
 
 		return $results;
+	}
+
+	/**
+	 * Build the WHERE clause and bound values for the log filters.
+	 *
+	 * The returned SQL contains only hard-coded column comparisons plus
+	 * placeholders — never a caller-supplied string — so it is safe to
+	 * interpolate into the query before handing it to $wpdb->prepare().
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param array<string,string> $filters Validated filter values.
+	 * @return array{0:string,1:array<int,string>} WHERE SQL and bound values.
+	 */
+	private static function build_where( $filters ) {
+		$columns = array(
+			'ip'        => 'ip_address = %s',
+			'username'  => 'user_login = %s',
+			'type'      => 'attempt_type = %s',
+			'date_from' => 'created_at >= %s',
+			'date_to'   => 'created_at <= %s',
+		);
+
+		$where  = array( '1=1' );
+		$values = array();
+
+		foreach ( $columns as $key => $fragment ) {
+			if ( isset( $filters[ $key ] ) && '' !== $filters[ $key ] ) {
+				$where[]  = $fragment;
+				$values[] = $filters[ $key ];
+			}
+		}
+
+		return array( implode( ' AND ', $where ), $values );
 	}
 
 	/**
@@ -350,25 +372,21 @@ class Database {
 			return $cached;
 		}
 
-		// Static WHERE with empty-string guards — no dynamic interpolation.
-		// Each filter is wrapped in `(%s = '' OR column %s %s)` so an empty filter
-		// value short-circuits the OR to TRUE and effectively skips that filter.
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table; caching handled above.
-		$count = (int) $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts
-				WHERE ( %s = '' OR ip_address = %s )
-					AND ( %s = '' OR user_login = %s )
-					AND ( %s = '' OR attempt_type = %s )
-					AND ( %s = '' OR created_at >= %s )
-					AND ( %s = '' OR created_at <= %s )",
-				$ip, $ip,
-				$username, $username,
-				$type, $type,
-				$date_from, $date_from,
-				$date_to, $date_to
-			)
+		// Build WHERE clause dynamically to avoid MySQL strict-mode DATETIME errors.
+		list( $where_sql, $values ) = self::build_where(
+			compact( 'ip', 'username', 'type', 'date_from', 'date_to' )
 		);
+
+		if ( ! empty( $values ) ) {
+			$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql}";
+
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
+			$count = (int) $wpdb->get_var( $wpdb->prepare( $sql, ...$values ) );
+		} else {
+			// No filters — no placeholders needed.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- safe: no user input in query
+			$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts" );
+		}
 
 		wp_cache_set( $cache_key, $count, 'mscsl' );
 
