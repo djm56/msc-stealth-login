@@ -2,772 +2,1120 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: MSC Stealth Login 1.0.2\n"
+"Project-Id-Version: MSC Stealth Login 1.3.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/msc-stealth-login\n"
-"Last-Translator: Anomalous Developers <info@anomalous.co.za>\n"
-"Language-Team: Spanish (Spain) <info@anomalous.co.za>\n"
+"POT-Creation-Date: 2026-08-27T15:26:38+00:00\n"
+"PO-Revision-Date: 2026-05-02T09:19:53+00:00\n"
+"Last-Translator: Anomalous Developers <dev@anomalous.com.au>\n"
+"Language-Team: Spanish (Spain) <dev@anomalous.com.au>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-02T09:19:53+00:00\n"
-"PO-Revision-Date: 2026-05-02T09:19:53+00:00\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: MSC Translation Generator 1.0\n"
 "X-Domain: msc-stealth-login\n"
 
 #. Plugin Name of the plugin
-#: msc-stealth-login.php
-#: includes/class-msc-stealth-login-settings.php:297
+#: msc-stealth-login.php includes/class-msc-stealth-login-settings.php:323
 msgid "MSC Stealth Login"
 msgstr "MSC Stealth Login"
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 #: msc-stealth-login.php
-msgid "https://anomalous.co.za"
-msgstr ""
+msgid "https://github.com/djm56/msc-stealth-login"
+msgstr "https://github.com/djm56/msc-stealth-login"
 
 #. Description of the plugin
 #: msc-stealth-login.php
-msgid "Hide your login page, block brute force attacks, and protect your WordPress site from unauthorized access. Complete free plugin with all features included."
-msgstr "Oculta tu página de inicio de sesión, bloquea ataques de fuerza bruta y protege tu sitio WordPress contra accesos no autorizados. Plugin gratuito completo con todas las funciones."
+msgid ""
+"Hide your login page, block brute force attacks, and protect your WordPress "
+"site from unauthorized access. Complete free plugin with all features "
+"included."
+msgstr ""
+"Oculta tu página de inicio de sesión, bloquea ataques de fuerza bruta y "
+"protege tu sitio WordPress contra accesos no autorizados. Plugin gratuito "
+"completo con todas las funciones."
 
 #. Author of the plugin
 #: msc-stealth-login.php
 msgid "Anomalous Developers"
 msgstr "Anomalous Developers"
 
-#: includes/class-msc-stealth-login-database.php:328
+#. Author URI of the plugin
+#: msc-stealth-login.php
+msgid "https://anomalous.co.za"
+msgstr "https://anomalous.co.za"
+
+#: includes/class-msc-stealth-login-database.php:477
 msgid "ID"
 msgstr "ID"
 
-#: includes/class-msc-stealth-login-database.php:329
-#: includes/class-msc-stealth-login-settings.php:153
-#: includes/class-msc-stealth-login-settings.php:681
-#: includes/class-msc-stealth-login-settings.php:884
-#: includes/class-msc-stealth-login-settings.php:938
+#: includes/class-msc-stealth-login-database.php:478
+#: includes/class-msc-stealth-login-settings.php:166
+#: includes/class-msc-stealth-login-settings.php:749
+#: includes/class-msc-stealth-login-settings.php:1000
+#: includes/class-msc-stealth-login-settings.php:1054
 msgid "IP Address"
 msgstr "Dirección IP"
 
-#: includes/class-msc-stealth-login-database.php:330
-#: includes/class-msc-stealth-login-settings.php:154
-#: includes/class-msc-stealth-login-settings.php:890
-#: includes/class-msc-stealth-login-settings.php:939
+#: includes/class-msc-stealth-login-database.php:479
+#: includes/class-msc-stealth-login-settings.php:167
+#: includes/class-msc-stealth-login-settings.php:1006
+#: includes/class-msc-stealth-login-settings.php:1055
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: includes/class-msc-stealth-login-database.php:331
-#: includes/class-msc-stealth-login-settings.php:155
-#: includes/class-msc-stealth-login-settings.php:940
+#: includes/class-msc-stealth-login-database.php:480
+#: includes/class-msc-stealth-login-settings.php:168
+#: includes/class-msc-stealth-login-settings.php:1056
 msgid "Result"
 msgstr "Resultado"
 
-#: includes/class-msc-stealth-login-database.php:332
-#: includes/class-msc-stealth-login-settings.php:156
+#: includes/class-msc-stealth-login-database.php:481
+#: includes/class-msc-stealth-login-settings.php:169
 msgid "User Agent"
 msgstr "Agente de usuario"
 
-#: includes/class-msc-stealth-login-database.php:333
-#: includes/class-msc-stealth-login-settings.php:157
-#: includes/class-msc-stealth-login-settings.php:941
+#: includes/class-msc-stealth-login-database.php:482
+#: includes/class-msc-stealth-login-settings.php:170
+#: includes/class-msc-stealth-login-settings.php:1057
 msgid "Date/Time"
 msgstr "Fecha/Hora"
 
 #. translators: %s: list of detected plugins
-#: includes/class-msc-stealth-login-module.php:83
+#: includes/class-msc-stealth-login-module.php:114
 #, php-format
-msgid "The following plugins were detected: %s. You may need to configure cache or security exclusions for your custom login URL."
-msgstr "Se detectaron los siguientes plugins: %s. Es posible que debas configurar exclusiones de caché o seguridad para tu URL de inicio de sesión personalizada."
+msgid ""
+"The following plugins were detected: %s. You may need to configure cache or "
+"security exclusions for your custom login URL."
+msgstr ""
+"Se detectaron los siguientes plugins: %s. Es posible que debas configurar "
+"exclusiones de caché o seguridad para tu URL de inicio de sesión "
+"personalizada."
 
-#: includes/class-msc-stealth-login-module.php:199
-#: includes/class-msc-stealth-login-module.php:1032
-#: includes/class-msc-stealth-login-settings.php:116
-#: includes/class-msc-stealth-login-settings.php:182
+#: includes/class-msc-stealth-login-module.php:232
+#: includes/class-msc-stealth-login-module.php:1008
+#: includes/class-msc-stealth-login-settings.php:129
+#: includes/class-msc-stealth-login-settings.php:195
 msgid "You do not have permission to access this page."
 msgstr "No tienes permiso para acceder a esta página."
 
-#: includes/class-msc-stealth-login-module.php:453
+#: includes/class-msc-stealth-login-module.php:484
 msgid "Pingback functionality is disabled."
 msgstr "La funcionalidad de pingback está desactivada."
 
 #. translators: %d is the number of minutes
-#: includes/class-msc-stealth-login-module.php:687
-#: includes/class-msc-stealth-login-module.php:811
+#: includes/class-msc-stealth-login-module.php:718
+#: includes/class-msc-stealth-login-module.php:842
 #, php-format
 msgid "Too many failed login attempts. Please try again in %d minutes."
-msgstr "Demasiados intentos de inicio de sesión fallidos. Por favor, inténtalo de nuevo en %d minutos."
+msgstr ""
+"Demasiados intentos de inicio de sesión fallidos. Por favor, inténtalo de "
+"nuevo en %d minutos."
 
 #. translators: %1$d days and %2$d hours
-#: includes/class-msc-stealth-login-module.php:795
+#: includes/class-msc-stealth-login-module.php:826
 #, php-format
-msgid "Too many failed login attempts. You are temporarily blocked for %1$d days and %2$d hours."
-msgstr "Demasiados intentos de inicio de sesión fallidos. Estás bloqueado temporalmente durante %1$d días y %2$d horas."
+msgid ""
+"Too many failed login attempts. You are temporarily blocked for %1$d days "
+"and %2$d hours."
+msgstr ""
+"Demasiados intentos de inicio de sesión fallidos. Estás bloqueado "
+"temporalmente durante %1$d días y %2$d horas."
 
 #. translators: %1$d hours and %2$d minutes
-#: includes/class-msc-stealth-login-module.php:803
+#: includes/class-msc-stealth-login-module.php:834
 #, php-format
-msgid "Too many failed login attempts. You are temporarily blocked for %1$d hours and %2$d minutes."
-msgstr "Demasiados intentos de inicio de sesión fallidos. Estás bloqueado temporalmente durante %1$d horas y %2$d minutos."
+msgid ""
+"Too many failed login attempts. You are temporarily blocked for %1$d hours "
+"and %2$d minutes."
+msgstr ""
+"Demasiados intentos de inicio de sesión fallidos. Estás bloqueado "
+"temporalmente durante %1$d horas y %2$d minutos."
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:841
+#: includes/class-msc-stealth-login-module.php:872
 #, php-format
 msgid "[%s] Brute Force Lockout Alert"
 msgstr "[%s] Alerta de bloqueo por fuerza bruta"
 
-#. translators: 1 is the site name, 2 is the IP address, 3 is the number of attempts
-#: includes/class-msc-stealth-login-module.php:859
+#. translators: 1: site name, 2: IP address, 3: number of failed attempts, 4:
+#. time
+#: includes/class-msc-stealth-login-module.php:890
 #, php-format
-msgid "A brute force lockout has occurred on %1$s.\n\nIP Address: %2$s\nFailed Attempts: %3$d\nTime: %4$s\n\nThis IP has been temporarily blocked from making login attempts.\n\nIf this is not expected behavior, you may want to investigate this IP address."
+msgid ""
+"A brute force lockout has occurred on %1$s.\n"
+"\n"
+"IP Address: %2$s\n"
+"Failed Attempts: %3$d\n"
+"Time: %4$s\n"
+"\n"
+"This IP has been temporarily blocked from making login attempts.\n"
+"\n"
+"If this is not expected behavior, you may want to investigate this IP address."
 msgstr ""
-
-#: includes/class-msc-stealth-login-module.php:895
-#: includes/class-msc-stealth-login-module.php:927
-#: includes/class-msc-stealth-login-settings.php:902
-#: includes/class-msc-stealth-login-settings.php:959
-msgid "Locked Out"
-msgstr "Bloqueado"
-
-#: includes/class-msc-stealth-login-module.php:948
-#: includes/class-msc-stealth-login-module.php:980
-msgid "Access Denied"
-msgstr "Acceso denegado"
-
-#: includes/class-msc-stealth-login-module.php:981
-msgid "The login page you are trying to access has been hidden for security reasons. Please use the correct login URL to access this site."
-msgstr "La página de inicio de sesión a la que intentas acceder ha sido ocultada por razones de seguridad. Por favor, usa la URL de inicio de sesión correcta."
+"Se ha producido un bloqueo por fuerza bruta en %1$s.\n"
+"\n"
+"Dirección IP: %2$s\n"
+"Intentos fallidos: %3$d\n"
+"Hora: %4$s\n"
+"\n"
+"Esta IP ha sido bloqueada temporalmente para realizar intentos de inicio de sesión.\n"
+"\n"
+"Si este no es el comportamiento esperado, puede investigar esta dirección IP."
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1059
+#: includes/class-msc-stealth-login-module.php:1035
 #, php-format
 msgid "[%s] Your Login URL Recovery"
 msgstr "[%s] Recuperación de tu URL de inicio de sesión"
 
-#. translators: 1 is the site name, 2 is the login URL
-#: includes/class-msc-stealth-login-module.php:1065
+#. translators: 1: site name, 2: login URL
+#: includes/class-msc-stealth-login-module.php:1041
 #, php-format
-msgid "You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s"
-msgstr "Has solicitado una recuperación de URL de inicio de sesión para %1$s. Tu URL de inicio de sesión sigilosa es: %2$s"
+msgid ""
+"You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s"
+msgstr ""
+"Has solicitado una recuperación de URL de inicio de sesión para %1$s. Tu URL"
+" de inicio de sesión sigilosa es: %2$s"
 
-#: includes/class-msc-stealth-login-module.php:1101
+#: includes/class-msc-stealth-login-module.php:1081
 msgid "Recovery email sent successfully."
 msgstr "Correo de recuperación enviado correctamente."
 
-#: includes/class-msc-stealth-login-module.php:1103
+#: includes/class-msc-stealth-login-module.php:1083
 msgid "Failed to send recovery email. Please check the email address."
-msgstr "No se pudo enviar el correo de recuperación. Por favor, verifica la dirección de correo."
+msgstr ""
+"No se pudo enviar el correo de recuperación. Por favor, verifica la "
+"dirección de correo."
 
-#: includes/class-msc-stealth-login-module.php:1105
+#: includes/class-msc-stealth-login-module.php:1085
 msgid "Failed to send recovery email."
 msgstr "No se pudo enviar el correo de recuperación."
 
+#: includes/class-msc-stealth-login-module.php:1115
+msgid "MSC Stealth Login:"
+msgstr "MSC Stealth Login:"
+
+#. translators: %s: Link to plugin settings page
+#: includes/class-msc-stealth-login-module.php:1119
+#, php-format
+msgid ""
+"This plugin collects IP addresses, usernames, user agents, and login attempt"
+" history for security features (brute force protection, login alerts). This "
+"data is stored in your WordPress database and is not sent externally. You "
+"can manage settings on the %s page."
+msgstr ""
+"Este plugin recopila direcciones IP, nombres de usuario, agentes de usuario "
+"e historial de intentos de inicio de sesión para funciones de seguridad "
+"(protección contra fuerza bruta, alertas de inicio de sesión). Estos datos "
+"se almacenan en su base de datos WordPress y no se envían externamente. "
+"Puede gestionar la configuración en la página de %s."
+
+#: includes/class-msc-stealth-login-module.php:1120
+msgid "plugin settings"
+msgstr "ajustes del plugin"
+
+#: includes/class-msc-stealth-login-module.php:1138
+msgid "Unauthorized"
+msgstr "No autorizado"
+
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1170
+#: includes/class-msc-stealth-login-module.php:1204
 #, php-format
 msgid "[%s] User Login Alert"
 msgstr "[%s] Alerta de inicio de sesión de usuario"
 
-#. translators: 1 is the username, 2 is the IP address, 3 is the time
-#: includes/class-msc-stealth-login-module.php:1176
+#. translators: 1: username, 2: IP address, 3: time
+#: includes/class-msc-stealth-login-module.php:1210
 #, php-format
-msgid "User: %1$s\nIP Address: %2$s\nTime: %3$s\n\nThis is an automated alert from your WordPress security plugin."
+msgid ""
+"User: %1$s\n"
+"IP Address: %2$s\n"
+"Time: %3$s\n"
+"\n"
+"This is an automated alert from your WordPress security plugin."
 msgstr ""
+"Usuario: %1$s\n"
+"Dirección IP: %2$s\n"
+"Hora: %3$s\n"
+"\n"
+"Esta es una alerta automatizada de su plugin de seguridad de WordPress."
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1223
+#: includes/class-msc-stealth-login-module.php:1257
 #, php-format
 msgid "[%s] New Login Location Detected"
 msgstr "[%s] Nueva ubicación de inicio de sesión detectada"
 
-#. translators: 1 is the display name, 2 is the IP address, 3 is the time
-#: includes/class-msc-stealth-login-module.php:1229
+#. translators: 1: display name, 2: IP address, 3: time
+#: includes/class-msc-stealth-login-module.php:1263
 #, php-format
-msgid "Hello %1$s,\n\nWe detected a login to your account from a new IP address:\n\nIP Address: %2$s\nTime: %3$s\n\nIf this was not you, please contact your site administrator immediately."
+msgid ""
+"Hello %1$s,\n"
+"\n"
+"We detected a login to your account from a new IP address:\n"
+"\n"
+"IP Address: %2$s\n"
+"Time: %3$s\n"
+"\n"
+"If this was not you, please contact your site administrator immediately."
 msgstr ""
+"Hola %1$s,\n"
+"\n"
+"Hemos detectado un inicio de sesión en su cuenta desde una nueva dirección IP:\n"
+"\n"
+"Dirección IP: %2$s\n"
+"Hora: %3$s\n"
+"\n"
+"Si no fue usted, contacte inmediatamente con el administrador del sitio."
 
-#: includes/class-msc-stealth-login-settings.php:75
+#: includes/class-msc-stealth-login-settings.php:73
 msgid "This slug is reserved. Please choose a different one."
 msgstr "Este slug está reservado. Por favor, elija otro."
 
-#: includes/class-msc-stealth-login-settings.php:302
+#: includes/class-msc-stealth-login-settings.php:213
+msgid "Redirect URL must be a local URL. Using homepage instead."
+msgstr ""
+"La URL de redirección debe ser una URL local. Usando la página de inicio en "
+"su lugar."
+
+#: includes/class-msc-stealth-login-settings.php:232
+msgid "That slug is reserved. Please choose a different one."
+msgstr "Ese slug está reservado. Elija uno diferente."
+
+#: includes/class-msc-stealth-login-settings.php:330
 msgid "Settings updated successfully."
 msgstr "Configuración actualizada correctamente."
 
-#: includes/class-msc-stealth-login-settings.php:308
+#: includes/class-msc-stealth-login-settings.php:337
 msgid "Settings"
 msgstr "Configuración"
 
-#: includes/class-msc-stealth-login-settings.php:311
+#: includes/class-msc-stealth-login-settings.php:338
 msgid "Advanced"
 msgstr "Avanzado"
 
-#: includes/class-msc-stealth-login-settings.php:314
+#: includes/class-msc-stealth-login-settings.php:339
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: includes/class-msc-stealth-login-settings.php:317
+#: includes/class-msc-stealth-login-settings.php:340
 msgid "History"
 msgstr "Historial"
 
-#: includes/class-msc-stealth-login-settings.php:320
+#: includes/class-msc-stealth-login-settings.php:341
+#: includes/class-msc-stealth-login-settings.php:882
 msgid "Support"
 msgstr "Soporte"
 
-#: includes/class-msc-stealth-login-settings.php:334
+#: includes/class-msc-stealth-login-settings.php:365
 msgid "Enable Stealth Login"
 msgstr "Activar inicio de sesión sigiloso"
 
-#: includes/class-msc-stealth-login-settings.php:338
+#: includes/class-msc-stealth-login-settings.php:369
 msgid "Enable stealth login protection"
 msgstr "Activar protección de inicio de sesión sigiloso"
 
-#: includes/class-msc-stealth-login-settings.php:345
-#: includes/class-msc-stealth-login-settings.php:746
+#: includes/class-msc-stealth-login-settings.php:376
+#: includes/class-msc-stealth-login-settings.php:814
 msgid "Custom Login URL"
 msgstr "URL de inicio de sesión personalizada"
 
 #. translators: %s is the home URL
-#: includes/class-msc-stealth-login-settings.php:353
+#: includes/class-msc-stealth-login-settings.php:384
 #, php-format
 msgid "Your login page will be at: %s"
 msgstr "Tu página de inicio de sesión estará en: %s"
 
-#: includes/class-msc-stealth-login-settings.php:362
-#: includes/class-msc-stealth-login-settings.php:749
+#: includes/class-msc-stealth-login-settings.php:393
+#: includes/class-msc-stealth-login-settings.php:817
 msgid "Hide wp-admin"
 msgstr "Ocultar wp-admin"
 
-#: includes/class-msc-stealth-login-settings.php:366
+#: includes/class-msc-stealth-login-settings.php:397
 msgid "Block direct access to wp-admin directory"
 msgstr "Bloquear acceso directo al directorio wp-admin"
 
-#: includes/class-msc-stealth-login-settings.php:369
-msgid "Users will be redirected to your custom login URL or the specified URL when trying to access wp-admin directly."
-msgstr "Los usuarios serán redirigidos a tu URL de inicio de sesión personalizada o la URL especificada al intentar acceder directamente a wp-admin."
+#: includes/class-msc-stealth-login-settings.php:400
+msgid ""
+"Users will be redirected to your custom login URL or the specified URL when "
+"trying to access wp-admin directly."
+msgstr ""
+"Los usuarios serán redirigidos a tu URL de inicio de sesión personalizada o "
+"la URL especificada al intentar acceder directamente a wp-admin."
 
-#: includes/class-msc-stealth-login-settings.php:376
+#: includes/class-msc-stealth-login-settings.php:407
 msgid "wp-admin Redirect URL"
 msgstr "URL de redirección de wp-admin"
 
-#: includes/class-msc-stealth-login-settings.php:381
-msgid "Where to redirect users when they try to access wp-admin directly. Defaults to homepage."
-msgstr "A dónde redirigir a los usuarios cuando intentan acceder directamente a wp-admin. Por defecto, la página de inicio."
+#: includes/class-msc-stealth-login-settings.php:412
+msgid ""
+"Where to redirect users when they try to access wp-admin directly. Defaults "
+"to homepage."
+msgstr ""
+"A dónde redirigir a los usuarios cuando intentan acceder directamente a wp-"
+"admin. Por defecto, la página de inicio."
 
-#: includes/class-msc-stealth-login-settings.php:388
+#: includes/class-msc-stealth-login-settings.php:419
 msgid "Logout Redirect URL"
 msgstr "URL de redirección al cerrar sesión"
 
-#: includes/class-msc-stealth-login-settings.php:393
+#: includes/class-msc-stealth-login-settings.php:424
 msgid "Where to redirect users after logging out. Defaults to homepage."
-msgstr "A dónde redirigir a los usuarios después de cerrar sesión. Por defecto, la página de inicio."
+msgstr ""
+"A dónde redirigir a los usuarios después de cerrar sesión. Por defecto, la "
+"página de inicio."
 
-#: includes/class-msc-stealth-login-settings.php:400
+#: includes/class-msc-stealth-login-settings.php:431
 msgid "Login URL Preview"
 msgstr "Vista previa de la URL de inicio de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:403
+#: includes/class-msc-stealth-login-settings.php:434
 msgid "This is what your custom login URL will look like."
 msgstr "Así se verá tu URL de inicio de sesión personalizada."
 
-#: includes/class-msc-stealth-login-settings.php:409
-#: includes/class-msc-stealth-login-settings.php:761
+#: includes/class-msc-stealth-login-settings.php:440
+#: includes/class-msc-stealth-login-settings.php:829
 msgid "Emergency Recovery URL"
 msgstr "URL de recuperación de emergencia"
 
-#: includes/class-msc-stealth-login-settings.php:415
+#: includes/class-msc-stealth-login-settings.php:454
 msgid "Current Recovery URL:"
 msgstr "URL de recuperación actual:"
 
-#: includes/class-msc-stealth-login-settings.php:419
+#: includes/class-msc-stealth-login-settings.php:458
 msgid "Copy URL"
 msgstr "Copiar URL"
 
-#: includes/class-msc-stealth-login-settings.php:421
+#: includes/class-msc-stealth-login-settings.php:460
 msgid "Copied!"
 msgstr "¡Copiado!"
 
-#: includes/class-msc-stealth-login-settings.php:424
-msgid "Bookmark this URL! If you lose access to your custom login URL, use this recovery URL to access wp-login.php and then navigate to settings to find your custom URL."
-msgstr "¡Guarda esta URL en marcadores! Si pierdes acceso a tu URL personalizada, usa esta URL de recuperación para acceder a wp-login.php."
+#: includes/class-msc-stealth-login-settings.php:463
+msgid ""
+"Bookmark this URL! If you lose access to your custom login URL, use this "
+"recovery URL to access wp-login.php and then navigate to settings to find "
+"your custom URL."
+msgstr ""
+"¡Guarda esta URL en marcadores! Si pierdes acceso a tu URL personalizada, "
+"usa esta URL de recuperación para acceder a wp-login.php."
 
-#: includes/class-msc-stealth-login-settings.php:427
+#: includes/class-msc-stealth-login-settings.php:466
 msgid "Are you sure? This will invalidate the current recovery URL."
 msgstr "¿Estás seguro? Esto invalidará la URL de recuperación actual."
 
-#: includes/class-msc-stealth-login-settings.php:428
+#: includes/class-msc-stealth-login-settings.php:467
 msgid "Regenerate Recovery URL"
 msgstr "Regenerar URL de recuperación"
 
-#: includes/class-msc-stealth-login-settings.php:433
+#: includes/class-msc-stealth-login-settings.php:472
 msgid "Recovery URL regenerated successfully!"
 msgstr "¡URL de recuperación regenerada correctamente!"
 
-#: includes/class-msc-stealth-login-settings.php:442
-#: includes/class-msc-stealth-login-settings.php:608
-#: includes/class-msc-stealth-login-settings.php:720
+#: includes/class-msc-stealth-login-settings.php:481
+#: includes/class-msc-stealth-login-settings.php:676
+#: includes/class-msc-stealth-login-settings.php:788
 msgid "Save Settings"
 msgstr "Guardar configuración"
 
-#: includes/class-msc-stealth-login-settings.php:453
-msgid "Advanced security features provide additional protection against brute force attacks, XML-RPC exploitation, and user enumeration via the REST API. These features are optional and may affect compatibility with some plugins or services that require XML-RPC or REST API access."
-msgstr "Las funciones de seguridad avanzada proporcionan protección adicional contra ataques de fuerza bruta, explotación XML-RPC y enumeración de usuarios a través de la API REST. Estas funciones son opcionales y pueden afectar la compatibilidad."
+#: includes/class-msc-stealth-login-settings.php:492
+msgid ""
+"Advanced security features provide additional protection against brute force"
+" attacks, XML-RPC exploitation, and user enumeration via the REST API. These"
+" features are optional and may affect compatibility with some plugins or "
+"services that require XML-RPC or REST API access."
+msgstr ""
+"Las funciones de seguridad avanzada proporcionan protección adicional contra"
+" ataques de fuerza bruta, explotación XML-RPC y enumeración de usuarios a "
+"través de la API REST. Estas funciones son opcionales y pueden afectar la "
+"compatibilidad."
 
-#: includes/class-msc-stealth-login-settings.php:457
+#: includes/class-msc-stealth-login-settings.php:496
 msgid "Enable Advanced Security Features"
 msgstr "Activar funciones de seguridad avanzada"
 
-#: includes/class-msc-stealth-login-settings.php:461
-msgid "Enable additional security features including brute force protection, XML-RPC blocking, and REST API protection."
-msgstr "Activar funciones de seguridad adicionales incluyendo protección contra fuerza bruta, bloqueo XML-RPC y protección de la API REST."
+#: includes/class-msc-stealth-login-settings.php:500
+msgid ""
+"Enable additional security features including brute force protection, XML-"
+"RPC blocking, and REST API protection."
+msgstr ""
+"Activar funciones de seguridad adicionales incluyendo protección contra "
+"fuerza bruta, bloqueo XML-RPC y protección de la API REST."
 
-#: includes/class-msc-stealth-login-settings.php:464
-msgid "When disabled, only the basic stealth login features will be active. Enable this to protect against automated attacks."
-msgstr "Cuando está desactivado, solo las funciones básicas de inicio de sesión sigiloso estarán activas. Activa esto para protegerte contra ataques automatizados."
+#: includes/class-msc-stealth-login-settings.php:503
+msgid ""
+"When disabled, only the basic stealth login features will be active. Enable "
+"this to protect against automated attacks."
+msgstr ""
+"Cuando está desactivado, solo las funciones básicas de inicio de sesión "
+"sigiloso estarán activas. Activa esto para protegerte contra ataques "
+"automatizados."
 
-#: includes/class-msc-stealth-login-settings.php:470
+#: includes/class-msc-stealth-login-settings.php:509
 msgid "XML-RPC & REST API Protection"
 msgstr "Protección XML-RPC y API REST"
 
-#: includes/class-msc-stealth-login-settings.php:474
-#: includes/class-msc-stealth-login-settings.php:752
+#: includes/class-msc-stealth-login-settings.php:513
+#: includes/class-msc-stealth-login-settings.php:820
 msgid "Disable XML-RPC"
 msgstr "Desactivar XML-RPC"
 
-#: includes/class-msc-stealth-login-settings.php:478
+#: includes/class-msc-stealth-login-settings.php:517
 msgid "Block XML-RPC requests"
 msgstr "Bloquear solicitudes XML-RPC"
 
-#: includes/class-msc-stealth-login-settings.php:481
-msgid "Prevents XML-RPC attacks and pingbacks. This also blocks the XML-RPC authentication method. Only available when Advanced Security is enabled."
-msgstr "Previene ataques XML-RPC y pingbacks. Esto también bloquea el método de autenticación XML-RPC. Solo disponible cuando la Seguridad Avanzada está activada."
+#: includes/class-msc-stealth-login-settings.php:520
+msgid ""
+"Prevents XML-RPC attacks and pingbacks. This also blocks the XML-RPC "
+"authentication method. Only available when Advanced Security is enabled."
+msgstr ""
+"Previene ataques XML-RPC y pingbacks. Esto también bloquea el método de "
+"autenticación XML-RPC. Solo disponible cuando la Seguridad Avanzada está "
+"activada."
 
-#: includes/class-msc-stealth-login-settings.php:487
-#: includes/class-msc-stealth-login-settings.php:755
+#: includes/class-msc-stealth-login-settings.php:526
+#: includes/class-msc-stealth-login-settings.php:823
 msgid "Disable REST API User Enumeration"
 msgstr "Desactivar enumeración de usuarios de la API REST"
 
-#: includes/class-msc-stealth-login-settings.php:491
+#: includes/class-msc-stealth-login-settings.php:530
 msgid "Block REST API user enumeration"
 msgstr "Bloquear enumeración de usuarios de la API REST"
 
-#: includes/class-msc-stealth-login-settings.php:494
-msgid "Prevents attackers from discovering usernames via the REST API by querying ?author=1. Only available when Advanced Security is enabled."
-msgstr "Previene que los atacantes descubran nombres de usuario a través de la API REST consultando ?author=1. Solo disponible cuando la Seguridad Avanzada está activada."
+#: includes/class-msc-stealth-login-settings.php:533
+msgid ""
+"Prevents attackers from discovering usernames via the REST API by querying "
+"?author=1. Only available when Advanced Security is enabled."
+msgstr ""
+"Previene que los atacantes descubran nombres de usuario a través de la API "
+"REST consultando ?author=1. Solo disponible cuando la Seguridad Avanzada "
+"está activada."
 
-#: includes/class-msc-stealth-login-settings.php:500
-#: includes/class-msc-stealth-login-settings.php:758
+#: includes/class-msc-stealth-login-settings.php:539
+#: includes/class-msc-stealth-login-settings.php:826
 msgid "Brute Force Protection"
 msgstr "Protección contra fuerza bruta"
 
-#: includes/class-msc-stealth-login-settings.php:504
+#: includes/class-msc-stealth-login-settings.php:543
 msgid "Enable Brute Force Protection"
 msgstr "Activar protección contra fuerza bruta"
 
-#: includes/class-msc-stealth-login-settings.php:508
+#: includes/class-msc-stealth-login-settings.php:547
 msgid "Enable login attempt limiting"
 msgstr "Activar limitación de intentos de inicio de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:511
-msgid "Limits login attempts to prevent brute force attacks. Only available when Advanced Security is enabled."
-msgstr "Limita los intentos de inicio de sesión para prevenir ataques de fuerza bruta. Solo disponible cuando la Seguridad Avanzada está activada."
+#: includes/class-msc-stealth-login-settings.php:550
+msgid ""
+"Limits login attempts to prevent brute force attacks. Only available when "
+"Advanced Security is enabled."
+msgstr ""
+"Limita los intentos de inicio de sesión para prevenir ataques de fuerza "
+"bruta. Solo disponible cuando la Seguridad Avanzada está activada."
 
-#: includes/class-msc-stealth-login-settings.php:518
+#: includes/class-msc-stealth-login-settings.php:557
 msgid "Max Login Attempts"
 msgstr "Máximo de intentos de inicio de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:523
+#: includes/class-msc-stealth-login-settings.php:562
 msgid "Number of failed attempts before a temporary lockout (1-10)."
 msgstr "Número de intentos fallidos antes de un bloqueo temporal (1-10)."
 
-#: includes/class-msc-stealth-login-settings.php:530
+#: includes/class-msc-stealth-login-settings.php:569
 msgid "Lockout Duration"
 msgstr "Duración del bloqueo"
 
-#: includes/class-msc-stealth-login-settings.php:534
-#: includes/class-msc-stealth-login-settings.php:598
+#: includes/class-msc-stealth-login-settings.php:573
+#: includes/class-msc-stealth-login-settings.php:666
 msgid "minutes"
 msgstr "minutos"
 
-#: includes/class-msc-stealth-login-settings.php:536
+#: includes/class-msc-stealth-login-settings.php:575
 msgid "How long the lockout lasts in minutes (5-60)."
 msgstr "Cuánto dura el bloqueo en minutos (5-60)."
 
-#: includes/class-msc-stealth-login-settings.php:542
+#: includes/class-msc-stealth-login-settings.php:584
+msgid "Share Lockouts Across Network"
+msgstr "Compartir bloqueos en toda la red"
+
+#: includes/class-msc-stealth-login-settings.php:588
+msgid "Count failed login attempts network-wide instead of per site"
+msgstr ""
+"Contar intentos fallidos de acceso en toda la red en lugar de por sitio"
+
+#: includes/class-msc-stealth-login-settings.php:591
+msgid ""
+"Multisite only. When off, an attacker gets a fresh set of attempts on every "
+"site in the network. When on, failed attempts and progressive lockout delays"
+" are shared, so a lockout earned on one site applies to all of them. Enable "
+"it on each site that should share the count."
+msgstr ""
+"Solo multisitio. Cuando está desactivado, un atacante obtiene un nuevo "
+"conjunto de intentos en cada sitio de la red. Cuando está activado, los "
+"intentos fallidos y los retrasos de bloqueo progresivo se comparten, por lo "
+"que un bloqueo obtenido en un sitio se aplica a todos ellos. Active esta "
+"opción en cada sitio que deba compartir el recuento."
+
+#: includes/class-msc-stealth-login-settings.php:598
 msgid "Login Logging"
 msgstr "Registro de inicios de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:546
+#: includes/class-msc-stealth-login-settings.php:602
 msgid "Enable Login Logging"
 msgstr "Activar registro de inicios de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:550
+#: includes/class-msc-stealth-login-settings.php:606
 msgid "Log all login attempts to database"
 msgstr "Registrar todos los intentos de inicio de sesión en la base de datos"
 
-#: includes/class-msc-stealth-login-settings.php:553
-msgid "When enabled, all login attempts (success, failure, lockout) will be recorded in the database for review in the History tab."
-msgstr "Cuando está activado, todos los intentos de inicio de sesión (éxito, fallo, bloqueo) se registrarán en la base de datos para revisión en la pestaña Historial."
+#: includes/class-msc-stealth-login-settings.php:609
+msgid ""
+"When enabled, all login attempts (success, failure, lockout) will be "
+"recorded in the database for review in the History tab."
+msgstr ""
+"Cuando está activado, todos los intentos de inicio de sesión (éxito, fallo, "
+"bloqueo) se registrarán en la base de datos para revisión en la pestaña "
+"Historial."
 
-#: includes/class-msc-stealth-login-settings.php:559
+#: includes/class-msc-stealth-login-settings.php:615
 msgid "IP Whitelist"
 msgstr "Lista blanca de IP"
 
-#: includes/class-msc-stealth-login-settings.php:564
+#: includes/class-msc-stealth-login-settings.php:620
 msgid "Whitelisted IP Addresses"
 msgstr "Direcciones IP en lista blanca"
 
-#: includes/class-msc-stealth-login-settings.php:569
-msgid "Enter IP addresses that should bypass brute force protection. Enter one IP per line or separate with commas. Examples:"
-msgstr "Ingresa las direcciones IP que deben omitir la protección contra fuerza bruta. Ingresa una IP por línea o sepáralas con comas. Ejemplos:"
+#: includes/class-msc-stealth-login-settings.php:625
+msgid ""
+"Enter IP addresses that should bypass brute force protection. Enter one IP "
+"per line or separate with commas. Examples:"
+msgstr ""
+"Ingresa las direcciones IP que deben omitir la protección contra fuerza "
+"bruta. Ingresa una IP por línea o sepáralas con comas. Ejemplos:"
 
-#: includes/class-msc-stealth-login-settings.php:576
+#: includes/class-msc-stealth-login-settings.php:631
+msgid "Trust Proxy Headers"
+msgstr "Confiar en encabezados de proxy"
+
+#: includes/class-msc-stealth-login-settings.php:635
+msgid "Trust X-Forwarded-For and similar proxy headers for IP detection"
+msgstr ""
+"Confiar en X-Forwarded-For y encabezados de proxy similares para la "
+"detección de IP"
+
+#: includes/class-msc-stealth-login-settings.php:638
+msgid ""
+"Enable this only if your site is behind a trusted reverse proxy (e.g., "
+"Cloudflare, Nginx). Disabling this provides stronger brute force protection "
+"by preventing IP spoofing."
+msgstr ""
+"Habilite esto solo si su sitio está detrás de un proxy inverso confiable (p."
+" ej., Cloudflare, Nginx). Desactivarlo proporciona una protección más fuerte"
+" contra fuerza bruta al prevenir la suplantación de IP."
+
+#: includes/class-msc-stealth-login-settings.php:644
 msgid "Progressive Lockout"
 msgstr "Bloqueo progresivo"
 
-#: includes/class-msc-stealth-login-settings.php:580
+#: includes/class-msc-stealth-login-settings.php:648
 msgid "Progressive Lockout Delays"
 msgstr "Retrasos de bloqueo progresivo"
 
-#: includes/class-msc-stealth-login-settings.php:584
+#: includes/class-msc-stealth-login-settings.php:652
 msgid "Enable progressive lockout delays"
 msgstr "Activar retrasos de bloqueo progresivo"
 
-#: includes/class-msc-stealth-login-settings.php:587
-msgid "Each subsequent lockout doubles the wait time. Helps stop persistent attackers. Resets after 24 hours of no attempts."
-msgstr "Cada bloqueo subsiguiente duplica el tiempo de espera. Ayuda a detener atacantes persistentes. Se reinicia después de 24 horas sin intentos."
+#: includes/class-msc-stealth-login-settings.php:655
+msgid ""
+"Each subsequent lockout doubles the wait time. Helps stop persistent "
+"attackers. Resets after 24 hours of no attempts."
+msgstr ""
+"Cada bloqueo subsiguiente duplica el tiempo de espera. Ayuda a detener "
+"atacantes persistentes. Se reinicia después de 24 horas sin intentos."
 
-#: includes/class-msc-stealth-login-settings.php:594
+#: includes/class-msc-stealth-login-settings.php:662
 msgid "Maximum Lockout Duration"
 msgstr "Duración máxima de bloqueo"
 
-#: includes/class-msc-stealth-login-settings.php:600
-msgid "Maximum lockout duration even with progressive delays (60-1440 minutes)."
-msgstr "Duración máxima de bloqueo incluso con retrasos progresivos (60-1440 minutos)."
+#: includes/class-msc-stealth-login-settings.php:668
+msgid ""
+"Maximum lockout duration even with progressive delays (60-1440 minutes)."
+msgstr ""
+"Duración máxima de bloqueo incluso con retrasos progresivos (60-1440 "
+"minutos)."
 
-#: includes/class-msc-stealth-login-settings.php:619
-msgid "Configure email notifications for login lockouts and alerts. These settings are independent of the Advanced Security features and can be enabled separately."
-msgstr "Configura notificaciones por correo para bloqueos de inicio de sesión y alertas. Estas configuraciones son independientes de las funciones de Seguridad Avanzada."
+#: includes/class-msc-stealth-login-settings.php:687
+msgid ""
+"Configure email notifications for login lockouts and alerts. These settings "
+"are independent of the Advanced Security features and can be enabled "
+"separately."
+msgstr ""
+"Configura notificaciones por correo para bloqueos de inicio de sesión y "
+"alertas. Estas configuraciones son independientes de las funciones de "
+"Seguridad Avanzada."
 
-#: includes/class-msc-stealth-login-settings.php:623
+#: includes/class-msc-stealth-login-settings.php:691
 msgid "Enable Email Notifications"
 msgstr "Activar notificaciones por correo"
 
-#: includes/class-msc-stealth-login-settings.php:627
+#: includes/class-msc-stealth-login-settings.php:695
 msgid "Enable email notification features"
 msgstr "Activar funciones de notificación por correo"
 
-#: includes/class-msc-stealth-login-settings.php:630
-msgid "Master toggle for all email notifications. When enabled, you can configure individual notification types below."
-msgstr "Control principal para todas las notificaciones por correo. Cuando está activado, puedes configurar los tipos individuales abajo."
+#: includes/class-msc-stealth-login-settings.php:698
+msgid ""
+"Master toggle for all email notifications. When enabled, you can configure "
+"individual notification types below."
+msgstr ""
+"Control principal para todas las notificaciones por correo. Cuando está "
+"activado, puedes configurar los tipos individuales abajo."
 
-#: includes/class-msc-stealth-login-settings.php:636
+#: includes/class-msc-stealth-login-settings.php:704
 msgid "Lockout Notifications"
 msgstr "Notificaciones de bloqueo"
 
-#: includes/class-msc-stealth-login-settings.php:640
+#: includes/class-msc-stealth-login-settings.php:708
 msgid "Lockout Email Notification"
 msgstr "Notificación por correo de bloqueo"
 
-#: includes/class-msc-stealth-login-settings.php:644
+#: includes/class-msc-stealth-login-settings.php:712
 msgid "Send email when a lockout occurs"
 msgstr "Enviar correo cuando ocurra un bloqueo"
 
-#: includes/class-msc-stealth-login-settings.php:651
+#: includes/class-msc-stealth-login-settings.php:719
 msgid "Notification Email"
 msgstr "Correo de notificación"
 
-#: includes/class-msc-stealth-login-settings.php:656
-msgid "Email address to receive lockout notifications. Defaults to site admin email."
-msgstr "Dirección de correo para recibir notificaciones de bloqueo. Por defecto, correo del administrador."
+#: includes/class-msc-stealth-login-settings.php:724
+msgid ""
+"Email address to receive lockout notifications. Defaults to site admin "
+"email."
+msgstr ""
+"Dirección de correo para recibir notificaciones de bloqueo. Por defecto, "
+"correo del administrador."
 
-#: includes/class-msc-stealth-login-settings.php:663
+#: includes/class-msc-stealth-login-settings.php:731
 msgid "Email Subject"
 msgstr "Asunto del correo"
 
-#: includes/class-msc-stealth-login-settings.php:668
+#: includes/class-msc-stealth-login-settings.php:736
 msgid "Custom email subject. Leave blank for default."
 msgstr "Asunto personalizado. Dejar en blanco para usar el predeterminado."
 
-#: includes/class-msc-stealth-login-settings.php:675
+#: includes/class-msc-stealth-login-settings.php:743
 msgid "Email Body"
 msgstr "Cuerpo del correo"
 
-#: includes/class-msc-stealth-login-settings.php:680
+#: includes/class-msc-stealth-login-settings.php:748
 msgid "Custom email body. Leave blank for default. Available placeholders:"
-msgstr "Cuerpo del correo personalizado. Dejar en blanco para usar el predeterminado. Marcadores disponibles:"
+msgstr ""
+"Cuerpo del correo personalizado. Dejar en blanco para usar el "
+"predeterminado. Marcadores disponibles:"
 
-#: includes/class-msc-stealth-login-settings.php:682
+#: includes/class-msc-stealth-login-settings.php:750
 msgid "Number of failed attempts"
 msgstr "Número de intentos fallidos"
 
-#: includes/class-msc-stealth-login-settings.php:683
+#: includes/class-msc-stealth-login-settings.php:751
 msgid "Current time"
 msgstr "Hora actual"
 
-#: includes/class-msc-stealth-login-settings.php:684
+#: includes/class-msc-stealth-login-settings.php:752
 msgid "Site name"
 msgstr "Nombre del sitio"
 
-#: includes/class-msc-stealth-login-settings.php:685
+#: includes/class-msc-stealth-login-settings.php:753
 msgid "Site URL"
 msgstr "URL del sitio"
 
-#: includes/class-msc-stealth-login-settings.php:691
+#: includes/class-msc-stealth-login-settings.php:759
 msgid "Login Alerts"
 msgstr "Alertas de inicio de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:695
+#: includes/class-msc-stealth-login-settings.php:763
 msgid "Admin Login Alert"
 msgstr "Alerta de inicio de sesión del administrador"
 
-#: includes/class-msc-stealth-login-settings.php:699
+#: includes/class-msc-stealth-login-settings.php:767
 msgid "Send email to admin when any user logs in"
 msgstr "Enviar correo al administrador cuando cualquier usuario inicie sesión"
 
-#: includes/class-msc-stealth-login-settings.php:705
+#: includes/class-msc-stealth-login-settings.php:773
 msgid "New IP Login Alert"
 msgstr "Alerta de inicio de sesión desde nueva IP"
 
-#: includes/class-msc-stealth-login-settings.php:709
+#: includes/class-msc-stealth-login-settings.php:777
 msgid "Email user when they login from a new IP address"
-msgstr "Enviar correo al usuario cuando inicie sesión desde una nueva dirección IP"
+msgstr ""
+"Enviar correo al usuario cuando inicie sesión desde una nueva dirección IP"
 
-#: includes/class-msc-stealth-login-settings.php:712
-msgid "Users will be notified when their account is accessed from an IP address they have not used before."
-msgstr "Los usuarios serán notificados cuando se acceda a su cuenta desde una dirección IP que no han usado antes."
+#: includes/class-msc-stealth-login-settings.php:780
+msgid ""
+"Users will be notified when their account is accessed from an IP address "
+"they have not used before."
+msgstr ""
+"Los usuarios serán notificados cuando se acceda a su cuenta desde una "
+"dirección IP que no han usado antes."
 
-#: includes/class-msc-stealth-login-settings.php:732
+#: includes/class-msc-stealth-login-settings.php:800
 msgid "How to Use MSC Stealth Login"
 msgstr "Cómo usar MSC Stealth Login"
 
-#: includes/class-msc-stealth-login-settings.php:733
-msgid "MSC Stealth Login helps secure your WordPress site by hiding the default login page and adding brute force protection."
-msgstr "MSC Stealth Login ayuda a proteger tu sitio WordPress ocultando la página de inicio de sesión predeterminada y añadiendo protección contra fuerza bruta."
+#: includes/class-msc-stealth-login-settings.php:801
+msgid ""
+"MSC Stealth Login helps secure your WordPress site by hiding the default "
+"login page and adding brute force protection."
+msgstr ""
+"MSC Stealth Login ayuda a proteger tu sitio WordPress ocultando la página de"
+" inicio de sesión predeterminada y añadiendo protección contra fuerza bruta."
 
-#: includes/class-msc-stealth-login-settings.php:735
+#: includes/class-msc-stealth-login-settings.php:803
 msgid "Setting Up Your Custom Login URL"
 msgstr "Configuración de tu URL de inicio de sesión personalizada"
 
-#: includes/class-msc-stealth-login-settings.php:737
+#: includes/class-msc-stealth-login-settings.php:805
 msgid "Go to the Settings tab above."
 msgstr "Ve a la pestaña de Configuración arriba."
 
-#: includes/class-msc-stealth-login-settings.php:738
+#: includes/class-msc-stealth-login-settings.php:806
 msgid "Enter a custom login slug (e.g., \"my-secret-login\" or \"admin-access\")."
-msgstr "Ingresa un slug de inicio de sesión personalizado (ej. \"my-secret-login\" o \"admin-access\")."
+msgstr ""
+"Ingresa un slug de inicio de sesión personalizado (ej. \"my-secret-login\" o"
+" \"admin-access\")."
 
-#: includes/class-msc-stealth-login-settings.php:739
+#: includes/class-msc-stealth-login-settings.php:807
 msgid "Click Save Settings."
 msgstr "Haz clic en Guardar configuración."
 
-#: includes/class-msc-stealth-login-settings.php:740
+#: includes/class-msc-stealth-login-settings.php:808
 msgid "Your new login URL will be:"
 msgstr "Tu nueva URL de inicio de sesión será:"
 
-#: includes/class-msc-stealth-login-settings.php:741
+#: includes/class-msc-stealth-login-settings.php:809
 msgid "Bookmark this URL immediately!"
 msgstr "¡Guarda esta URL en marcadores inmediatamente!"
 
-#: includes/class-msc-stealth-login-settings.php:741
+#: includes/class-msc-stealth-login-settings.php:809
 msgid "Important:"
 msgstr "Importante:"
 
-#: includes/class-msc-stealth-login-settings.php:741
+#: includes/class-msc-stealth-login-settings.php:809
 msgid "You will no longer be able to access wp-login.php directly."
 msgstr "Ya no podrás acceder directamente a wp-login.php."
 
-#: includes/class-msc-stealth-login-settings.php:744
+#: includes/class-msc-stealth-login-settings.php:812
 msgid "Security Features Explained"
 msgstr "Funciones de seguridad explicadas"
 
-#: includes/class-msc-stealth-login-settings.php:747
-msgid "Changes your login page from /wp-login.php to a custom URL of your choice. This prevents automated bots from finding your login page."
+#: includes/class-msc-stealth-login-settings.php:815
+msgid ""
+"Changes your login page from /wp-login.php to a custom URL of your choice. "
+"This prevents automated bots from finding your login page."
 msgstr ""
+"Cambia su página de inicio de sesión de /wp-login.php a una URL "
+"personalizada de su elección. Esto evita que los bots automatizados "
+"encuentren su página de inicio de sesión."
 
-#: includes/class-msc-stealth-login-settings.php:750
-msgid "Blocks direct access to the /wp-admin/ directory and redirects users to your custom login URL. Prevents unauthorized access attempts."
+#: includes/class-msc-stealth-login-settings.php:818
+msgid ""
+"Blocks direct access to the /wp-admin/ directory and redirects users to your"
+" custom login URL. Prevents unauthorized access attempts."
 msgstr ""
+"Bloquea el acceso directo al directorio /wp-admin/ y redirige a los usuarios"
+" a su URL de inicio de sesión personalizada. Previene intentos de acceso no "
+"autorizados."
 
-#: includes/class-msc-stealth-login-settings.php:753
-msgid "Blocks XML-RPC requests which are commonly used for brute force attacks and pingback spam. If you use mobile apps or external services that require XML-RPC, leave this disabled."
+#: includes/class-msc-stealth-login-settings.php:821
+msgid ""
+"Blocks XML-RPC requests which are commonly used for brute force attacks and "
+"pingback spam. If you use mobile apps or external services that require XML-"
+"RPC, leave this disabled."
 msgstr ""
+"Bloquea las solicitudes XML-RPC que se usan comúnmente para ataques de "
+"fuerza bruta y spam de pingback. Si utiliza aplicaciones móviles o servicios"
+" externos que requieren XML-RPC, deje esto desactivado."
 
-#: includes/class-msc-stealth-login-settings.php:756
-msgid "Prevents attackers from discovering usernames by querying the REST API with ?author=1, ?author=2, etc."
+#: includes/class-msc-stealth-login-settings.php:824
+msgid ""
+"Prevents attackers from discovering usernames by querying the REST API with "
+"?author=1, ?author=2, etc."
 msgstr ""
+"Evita que los atacantes descubran nombres de usuario consultando la API REST"
+" con ?author=1, ?author=2, etc."
 
-#: includes/class-msc-stealth-login-settings.php:759
-msgid "Limits login attempts to prevent brute force attacks. After the configured number of failed attempts, the IP address is temporarily blocked."
+#: includes/class-msc-stealth-login-settings.php:827
+msgid ""
+"Limits login attempts to prevent brute force attacks. After the configured "
+"number of failed attempts, the IP address is temporarily blocked."
 msgstr ""
+"Limita los intentos de inicio de sesión para prevenir ataques de fuerza "
+"bruta. Después del número configurado de intentos fallidos, la dirección IP "
+"se bloquea temporalmente."
 
-#: includes/class-msc-stealth-login-settings.php:762
-msgid "A special URL that allows you to access wp-login.php even when the plugin is active. This is your safety net if you forget your custom login URL. Bookmark this URL and keep it safe!"
+#: includes/class-msc-stealth-login-settings.php:830
+msgid ""
+"A special URL that allows you to access wp-login.php even when the plugin is"
+" active. This is your safety net if you forget your custom login URL. "
+"Bookmark this URL and keep it safe!"
 msgstr ""
+"Una URL especial que le permite acceder a wp-login.php incluso cuando el "
+"plugin está activo. Esta es su red de seguridad si olvida su URL de inicio "
+"de sesión personalizada. ¡Marque esta URL y guárdela en lugar seguro!"
 
-#: includes/class-msc-stealth-login-settings.php:764
+#: includes/class-msc-stealth-login-settings.php:832
 msgid "Frequently Asked Questions"
 msgstr "Preguntas frecuentes"
 
-#: includes/class-msc-stealth-login-settings.php:766
+#: includes/class-msc-stealth-login-settings.php:834
 msgid "What happens if I forget my custom login URL?"
 msgstr "¿Qué pasa si olvido mi URL de inicio de sesión personalizada?"
 
-#: includes/class-msc-stealth-login-settings.php:767
-msgid "Use the Emergency Recovery URL shown on the Settings tab. Bookmark this URL when you first set up the plugin. If you lose both URLs, you will need to disable the plugin via FTP or WP-CLI to regain access."
+#: includes/class-msc-stealth-login-settings.php:835
+msgid ""
+"Use the Emergency Recovery URL shown on the Settings tab. Bookmark this URL "
+"when you first set up the plugin. If you lose both URLs, you will need to "
+"disable the plugin via FTP or WP-CLI to regain access."
 msgstr ""
+"Use la URL de Recuperación de Emergencia que aparece en la pestaña Ajustes. "
+"Marque esta URL cuando configure el plugin por primera vez. Si pierde ambas "
+"URL, necesitará desactivar el plugin vía FTP o WP-CLI para recuperar el "
+"acceso."
 
-#: includes/class-msc-stealth-login-settings.php:769
+#: includes/class-msc-stealth-login-settings.php:837
 msgid "Will this break my site?"
 msgstr "¿Esto romperá mi sitio?"
 
-#: includes/class-msc-stealth-login-settings.php:770
-msgid "If configured correctly, no. However, we strongly recommend testing on a staging site first. Always bookmark your custom login URL and the recovery URL before logging out."
+#: includes/class-msc-stealth-login-settings.php:838
+msgid ""
+"If configured correctly, no. However, we strongly recommend testing on a "
+"staging site first. Always bookmark your custom login URL and the recovery "
+"URL before logging out."
 msgstr ""
+"Si se configura correctamente, no. Sin embargo, recomendamos encarecidamente"
+" probar primero en un sitio de staging. Siempre marque su URL de inicio de "
+"sesión personalizada y la URL de recuperación antes de cerrar sesión."
 
-#: includes/class-msc-stealth-login-settings.php:772
+#: includes/class-msc-stealth-login-settings.php:840
 msgid "Can I still use wp-admin after logging in?"
 msgstr "¿Puedo seguir usando wp-admin después de iniciar sesión?"
 
-#: includes/class-msc-stealth-login-settings.php:773
-msgid "Yes! Once you are logged in, wp-admin works normally. The \"Hide wp-admin\" feature only blocks direct access for non-logged-in users."
+#: includes/class-msc-stealth-login-settings.php:841
+msgid ""
+"Yes! Once you are logged in, wp-admin works normally. The \"Hide wp-admin\" "
+"feature only blocks direct access for non-logged-in users."
 msgstr ""
+"¡Sí! Una vez que haya iniciado sesión, wp-admin funciona normalmente. La "
+"función \"Ocultar wp-admin\" solo bloquea el acceso directo para usuarios "
+"que no han iniciado sesión."
 
-#: includes/class-msc-stealth-login-settings.php:775
+#: includes/class-msc-stealth-login-settings.php:843
 msgid "Will this work with my security plugin?"
 msgstr "¿Funcionará esto con mi plugin de seguridad?"
 
-#: includes/class-msc-stealth-login-settings.php:776
-msgid "Generally yes, but avoid using multiple plugins that modify login URLs or block wp-admin simultaneously as they may conflict."
+#: includes/class-msc-stealth-login-settings.php:844
+msgid ""
+"Generally yes, but avoid using multiple plugins that modify login URLs or "
+"block wp-admin simultaneously as they may conflict."
 msgstr ""
+"Generalmente sí, pero evite usar múltiples plugins que modifiquen URL de "
+"inicio de sesión o bloqueen wp-admin simultáneamente, ya que pueden entrar "
+"en conflicto."
 
-#: includes/class-msc-stealth-login-settings.php:778
+#: includes/class-msc-stealth-login-settings.php:846
 msgid "Does this work with WooCommerce?"
 msgstr "¿Funciona esto con WooCommerce?"
 
-#: includes/class-msc-stealth-login-settings.php:779
-msgid "Yes, but note that WooCommerce has its own login/my-account pages. You may need to test compatibility with your specific setup."
+#: includes/class-msc-stealth-login-settings.php:847
+msgid ""
+"Yes, but note that WooCommerce has its own login/my-account pages. You may "
+"need to test compatibility with your specific setup."
 msgstr ""
+"Sí, pero tenga en cuenta que WooCommerce tiene sus propias páginas de inicio"
+" de sesión/mi cuenta. Es posible que necesite probar la compatibilidad con "
+"su configuración específica."
 
-#: includes/class-msc-stealth-login-settings.php:781
+#: includes/class-msc-stealth-login-settings.php:849
 msgid "How do I disable the plugin if I get locked out?"
 msgstr "¿Cómo desactivo el plugin si me bloquean?"
 
-#: includes/class-msc-stealth-login-settings.php:783
+#: includes/class-msc-stealth-login-settings.php:851
 msgid "Use the Emergency Recovery URL (if you have it bookmarked)"
-msgstr ""
+msgstr "Use la URL de Recuperación de Emergencia (si la tiene marcada)"
 
-#: includes/class-msc-stealth-login-settings.php:784
-msgid "Via FTP/SFTP: Rename the plugin folder from /wp-content/plugins/msc-stealth-login/ to /wp-content/plugins/msc-stealth-login-disabled/"
+#: includes/class-msc-stealth-login-settings.php:852
+msgid ""
+"Via FTP/SFTP: Rename the plugin folder from /wp-content/plugins/msc-stealth-"
+"login/ to /wp-content/plugins/msc-stealth-login-disabled/"
 msgstr ""
+"Vía FTP/SFTP: Renombre la carpeta del plugin de /wp-content/plugins/msc-"
+"stealth-login/ a /wp-content/plugins/msc-stealth-login-disabled/"
 
-#: includes/class-msc-stealth-login-settings.php:785
+#: includes/class-msc-stealth-login-settings.php:853
 msgid "Via WP-CLI: Run: wp plugin deactivate msc-stealth-login"
+msgstr "Vía WP-CLI: Ejecute: wp plugin deactivate msc-stealth-login"
+
+#: includes/class-msc-stealth-login-settings.php:854
+msgid ""
+"Via Database: Set the mscsl_options option value to have module_enabled = 0"
 msgstr ""
+"Vía Base de Datos: Establezca el valor de la opción mscsl_options con "
+"module_enabled = 0"
 
-#: includes/class-msc-stealth-login-settings.php:786
-msgid "Via Database: Set the mscsl_options option value to have module_enabled = 0"
+#: includes/class-msc-stealth-login-settings.php:859
+msgid "Email Me My Login URL"
+msgstr "Enviarme mi URL de acceso por correo"
+
+#: includes/class-msc-stealth-login-settings.php:860
+msgid ""
+"Send the current custom login URL to an email address so you have it on "
+"record."
 msgstr ""
+"Envíe la URL de acceso personalizada actual a una dirección de correo para "
+"tenerla registrada."
 
-#: includes/class-msc-stealth-login-settings.php:791
-msgid "Need Help?"
-msgstr "¿Necesitas ayuda?"
+#: includes/class-msc-stealth-login-settings.php:865
+msgid "Recovery email sent."
+msgstr "Correo de recuperación enviado."
 
-#: includes/class-msc-stealth-login-settings.php:792
-msgid "If you have questions, encounter bugs, or need setup assistance, we're here to help."
-msgstr "Si tienes preguntas, encuentras errores o necesitas ayuda con la configuración, estamos aquí para ayudarte."
+#: includes/class-msc-stealth-login-settings.php:867
+msgid "The email could not be sent. Check your site's mail configuration."
+msgstr ""
+"No se pudo enviar el correo. Compruebe la configuración de correo de su "
+"sitio."
 
-#: includes/class-msc-stealth-login-settings.php:795
-msgid "Get Support"
-msgstr "Obtener soporte"
+#: includes/class-msc-stealth-login-settings.php:869
+msgid "Please enter a valid email address."
+msgstr "Introduzca una dirección de correo válida."
 
-#: includes/class-msc-stealth-login-settings.php:821
+#: includes/class-msc-stealth-login-settings.php:876
+msgid "you@example.com"
+msgstr "tu@example.com"
+
+#: includes/class-msc-stealth-login-settings.php:877
+msgid "Send Login URL"
+msgstr "Enviar URL de acceso"
+
+#. translators: %s is the URL to the plugin support forum on WordPress.org.
+#: includes/class-msc-stealth-login-settings.php:887
+#, php-format
+msgid ""
+"Need a hand? Visit the <a href=\"%s\" target=\"_blank\" rel=\"noopener "
+"noreferrer\">plugin support forum on WordPress.org</a> for help, bug reports"
+" and feature requests."
+msgstr ""
+"¿Necesita ayuda? Visite el <a href=\"%s\" target=\"_blank\" rel=\"noopener "
+"noreferrer\">foro de soporte del plugin en WordPress.org</a> para obtener "
+"ayuda, informes de errores y solicitudes de funciones."
+
+#: includes/class-msc-stealth-login-settings.php:915
 msgid "All login logs have been cleared."
 msgstr "Todos los registros de inicio de sesión han sido borrados."
 
-#: includes/class-msc-stealth-login-settings.php:871
+#: includes/class-msc-stealth-login-settings.php:987
 msgid "Login Attempt History"
 msgstr "Historial de intentos de inicio de sesión"
 
-#: includes/class-msc-stealth-login-settings.php:881
+#: includes/class-msc-stealth-login-settings.php:997
 msgid "Filter by IP"
 msgstr "Filtrar por IP"
 
-#: includes/class-msc-stealth-login-settings.php:887
+#: includes/class-msc-stealth-login-settings.php:1003
 msgid "Filter by Username"
 msgstr "Filtrar por nombre de usuario"
 
-#: includes/class-msc-stealth-login-settings.php:895
+#: includes/class-msc-stealth-login-settings.php:1011
 msgid "Filter by Result"
 msgstr "Filtrar por resultado"
 
-#: includes/class-msc-stealth-login-settings.php:899
+#: includes/class-msc-stealth-login-settings.php:1015
 msgid "All Results"
 msgstr "Todos los resultados"
 
-#: includes/class-msc-stealth-login-settings.php:900
-#: includes/class-msc-stealth-login-settings.php:953
+#: includes/class-msc-stealth-login-settings.php:1016
+#: includes/class-msc-stealth-login-settings.php:1069
 msgid "Success"
 msgstr "Éxito"
 
-#: includes/class-msc-stealth-login-settings.php:901
-#: includes/class-msc-stealth-login-settings.php:956
+#: includes/class-msc-stealth-login-settings.php:1017
+#: includes/class-msc-stealth-login-settings.php:1072
 msgid "Failed"
 msgstr "Fallido"
 
-#: includes/class-msc-stealth-login-settings.php:903
-#: includes/class-msc-stealth-login-settings.php:962
+#: includes/class-msc-stealth-login-settings.php:1018
+#: includes/class-msc-stealth-login-settings.php:1075
+msgid "Locked Out"
+msgstr "Bloqueado"
+
+#: includes/class-msc-stealth-login-settings.php:1019
+#: includes/class-msc-stealth-login-settings.php:1078
 msgid "Whitelisted"
 msgstr "En lista blanca"
 
-#: includes/class-msc-stealth-login-settings.php:907
+#: includes/class-msc-stealth-login-settings.php:1023
 msgid "Date From"
 msgstr "Fecha desde"
 
-#: includes/class-msc-stealth-login-settings.php:913
+#: includes/class-msc-stealth-login-settings.php:1029
 msgid "Date To"
 msgstr "Fecha hasta"
 
-#: includes/class-msc-stealth-login-settings.php:922
+#: includes/class-msc-stealth-login-settings.php:1038
 msgid "Filter"
 msgstr "Filtrar"
 
-#: includes/class-msc-stealth-login-settings.php:923
+#: includes/class-msc-stealth-login-settings.php:1039
 msgid "Clear Filters"
 msgstr "Limpiar filtros"
 
-#: includes/class-msc-stealth-login-settings.php:928
+#: includes/class-msc-stealth-login-settings.php:1044
 msgid "No login attempts recorded yet."
 msgstr "No se han registrado intentos de inicio de sesión aún."
 
 #. translators: %1$d: start number, %2$d: end number, %3$d: total count
-#: includes/class-msc-stealth-login-settings.php:932
+#: includes/class-msc-stealth-login-settings.php:1048
 #, php-format
 msgid "Showing %1$d to %2$d of %3$d entries"
 msgstr "Mostrando %1$d a %2$d de %3$d entradas"
 
-#: includes/class-msc-stealth-login-settings.php:984
+#: includes/class-msc-stealth-login-settings.php:1100
 msgid "&laquo; Previous"
 msgstr "&laquo; Anterior"
 
-#: includes/class-msc-stealth-login-settings.php:985
+#: includes/class-msc-stealth-login-settings.php:1101
 msgid "Next &raquo;"
 msgstr "Siguiente &raquo;"
 
 #. translators: %d: total number of items
-#: includes/class-msc-stealth-login-settings.php:996
+#: includes/class-msc-stealth-login-settings.php:1112
 #, php-format
 msgid "%d items"
 msgstr "%d elementos"
 
-#: includes/class-msc-stealth-login-settings.php:1006
+#: includes/class-msc-stealth-login-settings.php:1122
 msgid "Are you sure you want to clear all login logs?"
-msgstr "¿Estás seguro de que deseas borrar todos los registros de inicio de sesión?"
+msgstr ""
+"¿Estás seguro de que deseas borrar todos los registros de inicio de sesión?"
 
-#: includes/class-msc-stealth-login-settings.php:1007
+#: includes/class-msc-stealth-login-settings.php:1123
 msgid "Clear All Logs"
 msgstr "Borrar todos los registros"
 
-#: includes/class-msc-stealth-login-settings.php:1010
+#: includes/class-msc-stealth-login-settings.php:1126
 msgid "Export to CSV"
 msgstr "Exportar a CSV"
+
+#: includes/class-msc-stealth-login.php:207
+msgid ""
+"Enjoying MSC Stealth Login? A quick review would really help other WordPress"
+" users find it."
+msgstr ""
+"¿Disfruta de MSC Stealth Login? Una reseña rápida ayudaría mucho a otros "
+"usuarios de WordPress a encontrarlo."
+
+#: includes/class-msc-stealth-login.php:208
+msgid "Leave a review"
+msgstr "Dejar una reseña"
+
+#: includes/class-msc-stealth-login.php:210
+msgid "No thanks"
+msgstr "No, gracias"

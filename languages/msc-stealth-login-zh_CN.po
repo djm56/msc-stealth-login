@@ -1,24 +1,22 @@
-# Translation of MSC Stealth Login in Dutch (Belgium)
-# This file is distributed under the GPL-2.0+.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: MSC Stealth Login 1.3.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/msc-stealth-login\n"
-"POT-Creation-Date: 2026-08-27T15:26:38+00:00\n"
-"PO-Revision-Date: 2026-05-02T09:19:53+00:00\n"
+"PO-Revision-Date: 2026-08-27T00:00:00+00:00\n"
 "Last-Translator: Anomalous Developers <dev@anomalous.com.au>\n"
-"Language-Team: Dutch (Belgium) <dev@anomalous.com.au>\n"
-"Language: nl_BE\n"
+"Language-Team: Chinese (China) <dev@anomalous.com.au>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Domain: msc-stealth-login\n"
 
 #. Plugin Name of the plugin
 #: msc-stealth-login.php includes/class-msc-stealth-login-settings.php:323
 msgid "MSC Stealth Login"
-msgstr "MSC Stealth Login"
+msgstr "MSC 隐身登录"
 
 #. Plugin URI of the plugin
 #: msc-stealth-login.php
@@ -31,10 +29,7 @@ msgid ""
 "Hide your login page, block brute force attacks, and protect your WordPress "
 "site from unauthorized access. Complete free plugin with all features "
 "included."
-msgstr ""
-"Verberg je inlogpagina, blokkeer brute force-aanvallen en bescherm je "
-"WordPress-site tegen ongeautoriseerde toegang. Volledige gratis plugin met "
-"alle functies."
+msgstr "隐藏您的登录页面，阻止暴力破解攻击，并保护您的 WordPress 站点免受未授权访问。功能齐全的免费插件。"
 
 #. Author of the plugin
 #: msc-stealth-login.php
@@ -56,31 +51,31 @@ msgstr "ID"
 #: includes/class-msc-stealth-login-settings.php:1000
 #: includes/class-msc-stealth-login-settings.php:1054
 msgid "IP Address"
-msgstr "IP-adres"
+msgstr "IP 地址"
 
 #: includes/class-msc-stealth-login-database.php:479
 #: includes/class-msc-stealth-login-settings.php:167
 #: includes/class-msc-stealth-login-settings.php:1006
 #: includes/class-msc-stealth-login-settings.php:1055
 msgid "Username"
-msgstr "Gebruikersnaam"
+msgstr "用户名"
 
 #: includes/class-msc-stealth-login-database.php:480
 #: includes/class-msc-stealth-login-settings.php:168
 #: includes/class-msc-stealth-login-settings.php:1056
 msgid "Result"
-msgstr "Resultaat"
+msgstr "结果"
 
 #: includes/class-msc-stealth-login-database.php:481
 #: includes/class-msc-stealth-login-settings.php:169
 msgid "User Agent"
-msgstr "User agent"
+msgstr "用户代理"
 
 #: includes/class-msc-stealth-login-database.php:482
 #: includes/class-msc-stealth-login-settings.php:170
 #: includes/class-msc-stealth-login-settings.php:1057
 msgid "Date/Time"
-msgstr "Datum/Tijd"
+msgstr "日期/时间"
 
 #. translators: %s: list of detected plugins
 #: includes/class-msc-stealth-login-module.php:114
@@ -88,27 +83,25 @@ msgstr "Datum/Tijd"
 msgid ""
 "The following plugins were detected: %s. You may need to configure cache or "
 "security exclusions for your custom login URL."
-msgstr ""
-"De volgende plugins zijn gedetecteerd: %s. Mogelijk moet u cache- of "
-"beveiligingsuitsluitingen configureren voor uw aangepaste aanmeld-URL."
+msgstr "检测到以下插件：%s。您可能需要为自定义登录 URL 配置缓存或安全排除项。"
 
 #: includes/class-msc-stealth-login-module.php:232
 #: includes/class-msc-stealth-login-module.php:1008
 #: includes/class-msc-stealth-login-settings.php:129
 #: includes/class-msc-stealth-login-settings.php:195
 msgid "You do not have permission to access this page."
-msgstr "Je hebt geen toestemming om deze pagina te openen."
+msgstr "您没有访问此页面的权限。"
 
 #: includes/class-msc-stealth-login-module.php:484
 msgid "Pingback functionality is disabled."
-msgstr "Pingback-functionaliteit is uitgeschakeld."
+msgstr "Pingback 功能已禁用。"
 
 #. translators: %d is the number of minutes
 #: includes/class-msc-stealth-login-module.php:718
 #: includes/class-msc-stealth-login-module.php:842
 #, php-format
 msgid "Too many failed login attempts. Please try again in %d minutes."
-msgstr "Te veel mislukte inlogpogingen. Probeer het opnieuw over %d minuten."
+msgstr "登录失败次数过多。请 %d 分钟后再试。"
 
 #. translators: %1$d days and %2$d hours
 #: includes/class-msc-stealth-login-module.php:826
@@ -116,9 +109,7 @@ msgstr "Te veel mislukte inlogpogingen. Probeer het opnieuw over %d minuten."
 msgid ""
 "Too many failed login attempts. You are temporarily blocked for %1$d days "
 "and %2$d hours."
-msgstr ""
-"Te veel mislukte inlogpogingen. Je bent tijdelijk geblokkeerd voor %1$d "
-"dagen en %2$d uur."
+msgstr "登录失败次数过多。您的访问已被临时阻止 %1$d 天 %2$d 小时。"
 
 #. translators: %1$d hours and %2$d minutes
 #: includes/class-msc-stealth-login-module.php:834
@@ -126,15 +117,13 @@ msgstr ""
 msgid ""
 "Too many failed login attempts. You are temporarily blocked for %1$d hours "
 "and %2$d minutes."
-msgstr ""
-"Te veel mislukte inlogpogingen. Je bent tijdelijk geblokkeerd voor %1$d uur "
-"en %2$d minuten."
+msgstr "登录失败次数过多。您的访问已被临时阻止 %1$d 小时 %2$d 分钟。"
 
 #. translators: %s is the site name
 #: includes/class-msc-stealth-login-module.php:872
 #, php-format
 msgid "[%s] Brute Force Lockout Alert"
-msgstr "[%s] Brute force-blokkeringswaarschuwing"
+msgstr "[%s] 暴力破解锁定警报"
 
 #. translators: 1: site name, 2: IP address, 3: number of failed attempts, 4:
 #. time
@@ -151,46 +140,44 @@ msgid ""
 "\n"
 "If this is not expected behavior, you may want to investigate this IP address."
 msgstr ""
-"Er heeft een brute force-blokkering plaatsgevonden op %1$s.\n"
+"%1$s 上发生了暴力破解锁定。\n"
 "\n"
-"IP-adres: %2$s\n"
-"Mislukte pogingen: %3$d\n"
-"Tijd: %4$s\n"
+"IP 地址：%2$s\n"
+"失败尝试次数：%3$d\n"
+"时间：%4$s\n"
 "\n"
-"Dit IP is tijdelijk geblokkeerd voor het doen van aanmeldpogingen.\n"
+"此 IP 已被临时阻止进行登录尝试。\n"
 "\n"
-"Als dit niet het verwachte gedrag is, kunt u dit IP-adres onderzoeken."
+"如果这不是预期行为，您可能需要调查此 IP 地址。"
 
 #. translators: %s is the site name
 #: includes/class-msc-stealth-login-module.php:1035
 #, php-format
 msgid "[%s] Your Login URL Recovery"
-msgstr "[%s] Herstel van uw aanmeld-URL"
+msgstr "[%s] 您的登录 URL 恢复"
 
 #. translators: 1: site name, 2: login URL
 #: includes/class-msc-stealth-login-module.php:1041
 #, php-format
 msgid ""
 "You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s"
-msgstr ""
-"U heeft een herstel van aanmeld-URL aangevraagd voor %1$s. Uw stealth-"
-"aanmeld-URL is: %2$s"
+msgstr "您为 %1$s 请求了登录 URL 恢复。您的隐身登录 URL 是：%2$s"
 
 #: includes/class-msc-stealth-login-module.php:1081
 msgid "Recovery email sent successfully."
-msgstr "Herstel-e-mail succesvol verzonden."
+msgstr "恢复邮件已成功发送。"
 
 #: includes/class-msc-stealth-login-module.php:1083
 msgid "Failed to send recovery email. Please check the email address."
-msgstr "Kan herstel-e-mail niet verzenden. Controleer het e-mailadres."
+msgstr "发送恢复邮件失败。请检查电子邮件地址。"
 
 #: includes/class-msc-stealth-login-module.php:1085
 msgid "Failed to send recovery email."
-msgstr "Kan herstel-e-mail niet verzenden."
+msgstr "发送恢复邮件失败。"
 
 #: includes/class-msc-stealth-login-module.php:1115
 msgid "MSC Stealth Login:"
-msgstr "MSC Stealth Login:"
+msgstr "MSC 隐身登录："
 
 #. translators: %s: Link to plugin settings page
 #: includes/class-msc-stealth-login-module.php:1119
@@ -201,25 +188,22 @@ msgid ""
 "data is stored in your WordPress database and is not sent externally. You "
 "can manage settings on the %s page."
 msgstr ""
-"Deze plugin verzamelt IP-adressen, gebruikersnamen, user agents en "
-"aanmeldpogingsgeschiedenis voor beveiligingsfuncties (brute force-"
-"bescherming, aanmeldwaarschuwingen). Deze gegevens worden opgeslagen in uw "
-"WordPress-database en niet extern verzonden. U kunt instellingen beheren op "
-"de %s-pagina."
+"此插件收集 IP 地址、用户名、用户代理和登录尝试历史记录，用于安全功能（暴力破解保护、登录警报）。这些数据存储在您的 WordPress "
+"数据库中，不会发送到外部。您可以在 %s 页面管理设置。"
 
 #: includes/class-msc-stealth-login-module.php:1120
 msgid "plugin settings"
-msgstr "plugin-instellingen"
+msgstr "插件设置"
 
 #: includes/class-msc-stealth-login-module.php:1138
 msgid "Unauthorized"
-msgstr "Ongeautoriseerd"
+msgstr "未授权"
 
 #. translators: %s is the site name
 #: includes/class-msc-stealth-login-module.php:1204
 #, php-format
 msgid "[%s] User Login Alert"
-msgstr "[%s] Gebruikersaanmelding-waarschuwing"
+msgstr "[%s] 用户登录警报"
 
 #. translators: 1: username, 2: IP address, 3: time
 #: includes/class-msc-stealth-login-module.php:1210
@@ -231,17 +215,17 @@ msgid ""
 "\n"
 "This is an automated alert from your WordPress security plugin."
 msgstr ""
-"Gebruiker: %1$s\n"
-"IP-adres: %2$s\n"
-"Tijd: %3$s\n"
+"用户：%1$s\n"
+"IP 地址：%2$s\n"
+"时间：%3$s\n"
 "\n"
-"Dit is een geautomatiseerde waarschuwing van uw WordPress-beveiligingsplugin."
+"这是来自您的 WordPress 安全插件的自动警报。"
 
 #. translators: %s is the site name
 #: includes/class-msc-stealth-login-module.php:1257
 #, php-format
 msgid "[%s] New Login Location Detected"
-msgstr "[%s] Nieuwe aanmeldlocatie gedetecteerd"
+msgstr "[%s] 检测到新的登录位置"
 
 #. translators: 1: display name, 2: IP address, 3: time
 #: includes/class-msc-stealth-login-module.php:1263
@@ -256,135 +240,128 @@ msgid ""
 "\n"
 "If this was not you, please contact your site administrator immediately."
 msgstr ""
-"Hallo %1$s,\n"
+"您好 %1$s，\n"
 "\n"
-"We hebben een aanmelding op uw account gedetecteerd vanaf een nieuw IP-adres:\n"
+"我们检测到您的账户从一个新 IP 地址登录：\n"
 "\n"
-"IP-adres: %2$s\n"
-"Tijd: %3$s\n"
+"IP 地址：%2$s\n"
+"时间：%3$s\n"
 "\n"
-"Als u dit niet was, neem dan onmiddellijk contact op met uw sitebeheerder."
+"如果这不是您本人，请立即联系您的站点管理员。"
 
 #: includes/class-msc-stealth-login-settings.php:73
 msgid "This slug is reserved. Please choose a different one."
-msgstr "Deze slug is gereserveerd. Kies een andere."
+msgstr "此 slug 已被保留。请选择另一个。"
 
 #: includes/class-msc-stealth-login-settings.php:213
 msgid "Redirect URL must be a local URL. Using homepage instead."
-msgstr ""
-"Doorverwijzings-URL moet een lokale URL zijn. Startpagina wordt in plaats "
-"daarvan gebruikt."
+msgstr "重定向 URL 必须是本地 URL。改用首页。"
 
 #: includes/class-msc-stealth-login-settings.php:232
 msgid "That slug is reserved. Please choose a different one."
-msgstr "Die slug is gereserveerd. Kies een andere."
+msgstr "该 slug 已被保留。请选择另一个。"
 
 #: includes/class-msc-stealth-login-settings.php:330
 msgid "Settings updated successfully."
-msgstr "Instellingen succesvol bijgewerkt."
+msgstr "设置已成功更新。"
 
 #: includes/class-msc-stealth-login-settings.php:337
 msgid "Settings"
-msgstr "Instellingen"
+msgstr "设置"
 
 #: includes/class-msc-stealth-login-settings.php:338
 msgid "Advanced"
-msgstr "Geavanceerd"
+msgstr "高级"
 
 #: includes/class-msc-stealth-login-settings.php:339
 msgid "Email"
-msgstr "E-mail"
+msgstr "电子邮件"
 
 #: includes/class-msc-stealth-login-settings.php:340
 msgid "History"
-msgstr "Geschiedenis"
+msgstr "历史记录"
 
 #: includes/class-msc-stealth-login-settings.php:341
 #: includes/class-msc-stealth-login-settings.php:882
 msgid "Support"
-msgstr "Ondersteuning"
+msgstr "支持"
 
 #: includes/class-msc-stealth-login-settings.php:365
 msgid "Enable Stealth Login"
-msgstr "Stealth Login inschakelen"
+msgstr "启用隐身登录"
 
 #: includes/class-msc-stealth-login-settings.php:369
 msgid "Enable stealth login protection"
-msgstr "Stealth-aanmeldbeveiliging inschakelen"
+msgstr "启用隐身登录保护"
 
 #: includes/class-msc-stealth-login-settings.php:376
 #: includes/class-msc-stealth-login-settings.php:814
 msgid "Custom Login URL"
-msgstr "Aangepaste inlog-URL"
+msgstr "自定义登录 URL"
 
 #. translators: %s is the home URL
 #: includes/class-msc-stealth-login-settings.php:384
 #, php-format
 msgid "Your login page will be at: %s"
-msgstr "Je inlogpagina is bereikbaar op: %s"
+msgstr "您的登录页面将位于：%s"
 
 #: includes/class-msc-stealth-login-settings.php:393
 #: includes/class-msc-stealth-login-settings.php:817
 msgid "Hide wp-admin"
-msgstr "wp-admin verbergen"
+msgstr "隐藏 wp-admin"
 
 #: includes/class-msc-stealth-login-settings.php:397
 msgid "Block direct access to wp-admin directory"
-msgstr "Directe toegang tot wp-admin-map blokkeren"
+msgstr "阻止对 wp-admin 目录的直接访问"
 
 #: includes/class-msc-stealth-login-settings.php:400
 msgid ""
 "Users will be redirected to your custom login URL or the specified URL when "
 "trying to access wp-admin directly."
-msgstr ""
-"Gebruikers worden doorverwezen naar uw aangepaste aanmeld-URL of de "
-"opgegeven URL wanneer ze proberen direct toegang te krijgen tot wp-admin."
+msgstr "当用户尝试直接访问 wp-admin 时，他们将被重定向到您的自定义登录 URL 或指定的 URL。"
 
 #: includes/class-msc-stealth-login-settings.php:407
 msgid "wp-admin Redirect URL"
-msgstr "wp-admin-doorverwijzings-URL"
+msgstr "wp-admin 重定向 URL"
 
 #: includes/class-msc-stealth-login-settings.php:412
 msgid ""
 "Where to redirect users when they try to access wp-admin directly. Defaults "
 "to homepage."
-msgstr ""
-"Waar gebruikers naartoe doorverwijzen wanneer ze proberen direct toegang te "
-"krijgen tot wp-admin. Standaard startpagina."
+msgstr "当用户尝试直接访问 wp-admin 时重定向到何处。默认为首页。"
 
 #: includes/class-msc-stealth-login-settings.php:419
 msgid "Logout Redirect URL"
-msgstr "Uitlog-omleidings-URL"
+msgstr "注销重定向 URL"
 
 #: includes/class-msc-stealth-login-settings.php:424
 msgid "Where to redirect users after logging out. Defaults to homepage."
-msgstr ""
-"Waar gebruikers naartoe doorverwijzen na afmelding. Standaard startpagina."
+msgstr "注销后将用户重定向到何处。默认为首页。"
 
 #: includes/class-msc-stealth-login-settings.php:431
 msgid "Login URL Preview"
-msgstr "Inlog-URL voorbeeld"
+msgstr "登录 URL 预览"
 
 #: includes/class-msc-stealth-login-settings.php:434
 msgid "This is what your custom login URL will look like."
-msgstr "Zo zal uw aangepaste aanmeld-URL eruitzien."
+msgstr "您的自定义登录 URL 将如下所示。"
 
 #: includes/class-msc-stealth-login-settings.php:440
 #: includes/class-msc-stealth-login-settings.php:829
 msgid "Emergency Recovery URL"
-msgstr "Noodherstel-URL"
+msgstr "紧急恢复 URL"
 
 #: includes/class-msc-stealth-login-settings.php:454
 msgid "Current Recovery URL:"
-msgstr "Huidige herstel-URL:"
+msgstr "当前恢复 URL："
 
 #: includes/class-msc-stealth-login-settings.php:458
 msgid "Copy URL"
-msgstr "URL kopiëren"
+msgstr "复制 URL"
 
 #: includes/class-msc-stealth-login-settings.php:460
 msgid "Copied!"
-msgstr "Gekopieerd!"
+msgstr "已复制！"
 
 #: includes/class-msc-stealth-login-settings.php:463
 msgid ""
@@ -392,28 +369,26 @@ msgid ""
 "recovery URL to access wp-login.php and then navigate to settings to find "
 "your custom URL."
 msgstr ""
-"Voeg deze URL toe aan uw bladwijzers! Als u de toegang tot uw aangepaste "
-"aanmeld-URL verliest, gebruik dan deze herstel-URL om toegang te krijgen tot"
-" wp-login.php en ga vervolgens naar instellingen om uw aangepaste URL te "
-"vinden."
+"请收藏此 URL！如果您失去了对自定义登录 URL 的访问权限，请使用此恢复 URL 访问 wp-login.php，然后导航到设置中查找您的自定义 "
+"URL。"
 
 #: includes/class-msc-stealth-login-settings.php:466
 msgid "Are you sure? This will invalidate the current recovery URL."
-msgstr "Weet u het zeker? Hiermee wordt de huidige herstel-URL ongeldig."
+msgstr "您确定吗？这将使当前恢复 URL 失效。"
 
 #: includes/class-msc-stealth-login-settings.php:467
 msgid "Regenerate Recovery URL"
-msgstr "Herstel-URL opnieuw genereren"
+msgstr "重新生成恢复 URL"
 
 #: includes/class-msc-stealth-login-settings.php:472
 msgid "Recovery URL regenerated successfully!"
-msgstr "Herstel-URL succesvol opnieuw gegenereerd!"
+msgstr "恢复 URL 已成功重新生成！"
 
 #: includes/class-msc-stealth-login-settings.php:481
 #: includes/class-msc-stealth-login-settings.php:676
 #: includes/class-msc-stealth-login-settings.php:788
 msgid "Save Settings"
-msgstr "Instellingen opslaan"
+msgstr "保存设置"
 
 #: includes/class-msc-stealth-login-settings.php:492
 msgid ""
@@ -422,120 +397,106 @@ msgid ""
 " features are optional and may affect compatibility with some plugins or "
 "services that require XML-RPC or REST API access."
 msgstr ""
-"Geavanceerde beveiligingsfuncties bieden extra bescherming tegen brute "
-"force-aanvallen, XML-RPC-exploitatie en gebruikersinventarisatie via de REST"
-" API. Deze functies zijn optioneel en kunnen de compatibiliteit beïnvloeden "
-"met sommige plugins of services die XML-RPC- of REST API-toegang vereisen."
+"高级安全功能提供针对暴力破解攻击、XML-RPC 利用和通过 REST API 进行用户枚举的额外保护。这些功能是可选的，可能会影响某些需要 XML-"
+"RPC 或 REST API 访问权限的插件或服务的兼容性。"
 
 #: includes/class-msc-stealth-login-settings.php:496
 msgid "Enable Advanced Security Features"
-msgstr "Geavanceerde beveiligingsfuncties inschakelen"
+msgstr "启用高级安全功能"
 
 #: includes/class-msc-stealth-login-settings.php:500
 msgid ""
 "Enable additional security features including brute force protection, XML-"
 "RPC blocking, and REST API protection."
-msgstr ""
-"Schakel extra beveiligingsfuncties in, waaronder brute force-bescherming, "
-"XML-RPC-blokkering en REST API-bescherming."
+msgstr "启用其他安全功能，包括暴力破解保护、XML-RPC 阻止和 REST API 保护。"
 
 #: includes/class-msc-stealth-login-settings.php:503
 msgid ""
 "When disabled, only the basic stealth login features will be active. Enable "
 "this to protect against automated attacks."
-msgstr ""
-"Wanneer uitgeschakeld, zijn alleen de basis stealth-aanmeldfuncties actief. "
-"Schakel dit in om te beschermen tegen geautomatiseerde aanvallen."
+msgstr "禁用时，只有基本的隐身登录功能将处于活动状态。启用此功能以防范自动攻击。"
 
 #: includes/class-msc-stealth-login-settings.php:509
 msgid "XML-RPC & REST API Protection"
-msgstr "XML-RPC & REST API-bescherming"
+msgstr "XML-RPC 和 REST API 保护"
 
 #: includes/class-msc-stealth-login-settings.php:513
 #: includes/class-msc-stealth-login-settings.php:820
 msgid "Disable XML-RPC"
-msgstr "XML-RPC uitschakelen"
+msgstr "禁用 XML-RPC"
 
 #: includes/class-msc-stealth-login-settings.php:517
 msgid "Block XML-RPC requests"
-msgstr "XML-RPC-verzoeken blokkeren"
+msgstr "阻止 XML-RPC 请求"
 
 #: includes/class-msc-stealth-login-settings.php:520
 msgid ""
 "Prevents XML-RPC attacks and pingbacks. This also blocks the XML-RPC "
 "authentication method. Only available when Advanced Security is enabled."
-msgstr ""
-"Voorkomt XML-RPC-aanvallen en pingbacks. Dit blokkeert ook de XML-RPC-"
-"authenticatiemethode. Alleen beschikbaar wanneer Geavanceerde Beveiliging is"
-" ingeschakeld."
+msgstr "防止 XML-RPC 攻击和 pingback。这也会阻止 XML-RPC 身份验证方法。仅在启用高级安全时可用。"
 
 #: includes/class-msc-stealth-login-settings.php:526
 #: includes/class-msc-stealth-login-settings.php:823
 msgid "Disable REST API User Enumeration"
-msgstr "REST API-gebruikersinventarisatie uitschakelen"
+msgstr "禁用 REST API 用户枚举"
 
 #: includes/class-msc-stealth-login-settings.php:530
 msgid "Block REST API user enumeration"
-msgstr "REST API-gebruikersinventarisatie blokkeren"
+msgstr "阻止 REST API 用户枚举"
 
 #: includes/class-msc-stealth-login-settings.php:533
 msgid ""
 "Prevents attackers from discovering usernames via the REST API by querying "
 "?author=1. Only available when Advanced Security is enabled."
-msgstr ""
-"Voorkomt dat aanvallers gebruikersnamen ontdekken via de REST API door "
-"?author=1 te queryen. Alleen beschikbaar wanneer Geavanceerde Beveiliging is"
-" ingeschakeld."
+msgstr "通过查询 ?author=1 防止攻击者通过 REST API 发现用户名。仅在启用高级安全时可用。"
 
 #: includes/class-msc-stealth-login-settings.php:539
 #: includes/class-msc-stealth-login-settings.php:826
 msgid "Brute Force Protection"
-msgstr "Brute force-bescherming"
+msgstr "暴力破解保护"
 
 #: includes/class-msc-stealth-login-settings.php:543
 msgid "Enable Brute Force Protection"
-msgstr "Brute force-bescherming inschakelen"
+msgstr "启用暴力破解保护"
 
 #: includes/class-msc-stealth-login-settings.php:547
 msgid "Enable login attempt limiting"
-msgstr "Aanmeldpogingsbeperking inschakelen"
+msgstr "启用登录尝试限制"
 
 #: includes/class-msc-stealth-login-settings.php:550
 msgid ""
 "Limits login attempts to prevent brute force attacks. Only available when "
 "Advanced Security is enabled."
-msgstr ""
-"Beperkt aanmeldpogingen om brute force-aanvallen te voorkomen. Alleen "
-"beschikbaar wanneer Geavanceerde Beveiliging is ingeschakeld."
+msgstr "限制登录尝试次数以防止暴力破解攻击。仅在启用高级安全时可用。"
 
 #: includes/class-msc-stealth-login-settings.php:557
 msgid "Max Login Attempts"
-msgstr "Maximale inlogpogingen"
+msgstr "最大登录尝试次数"
 
 #: includes/class-msc-stealth-login-settings.php:562
 msgid "Number of failed attempts before a temporary lockout (1-10)."
-msgstr "Aantal mislukte pogingen vóór een tijdelijke blokkering (1-10)."
+msgstr "临时锁定之前的失败尝试次数（1-10）。"
 
 #: includes/class-msc-stealth-login-settings.php:569
 msgid "Lockout Duration"
-msgstr "Blokkeringsduur"
+msgstr "锁定持续时间"
 
 #: includes/class-msc-stealth-login-settings.php:573
 #: includes/class-msc-stealth-login-settings.php:666
 msgid "minutes"
-msgstr "minuten"
+msgstr "分钟"
 
 #: includes/class-msc-stealth-login-settings.php:575
 msgid "How long the lockout lasts in minutes (5-60)."
-msgstr "Hoe lang de blokkering duurt in minuten (5-60)."
+msgstr "锁定持续多长时间（分钟）（5-60）。"
 
 #: includes/class-msc-stealth-login-settings.php:584
 msgid "Share Lockouts Across Network"
-msgstr "Blokkeringen delen in het netwerk"
+msgstr "在网络中共享锁定"
 
 #: includes/class-msc-stealth-login-settings.php:588
 msgid "Count failed login attempts network-wide instead of per site"
-msgstr "Tel mislukte aanmeldpogingen netwerkbreed in plaats van per site"
+msgstr "在整个网络中统计失败的登录尝试，而不是按站点统计"
 
 #: includes/class-msc-stealth-login-settings.php:591
 msgid ""
@@ -544,57 +505,47 @@ msgid ""
 " are shared, so a lockout earned on one site applies to all of them. Enable "
 "it on each site that should share the count."
 msgstr ""
-"Alleen multisite. Wanneer uitgeschakeld, krijgt een aanvaller een nieuwe set"
-" pogingen op elke site in het netwerk. Wanneer ingeschakeld, worden mislukte"
-" pogingen en progressieve blokkeringsvertragingen gedeeld, zodat een "
-"blokkering die op één site is verdiend op allemaal van toepassing is. "
-"Schakel het in op elke site die de telling moet delen."
+"仅限多站点。关闭时，攻击者在网络中的每个站点都会获得一组新的尝试。开启时，失败的尝试和渐进式锁定延迟是共享的，因此在一个站点上获得的锁定适用于所有站点。在应共享计数的每个站点上启用它。"
 
 #: includes/class-msc-stealth-login-settings.php:598
 msgid "Login Logging"
-msgstr "Inlogregistratie"
+msgstr "登录日志记录"
 
 #: includes/class-msc-stealth-login-settings.php:602
 msgid "Enable Login Logging"
-msgstr "Inlogregistratie inschakelen"
+msgstr "启用登录日志记录"
 
 #: includes/class-msc-stealth-login-settings.php:606
 msgid "Log all login attempts to database"
-msgstr "Alle aanmeldpogingen in database vastleggen"
+msgstr "将所有登录尝试记录到数据库"
 
 #: includes/class-msc-stealth-login-settings.php:609
 msgid ""
 "When enabled, all login attempts (success, failure, lockout) will be "
 "recorded in the database for review in the History tab."
-msgstr ""
-"Wanneer ingeschakeld, worden alle aanmeldpogingen (succes, mislukking, "
-"blokkering) vastgelegd in de database voor beoordeling op het tabblad "
-"Geschiedenis."
+msgstr "启用后，所有登录尝试（成功、失败、锁定）都将记录在数据库中，以便在历史记录选项卡中查看。"
 
 #: includes/class-msc-stealth-login-settings.php:615
 msgid "IP Whitelist"
-msgstr "IP-whitelist"
+msgstr "IP 白名单"
 
 #: includes/class-msc-stealth-login-settings.php:620
 msgid "Whitelisted IP Addresses"
-msgstr "IP-adressen op whitelist"
+msgstr "白名单 IP 地址"
 
 #: includes/class-msc-stealth-login-settings.php:625
 msgid ""
 "Enter IP addresses that should bypass brute force protection. Enter one IP "
 "per line or separate with commas. Examples:"
-msgstr ""
-"Voer IP-adressen in die brute force-bescherming moeten omzeilen. Voer één IP"
-" per regel in of scheid met komma's. Voorbeelden:"
+msgstr "输入应绕过暴力破解保护的 IP 地址。每行输入一个 IP 或用逗号分隔。例如："
 
 #: includes/class-msc-stealth-login-settings.php:631
 msgid "Trust Proxy Headers"
-msgstr "Proxy-headers vertrouwen"
+msgstr "信任代理标头"
 
 #: includes/class-msc-stealth-login-settings.php:635
 msgid "Trust X-Forwarded-For and similar proxy headers for IP detection"
-msgstr ""
-"X-Forwarded-For en vergelijkbare proxy-headers vertrouwen voor IP-detectie"
+msgstr "信任 X-Forwarded-For 和类似的代理标头用于 IP 检测"
 
 #: includes/class-msc-stealth-login-settings.php:638
 msgid ""
@@ -602,218 +553,193 @@ msgid ""
 "Cloudflare, Nginx). Disabling this provides stronger brute force protection "
 "by preventing IP spoofing."
 msgstr ""
-"Schakel dit alleen in als uw site achter een vertrouwde reverse proxy staat "
-"(bijv. Cloudflare, Nginx). Uitschakelen biedt sterkere brute force-"
-"bescherming door IP-spoofing te voorkomen."
+"仅当您的站点位于受信任的反向代理（例如 Cloudflare、Nginx）后方时才启用此功能。禁用此功能可通过防止 IP 欺骗来提供更强的暴力破解保护。"
 
 #: includes/class-msc-stealth-login-settings.php:644
 msgid "Progressive Lockout"
-msgstr "Progressieve blokkering"
+msgstr "渐进式锁定"
 
 #: includes/class-msc-stealth-login-settings.php:648
 msgid "Progressive Lockout Delays"
-msgstr "Progressieve blokkeringsvertragingen"
+msgstr "渐进式锁定延迟"
 
 #: includes/class-msc-stealth-login-settings.php:652
 msgid "Enable progressive lockout delays"
-msgstr "Progressieve blokkeringsvertragingen inschakelen"
+msgstr "启用渐进式锁定延迟"
 
 #: includes/class-msc-stealth-login-settings.php:655
 msgid ""
 "Each subsequent lockout doubles the wait time. Helps stop persistent "
 "attackers. Resets after 24 hours of no attempts."
-msgstr ""
-"Elke volgende blokkering verdubbelt de wachttijd. Helpt aanhoudende "
-"aanvallers te stoppen. Reset na 24 uur zonder pogingen."
+msgstr "每次后续锁定都会使等待时间加倍。有助于阻止持续的攻击者。在 24 小时无尝试后重置。"
 
 #: includes/class-msc-stealth-login-settings.php:662
 msgid "Maximum Lockout Duration"
-msgstr "Maximale blokkeringsduur"
+msgstr "最长锁定持续时间"
 
 #: includes/class-msc-stealth-login-settings.php:668
 msgid ""
 "Maximum lockout duration even with progressive delays (60-1440 minutes)."
-msgstr ""
-"Maximale blokkeringsduur zelfs met progressieve vertragingen (60-1440 "
-"minuten)."
+msgstr "即使有渐进式延迟，最长锁定持续时间（60-1440 分钟）。"
 
 #: includes/class-msc-stealth-login-settings.php:687
 msgid ""
 "Configure email notifications for login lockouts and alerts. These settings "
 "are independent of the Advanced Security features and can be enabled "
 "separately."
-msgstr ""
-"Configureer e-mailmeldingen voor aanmeldblokkeringen en waarschuwingen. Deze"
-" instellingen zijn onafhankelijk van de Geavanceerde Beveiligingsfuncties en"
-" kunnen afzonderlijk worden ingeschakeld."
+msgstr "为登录锁定和警报配置电子邮件通知。这些设置独立于高级安全功能，可以单独启用。"
 
 #: includes/class-msc-stealth-login-settings.php:691
 msgid "Enable Email Notifications"
-msgstr "E-mailmeldingen inschakelen"
+msgstr "启用电子邮件通知"
 
 #: includes/class-msc-stealth-login-settings.php:695
 msgid "Enable email notification features"
-msgstr "E-mailmeldingsfuncties inschakelen"
+msgstr "启用电子邮件通知功能"
 
 #: includes/class-msc-stealth-login-settings.php:698
 msgid ""
 "Master toggle for all email notifications. When enabled, you can configure "
 "individual notification types below."
-msgstr ""
-"Hoofdschakelaar voor alle e-mailmeldingen. Wanneer ingeschakeld, kunt u "
-"hieronder afzonderlijke meldingstypen configureren."
+msgstr "所有电子邮件通知的主开关。启用后，您可以在下面配置各个通知类型。"
 
 #: includes/class-msc-stealth-login-settings.php:704
 msgid "Lockout Notifications"
-msgstr "Blokkeringsmeldingen"
+msgstr "锁定通知"
 
 #: includes/class-msc-stealth-login-settings.php:708
 msgid "Lockout Email Notification"
-msgstr "Blokkerings-e-mailmelding"
+msgstr "锁定电子邮件通知"
 
 #: includes/class-msc-stealth-login-settings.php:712
 msgid "Send email when a lockout occurs"
-msgstr "E-mail verzenden wanneer een blokkering optreedt"
+msgstr "发生锁定时发送电子邮件"
 
 #: includes/class-msc-stealth-login-settings.php:719
 msgid "Notification Email"
-msgstr "Meldings-e-mail"
+msgstr "通知电子邮件"
 
 #: includes/class-msc-stealth-login-settings.php:724
 msgid ""
 "Email address to receive lockout notifications. Defaults to site admin "
 "email."
-msgstr ""
-"E-mailadres om blokkeringsmeldingen te ontvangen. Standaard sitebeheerder-e-"
-"mail."
+msgstr "用于接收锁定通知的电子邮件地址。默认为站点管理员电子邮件。"
 
 #: includes/class-msc-stealth-login-settings.php:731
 msgid "Email Subject"
-msgstr "E-mailonderwerp"
+msgstr "电子邮件主题"
 
 #: includes/class-msc-stealth-login-settings.php:736
 msgid "Custom email subject. Leave blank for default."
-msgstr "Aangepast e-mailonderwerp. Laat leeg voor standaard."
+msgstr "自定义电子邮件主题。留空使用默认值。"
 
 #: includes/class-msc-stealth-login-settings.php:743
 msgid "Email Body"
-msgstr "E-mailtekst"
+msgstr "电子邮件正文"
 
 #: includes/class-msc-stealth-login-settings.php:748
 msgid "Custom email body. Leave blank for default. Available placeholders:"
-msgstr ""
-"Aangepaste e-mailtekst. Laat leeg voor standaard. Beschikbare "
-"plaatsaanduidingen:"
+msgstr "自定义电子邮件正文。留空使用默认值。可用的占位符："
 
 #: includes/class-msc-stealth-login-settings.php:750
 msgid "Number of failed attempts"
-msgstr "Aantal mislukte pogingen"
+msgstr "失败尝试次数"
 
 #: includes/class-msc-stealth-login-settings.php:751
 msgid "Current time"
-msgstr "Huidige tijd"
+msgstr "当前时间"
 
 #: includes/class-msc-stealth-login-settings.php:752
 msgid "Site name"
-msgstr "Sitenaam"
+msgstr "站点名称"
 
 #: includes/class-msc-stealth-login-settings.php:753
 msgid "Site URL"
-msgstr "Site-URL"
+msgstr "站点 URL"
 
 #: includes/class-msc-stealth-login-settings.php:759
 msgid "Login Alerts"
-msgstr "Inlogwaarschuwingen"
+msgstr "登录警报"
 
 #: includes/class-msc-stealth-login-settings.php:763
 msgid "Admin Login Alert"
-msgstr "Admin-inlogwaarschuwing"
+msgstr "管理员登录警报"
 
 #: includes/class-msc-stealth-login-settings.php:767
 msgid "Send email to admin when any user logs in"
-msgstr "E-mail naar beheerder sturen wanneer een gebruiker aanmeldt"
+msgstr "当任何用户登录时向管理员发送电子邮件"
 
 #: includes/class-msc-stealth-login-settings.php:773
 msgid "New IP Login Alert"
-msgstr "Nieuwe IP-inlogwaarschuwing"
+msgstr "新 IP 登录警报"
 
 #: includes/class-msc-stealth-login-settings.php:777
 msgid "Email user when they login from a new IP address"
-msgstr "E-mail naar gebruiker wanneer ze aanmelden vanaf een nieuw IP-adres"
+msgstr "当用户从新 IP 地址登录时向他们发送电子邮件"
 
 #: includes/class-msc-stealth-login-settings.php:780
 msgid ""
 "Users will be notified when their account is accessed from an IP address "
 "they have not used before."
-msgstr ""
-"Gebruikers worden op de hoogte gesteld wanneer hun account wordt geopend "
-"vanaf een IP-adres dat ze nog niet eerder hebben gebruikt."
+msgstr "当用户的账户从他们之前未使用过的 IP 地址被访问时，将通知用户。"
 
 #: includes/class-msc-stealth-login-settings.php:800
 msgid "How to Use MSC Stealth Login"
-msgstr "Hoe MSC Stealth Login te gebruiken"
+msgstr "如何使用 MSC 隐身登录"
 
 #: includes/class-msc-stealth-login-settings.php:801
 msgid ""
 "MSC Stealth Login helps secure your WordPress site by hiding the default "
 "login page and adding brute force protection."
-msgstr ""
-"MSC Stealth Login helpt uw WordPress-site te beveiligen door de standaard "
-"aanmeldpagina te verbergen en brute force-bescherming toe te voegen."
+msgstr "MSC 隐身登录通过隐藏默认登录页面并添加暴力破解保护来帮助保护您的 WordPress 站点。"
 
 #: includes/class-msc-stealth-login-settings.php:803
 msgid "Setting Up Your Custom Login URL"
-msgstr "Uw aangepaste aanmeld-URL instellen"
+msgstr "设置您的自定义登录 URL"
 
 #: includes/class-msc-stealth-login-settings.php:805
 msgid "Go to the Settings tab above."
-msgstr "Ga naar het tabblad Instellingen hierboven."
+msgstr "转到上面的设置选项卡。"
 
 #: includes/class-msc-stealth-login-settings.php:806
 msgid "Enter a custom login slug (e.g., \"my-secret-login\" or \"admin-access\")."
-msgstr ""
-"Voer een aangepaste aanmeld-slug in (bijv. \"mijn-geheime-aanmelding\" of "
-"\"beheerder-toegang\")."
+msgstr "输入自定义登录 slug（例如，\"my-secret-login\" 或 \"admin-access\"）。"
 
 #: includes/class-msc-stealth-login-settings.php:807
 msgid "Click Save Settings."
-msgstr "Klik op Instellingen opslaan."
+msgstr "点击保存设置。"
 
 #: includes/class-msc-stealth-login-settings.php:808
 msgid "Your new login URL will be:"
-msgstr "Uw nieuwe aanmeld-URL zal zijn:"
+msgstr "您的新登录 URL 将是："
 
 #: includes/class-msc-stealth-login-settings.php:809
 msgid "Bookmark this URL immediately!"
-msgstr "Voeg deze URL onmiddellijk toe aan uw bladwijzers!"
+msgstr "立即收藏此 URL！"
 
 #: includes/class-msc-stealth-login-settings.php:809
 msgid "Important:"
-msgstr "Belangrijk:"
+msgstr "重要提示："
 
 #: includes/class-msc-stealth-login-settings.php:809
 msgid "You will no longer be able to access wp-login.php directly."
-msgstr "U heeft niet langer directe toegang tot wp-login.php."
+msgstr "您将无法再直接访问 wp-login.php。"
 
 #: includes/class-msc-stealth-login-settings.php:812
 msgid "Security Features Explained"
-msgstr "Beveiligingsfuncties uitgelegd"
+msgstr "安全功能说明"
 
 #: includes/class-msc-stealth-login-settings.php:815
 msgid ""
 "Changes your login page from /wp-login.php to a custom URL of your choice. "
 "This prevents automated bots from finding your login page."
-msgstr ""
-"Wijzigt uw aanmeldpagina van /wp-login.php naar een aangepaste URL van uw "
-"keuze. Dit voorkomt dat geautomatiseerde bots uw aanmeldpagina vinden."
+msgstr "将您的登录页面从 /wp-login.php 更改为您选择的自定义 URL。这可以防止自动机器人找到您的登录页面。"
 
 #: includes/class-msc-stealth-login-settings.php:818
 msgid ""
 "Blocks direct access to the /wp-admin/ directory and redirects users to your"
 " custom login URL. Prevents unauthorized access attempts."
-msgstr ""
-"Blokkeert directe toegang tot de /wp-admin/-map en verwijst gebruikers door "
-"naar uw aangepaste aanmeld-URL. Voorkomt ongeautoriseerde toegangspogingen."
+msgstr "阻止对 /wp-admin/ 目录的直接访问，并将用户重定向到您的自定义登录 URL。防止未经授权的访问尝试。"
 
 #: includes/class-msc-stealth-login-settings.php:821
 msgid ""
@@ -821,26 +747,19 @@ msgid ""
 "pingback spam. If you use mobile apps or external services that require XML-"
 "RPC, leave this disabled."
 msgstr ""
-"Blokkeert XML-RPC-verzoeken die vaak worden gebruikt voor brute force-"
-"aanvallen en pingback-spam. Als u mobiele apps of externe services gebruikt "
-"die XML-RPC vereisen, laat dit dan uitgeschakeld."
+"阻止常用于暴力破解攻击和 pingback 垃圾邮件的 XML-RPC 请求。如果您使用需要 XML-RPC 的移动应用或外部服务，请保持禁用状态。"
 
 #: includes/class-msc-stealth-login-settings.php:824
 msgid ""
 "Prevents attackers from discovering usernames by querying the REST API with "
 "?author=1, ?author=2, etc."
-msgstr ""
-"Voorkomt dat aanvallers gebruikersnamen ontdekken door de REST API te "
-"queryen met ?author=1, ?author=2, enz."
+msgstr "通过使用 ?author=1、?author=2 等查询 REST API，防止攻击者发现用户名。"
 
 #: includes/class-msc-stealth-login-settings.php:827
 msgid ""
 "Limits login attempts to prevent brute force attacks. After the configured "
 "number of failed attempts, the IP address is temporarily blocked."
-msgstr ""
-"Beperkt aanmeldpogingen om brute force-aanvallen te voorkomen. Na het "
-"geconfigureerde aantal mislukte pogingen wordt het IP-adres tijdelijk "
-"geblokkeerd."
+msgstr "限制登录尝试次数以防止暴力破解攻击。在达到配置的失败尝试次数后，IP 地址将被临时阻止。"
 
 #: includes/class-msc-stealth-login-settings.php:830
 msgid ""
@@ -848,17 +767,16 @@ msgid ""
 " active. This is your safety net if you forget your custom login URL. "
 "Bookmark this URL and keep it safe!"
 msgstr ""
-"Een speciale URL waarmee u toegang krijgt tot wp-login.php, zelfs wanneer de"
-" plugin actief is. Dit is uw vangnet als u uw aangepaste aanmeld-URL "
-"vergeet. Voeg deze URL toe aan uw bladwijzers en bewaar hem veilig!"
+"一个特殊的 URL，允许您即使在插件处于活动状态时也能访问 wp-login.php。如果您忘记了自定义登录 URL，这是您的安全网。请收藏此 URL "
+"并妥善保管！"
 
 #: includes/class-msc-stealth-login-settings.php:832
 msgid "Frequently Asked Questions"
-msgstr "Veelgestelde vragen"
+msgstr "常见问题"
 
 #: includes/class-msc-stealth-login-settings.php:834
 msgid "What happens if I forget my custom login URL?"
-msgstr "Wat gebeurt er als ik mijn aangepaste aanmeld-URL vergeet?"
+msgstr "如果我忘记了我的自定义登录 URL 会怎样？"
 
 #: includes/class-msc-stealth-login-settings.php:835
 msgid ""
@@ -866,124 +784,104 @@ msgid ""
 "when you first set up the plugin. If you lose both URLs, you will need to "
 "disable the plugin via FTP or WP-CLI to regain access."
 msgstr ""
-"Gebruik de Noodherstel-URL die op het tabblad Instellingen wordt "
-"weergegeven. Voeg deze URL toe aan uw bladwijzers wanneer u de plugin voor "
-"het eerst instelt. Als u beide URL's verliest, moet u de plugin uitschakelen"
-" via FTP of WP-CLI om weer toegang te krijgen."
+"使用设置选项卡上显示的紧急恢复 URL。在您首次设置插件时收藏此 URL。如果您丢失了两个 URL，则需要通过 FTP 或 WP-CLI "
+"禁用插件以重新获得访问权限。"
 
 #: includes/class-msc-stealth-login-settings.php:837
 msgid "Will this break my site?"
-msgstr "Zal dit mijn site breken?"
+msgstr "这会破坏我的站点吗？"
 
 #: includes/class-msc-stealth-login-settings.php:838
 msgid ""
 "If configured correctly, no. However, we strongly recommend testing on a "
 "staging site first. Always bookmark your custom login URL and the recovery "
 "URL before logging out."
-msgstr ""
-"Indien correct geconfigureerd, nee. We raden echter sterk aan om eerst op "
-"een staging-site te testen. Voeg altijd uw aangepaste aanmeld-URL en de "
-"herstel-URL toe aan uw bladwijzers voordat u zich afmeldt."
+msgstr "如果正确配置，不会。但我们强烈建议先在临时站点上进行测试。注销前请务必收藏您的自定义登录 URL 和恢复 URL。"
 
 #: includes/class-msc-stealth-login-settings.php:840
 msgid "Can I still use wp-admin after logging in?"
-msgstr "Kan ik wp-admin nog steeds gebruiken na het aanmelden?"
+msgstr "登录后我还能使用 wp-admin 吗？"
 
 #: includes/class-msc-stealth-login-settings.php:841
 msgid ""
 "Yes! Once you are logged in, wp-admin works normally. The \"Hide wp-admin\" "
 "feature only blocks direct access for non-logged-in users."
-msgstr ""
-"Ja! Zodra u bent aangemeld, werkt wp-admin normaal. De functie \"wp-admin "
-"verbergen\" blokkeert alleen directe toegang voor niet-aangemelde "
-"gebruikers."
+msgstr "是的！一旦您登录，wp-admin 就会正常工作。\"隐藏 wp-admin\" 功能仅阻止未登录用户的直接访问。"
 
 #: includes/class-msc-stealth-login-settings.php:843
 msgid "Will this work with my security plugin?"
-msgstr "Werkt dit met mijn beveiligingsplugin?"
+msgstr "这会与我的安全插件一起工作吗？"
 
 #: includes/class-msc-stealth-login-settings.php:844
 msgid ""
 "Generally yes, but avoid using multiple plugins that modify login URLs or "
 "block wp-admin simultaneously as they may conflict."
-msgstr ""
-"Over het algemeen wel, maar vermijd het gelijktijdig gebruik van meerdere "
-"plugins die aanmeld-URL's wijzigen of wp-admin blokkeren, aangezien deze "
-"kunnen conflicteren."
+msgstr "通常可以，但避免同时使用多个修改登录 URL 或阻止 wp-admin 的插件，因为它们可能会发生冲突。"
 
 #: includes/class-msc-stealth-login-settings.php:846
 msgid "Does this work with WooCommerce?"
-msgstr "Werkt dit met WooCommerce?"
+msgstr "这与 WooCommerce 兼容吗？"
 
 #: includes/class-msc-stealth-login-settings.php:847
 msgid ""
 "Yes, but note that WooCommerce has its own login/my-account pages. You may "
 "need to test compatibility with your specific setup."
-msgstr ""
-"Ja, maar merk op dat WooCommerce zijn eigen aanmeld-/mijn-accountpagina's "
-"heeft. Mogelijk moet u de compatibiliteit met uw specifieke configuratie "
-"testen."
+msgstr "可以，但请注意 WooCommerce 有自己的登录/我的账户页面。您可能需要测试与您特定设置的兼容性。"
 
 #: includes/class-msc-stealth-login-settings.php:849
 msgid "How do I disable the plugin if I get locked out?"
-msgstr "Hoe schakel ik de plugin uit als ik buitengesloten word?"
+msgstr "如果我被锁定，如何禁用插件？"
 
 #: includes/class-msc-stealth-login-settings.php:851
 msgid "Use the Emergency Recovery URL (if you have it bookmarked)"
-msgstr "Gebruik de Noodherstel-URL (als u deze in uw bladwijzers heeft)"
+msgstr "使用紧急恢复 URL（如果您已收藏）"
 
 #: includes/class-msc-stealth-login-settings.php:852
 msgid ""
 "Via FTP/SFTP: Rename the plugin folder from /wp-content/plugins/msc-stealth-"
 "login/ to /wp-content/plugins/msc-stealth-login-disabled/"
 msgstr ""
-"Via FTP/SFTP: Hernoem de plugin-map van /wp-content/plugins/msc-stealth-"
-"login/ naar /wp-content/plugins/msc-stealth-login-disabled/"
+"通过 FTP/SFTP：将插件文件夹从 /wp-content/plugins/msc-stealth-login/ 重命名为 /wp-"
+"content/plugins/msc-stealth-login-disabled/"
 
 #: includes/class-msc-stealth-login-settings.php:853
 msgid "Via WP-CLI: Run: wp plugin deactivate msc-stealth-login"
-msgstr "Via WP-CLI: Voer uit: wp plugin deactivate msc-stealth-login"
+msgstr "通过 WP-CLI：运行：wp plugin deactivate msc-stealth-login"
 
 #: includes/class-msc-stealth-login-settings.php:854
 msgid ""
 "Via Database: Set the mscsl_options option value to have module_enabled = 0"
-msgstr ""
-"Via database: Stel de waarde van de optie mscsl_options in op module_enabled"
-" = 0"
+msgstr "通过数据库：将 mscsl_options 选项值设置为 module_enabled = 0"
 
 #: includes/class-msc-stealth-login-settings.php:859
 msgid "Email Me My Login URL"
-msgstr "Stuur mij mijn aanmeld-URL per e-mail"
+msgstr "通过电子邮件发送我的登录 URL"
 
 #: includes/class-msc-stealth-login-settings.php:860
 msgid ""
 "Send the current custom login URL to an email address so you have it on "
 "record."
-msgstr ""
-"Stuur de huidige aangepaste aanmeld-URL naar een e-mailadres zodat u het bij"
-" de hand heeft."
+msgstr "将当前的自定义登录 URL 发送到电子邮件地址，以便您记录在案。"
 
 #: includes/class-msc-stealth-login-settings.php:865
 msgid "Recovery email sent."
-msgstr "Herstel-e-mail verzonden."
+msgstr "恢复邮件已发送。"
 
 #: includes/class-msc-stealth-login-settings.php:867
 msgid "The email could not be sent. Check your site's mail configuration."
-msgstr ""
-"De e-mail kon niet worden verzonden. Controleer de e-mailconfiguratie van uw"
-" site."
+msgstr "无法发送电子邮件。请检查您站点的邮件配置。"
 
 #: includes/class-msc-stealth-login-settings.php:869
 msgid "Please enter a valid email address."
-msgstr "Voer een geldig e-mailadres in."
+msgstr "请输入有效的电子邮件地址。"
 
 #: includes/class-msc-stealth-login-settings.php:876
 msgid "you@example.com"
-msgstr "u@voorbeeld.com"
+msgstr "you@example.com"
 
 #: includes/class-msc-stealth-login-settings.php:877
 msgid "Send Login URL"
-msgstr "Aanmeld-URL verzenden"
+msgstr "发送登录 URL"
 
 #. translators: %s is the URL to the plugin support forum on WordPress.org.
 #: includes/class-msc-stealth-login-settings.php:887
@@ -993,118 +891,115 @@ msgid ""
 "noreferrer\">plugin support forum on WordPress.org</a> for help, bug reports"
 " and feature requests."
 msgstr ""
-"Hulp nodig? Bezoek het <a href=\"%s\" target=\"_blank\" rel=\"noopener "
-"noreferrer\">ondersteuningsforum van de plugin op WordPress.org</a> voor "
-"hulp, bugrapporten en functieverzoeken."
+"需要帮助？访问 <a href=\"%s\" target=\"_blank\" rel=\"noopener "
+"noreferrer\">WordPress.org 上的插件支持论坛</a> 以获得帮助、错误报告和功能请求。"
 
 #: includes/class-msc-stealth-login-settings.php:915
 msgid "All login logs have been cleared."
-msgstr "Alle inloglogboeken zijn gewist."
+msgstr "所有登录日志已清除。"
 
 #: includes/class-msc-stealth-login-settings.php:987
 msgid "Login Attempt History"
-msgstr "Inlogpogingengeschiedenis"
+msgstr "登录尝试历史记录"
 
 #: includes/class-msc-stealth-login-settings.php:997
 msgid "Filter by IP"
-msgstr "Filteren op IP"
+msgstr "按 IP 筛选"
 
 #: includes/class-msc-stealth-login-settings.php:1003
 msgid "Filter by Username"
-msgstr "Filteren op gebruikersnaam"
+msgstr "按用户名筛选"
 
 #: includes/class-msc-stealth-login-settings.php:1011
 msgid "Filter by Result"
-msgstr "Filteren op resultaat"
+msgstr "按结果筛选"
 
 #: includes/class-msc-stealth-login-settings.php:1015
 msgid "All Results"
-msgstr "Alle resultaten"
+msgstr "所有结果"
 
 #: includes/class-msc-stealth-login-settings.php:1016
 #: includes/class-msc-stealth-login-settings.php:1069
 msgid "Success"
-msgstr "Geslaagd"
+msgstr "成功"
 
 #: includes/class-msc-stealth-login-settings.php:1017
 #: includes/class-msc-stealth-login-settings.php:1072
 msgid "Failed"
-msgstr "Mislukt"
+msgstr "失败"
 
 #: includes/class-msc-stealth-login-settings.php:1018
 #: includes/class-msc-stealth-login-settings.php:1075
 msgid "Locked Out"
-msgstr "Geblokkeerd"
+msgstr "已锁定"
 
 #: includes/class-msc-stealth-login-settings.php:1019
 #: includes/class-msc-stealth-login-settings.php:1078
 msgid "Whitelisted"
-msgstr "Op whitelist"
+msgstr "已加入白名单"
 
 #: includes/class-msc-stealth-login-settings.php:1023
 msgid "Date From"
-msgstr "Datum van"
+msgstr "起始日期"
 
 #: includes/class-msc-stealth-login-settings.php:1029
 msgid "Date To"
-msgstr "Datum tot"
+msgstr "结束日期"
 
 #: includes/class-msc-stealth-login-settings.php:1038
 msgid "Filter"
-msgstr "Filteren"
+msgstr "筛选"
 
 #: includes/class-msc-stealth-login-settings.php:1039
 msgid "Clear Filters"
-msgstr "Filters wissen"
+msgstr "清除筛选"
 
 #: includes/class-msc-stealth-login-settings.php:1044
 msgid "No login attempts recorded yet."
-msgstr "Nog geen inlogpogingen geregistreerd."
+msgstr "尚未记录登录尝试。"
 
 #. translators: %1$d: start number, %2$d: end number, %3$d: total count
 #: includes/class-msc-stealth-login-settings.php:1048
 #, php-format
 msgid "Showing %1$d to %2$d of %3$d entries"
-msgstr "Weergave %1$d tot %2$d van %3$d vermeldingen"
+msgstr "显示 %3$d 条记录中的第 %1$d 到 %2$d 条"
 
 #: includes/class-msc-stealth-login-settings.php:1100
 msgid "&laquo; Previous"
-msgstr "&laquo; Vorige"
+msgstr "&laquo; 上一步"
 
 #: includes/class-msc-stealth-login-settings.php:1101
 msgid "Next &raquo;"
-msgstr "Volgende &raquo;"
+msgstr "下一步 &raquo;"
 
 #. translators: %d: total number of items
 #: includes/class-msc-stealth-login-settings.php:1112
 #, php-format
 msgid "%d items"
-msgstr "%d items"
+msgstr "%d 项"
 
 #: includes/class-msc-stealth-login-settings.php:1122
 msgid "Are you sure you want to clear all login logs?"
-msgstr "Weet u zeker dat u alle aanmeldlogboeken wilt wissen?"
+msgstr "您确定要清除所有登录日志吗？"
 
 #: includes/class-msc-stealth-login-settings.php:1123
 msgid "Clear All Logs"
-msgstr "Alle logboeken wissen"
+msgstr "清除所有日志"
 
 #: includes/class-msc-stealth-login-settings.php:1126
 msgid "Export to CSV"
-msgstr "Exporteren naar CSV"
+msgstr "导出为 CSV"
 
 #: includes/class-msc-stealth-login.php:207
 msgid ""
 "Enjoying MSC Stealth Login? A quick review would really help other WordPress"
 " users find it."
-msgstr ""
-"Geniet u van MSC Stealth Login? Een korte beoordeling zou andere WordPress-"
-"gebruikers echt helpen het te vinden."
+msgstr "喜欢 MSC 隐身登录吗？快速评论将真正帮助其他 WordPress 用户找到它。"
 
 #: includes/class-msc-stealth-login.php:208
 msgid "Leave a review"
-msgstr "Een beoordeling achterlaten"
+msgstr "留下评论"
 
 #: includes/class-msc-stealth-login.php:210
 msgid "No thanks"
-msgstr "Nee, bedankt"
+msgstr "不，谢谢"

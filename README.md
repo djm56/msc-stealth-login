@@ -1,6 +1,6 @@
 # MSC Stealth Login
 
-![Version](https://img.shields.io/badge/version-1.3.1-blue)
+![Version](https://img.shields.io/badge/version-1.3.2-blue)
 ![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![WordPress](https://img.shields.io/badge/WordPress-5.9%2B-blue)
@@ -35,7 +35,7 @@ Hide your WordPress login page from attackers. Protect against brute force with 
 - **REST API Protection** — Block user enumeration via `/wp/v2/users` and `?author=` queries
 - **IP Whitelist** — Bypass brute force protection for trusted IPs (supports CIDR notation)
 - **Recovery URL** — Token-based emergency access if you forget your custom login URL
-- **12 Languages** — German (DE/CH), Spanish (ES/MX), French (FR/CA), Italian, Japanese, Dutch (NL/BE), Portuguese (BR/PT)
+- **20 Languages** — German (DE/CH), Spanish (ES/MX), French (FR/CA), Italian, Japanese, Dutch (NL/BE), Portuguese (BR/PT), Russian, Simplified Chinese, Turkish, Polish, Indonesian, Swedish, Ukrainian, Arabic
 
 ## Installation
 
@@ -141,7 +141,7 @@ add_filter( 'mscsl_network_shared_lockout', '__return_true' );
 
 | Constant | Value | Description |
 |----------|-------|-------------|
-| `MSCSL_PLUGIN_VERSION` | `'1.3.1'` | Current plugin version |
+| `MSCSL_PLUGIN_VERSION` | `'1.3.2'` | Current plugin version |
 | `MSCSL_PLUGIN_FILE` | `__FILE__` | Absolute path to main plugin file |
 | `MSCSL_PLUGIN_DIR` | Plugin directory path | Absolute path to plugin directory |
 | `MSCSL_PLUGIN_URL` | Plugin directory URL | URL to plugin directory |
@@ -338,7 +338,7 @@ See [tests/README.md](tests/README.md) for detailed testing instructions and tro
 
 ### Translations
 
-The plugin ships with 12 translations. To update:
+The plugin ships with 20 translations. To update:
 
 ```bash
 # Regenerate .pot template from source PHP files (requires WP-CLI)
@@ -354,7 +354,7 @@ Translation dictionaries are maintained in `scripts/generate-translations.php`. 
 2. Run `php scripts/generate-translations.php`
 3. Verify the .po and .mo files were generated
 
-**Supported locales:** de_DE, de_CH, es_ES, es_MX, fr_FR, fr_CA, it_IT, ja, nl_NL, nl_BE, pt_BR, pt_PT
+**Supported locales:** de_DE, de_CH, es_ES, es_MX, fr_FR, fr_CA, it_IT, ja, nl_NL, nl_BE, pt_BR, pt_PT, ru_RU, zh_CN, tr_TR, pl_PL, id_ID, sv_SE, uk, ar
 
 ### Composer Scripts
 

@@ -5,7 +5,7 @@ Tags: hide login, custom login url, block wp-admin, disable xml-rpc, brute force
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,9 @@ No. Every feature is included in the plugin you download — there is nothing to
 
 == Changelog ==
 
+= 1.3.2 =
+* Updated translations: added 8 new languages (Russian, Simplified Chinese, Turkish, Polish, Indonesian, Swedish, Ukrainian, Arabic) and refreshed all 20 bundled locales to 100% string coverage. No functional changes.
+
 = 1.3.1 =
 * Tested with WordPress 7.1. No functional changes.
 
@@ -256,6 +259,9 @@ No. Every feature is included in the plugin you download — there is nothing to
 * Recovery URL system for forgotten login URLs
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+Translation maintenance release: adds 8 new languages (Russian, Simplified Chinese, Turkish, Polish, Indonesian, Swedish, Ukrainian, Arabic) and refreshes all 20 bundled locales to 100% string coverage. No functional changes — safe update.
 
 = 1.3.1 =
 Compatibility update: confirmed tested against WordPress 7.1. No functional changes — safe update.

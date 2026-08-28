@@ -3,7 +3,7 @@
  * Plugin Name: MSC Stealth Login
  * Plugin URI: https://github.com/djm56/msc-stealth-login
  * Description: Hide your login page, block brute force attacks, and protect your WordPress site from unauthorized access. Complete free plugin with all features included.
- * Version: 1.3.1
+ * Version: 1.3.2
  * Author: Anomalous Developers
  * Author URI: https://anomalous.co.za
  * Text Domain: msc-stealth-login
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Current plugin version.
  */
-define( 'MSCSL_PLUGIN_VERSION', '1.3.1' );
+define( 'MSCSL_PLUGIN_VERSION', '1.3.2' );
 
 /**
  * Absolute path to the main plugin file.
