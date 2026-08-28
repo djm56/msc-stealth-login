@@ -248,10 +248,14 @@ class Database {
 		$values[] = $limit;
 		$values[] = $offset;
 
-		$sql = "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d";
-
-		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
-		$results = $wpdb->get_results( $wpdb->prepare( $sql, ...$values ), ARRAY_A );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table; caching handled above.
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d",
+				...$values
+			),
+			ARRAY_A
+		);
 
 		wp_cache_set( $cache_key, $results, 'mscsl' );
 
@@ -378,10 +382,13 @@ class Database {
 		);
 
 		if ( ! empty( $values ) ) {
-			$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql}";
-
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
-			$count = (int) $wpdb->get_var( $wpdb->prepare( $sql, ...$values ) );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- custom table; caching handled above.
+			$count = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql}",
+					...$values
+				)
+			);
 		} else {
 			// No filters — no placeholders needed.
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- safe: no user input in query
