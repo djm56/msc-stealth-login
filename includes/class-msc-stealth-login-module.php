@@ -885,12 +885,23 @@ class Module {
 			$message = str_replace( '{site_name}', get_bloginfo( 'name' ), $message );
 			$message = str_replace( '{site_url}', home_url(), $message );
 		} else {
+			// Pre-format the pluralised "Failed Attempts" line so the multi-line
+			// body template can interpolate it as a single %3$s slot. Using
+			// _n() lets translators provide proper plural forms for locales
+			// like Russian, Polish, Ukrainian and Arabic.
+			$failed_attempts_count = absint( $attempts['count'] );
+			$failed_attempts_line  = sprintf(
+				/* translators: %d: number of failed login attempts */
+				_n( 'Failed Attempt: %d', 'Failed Attempts: %d', $failed_attempts_count, 'msc-stealth-login' ),
+				$failed_attempts_count
+			);
+
 			$message = sprintf(
-				/* translators: 1: site name, 2: IP address, 3: number of failed attempts, 4: time */
+				/* translators: 1: site name, 2: IP address, 3: failed attempts line, 4: time */
 				__( 'A brute force lockout has occurred on %1$s.
 
 IP Address: %2$s
-Failed Attempts: %3$d
+%3$s
 Time: %4$s
 
 This IP has been temporarily blocked from making login attempts.
@@ -898,7 +909,7 @@ This IP has been temporarily blocked from making login attempts.
 If this is not expected behavior, you may want to investigate this IP address.', 'msc-stealth-login' ),
 				get_bloginfo( 'name' ),
 				$ip,
-				absint( $attempts['count'] ),
+				$failed_attempts_line,
 				current_time( 'mysql' )
 			);
 		}

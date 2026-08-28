@@ -376,8 +376,8 @@ class Settings {
 									<label for="custom_login_slug"><?php esc_html_e( 'Custom Login URL', 'msc-stealth-login' ); ?></label>
 								</th>
 								<td>
-									<input type="text" id="custom_login_slug" name="custom_login_slug" value="<?php echo esc_attr( $options['custom_login_slug'] ); ?>" class="regular-text code" />
-									<p class="description">
+									<input type="text" id="custom_login_slug" name="custom_login_slug" value="<?php echo esc_attr( $options['custom_login_slug'] ); ?>" class="regular-text code" aria-describedby="custom_login_slug-description" />
+									<p class="description" id="custom_login_slug-description">
 										<?php
 										printf(
 											/* translators: %s is the home URL */
@@ -393,10 +393,10 @@ class Settings {
 								<th scope="row"><?php esc_html_e( 'Hide wp-admin', 'msc-stealth-login' ); ?></th>
 								<td>
 									<label for="hide_wp_admin">
-										<input id="hide_wp_admin" type="checkbox" name="hide_wp_admin" value="1" <?php checked( 1, $options['hide_wp_admin'] ); ?> />
+										<input id="hide_wp_admin" type="checkbox" name="hide_wp_admin" value="1" <?php checked( 1, $options['hide_wp_admin'] ); ?> aria-describedby="hide_wp_admin-description" />
 										<?php esc_html_e( 'Block direct access to wp-admin directory', 'msc-stealth-login' ); ?>
 									</label>
-									<p class="description">
+									<p class="description" id="hide_wp_admin-description">
 										<?php esc_html_e( 'Users will be redirected to your custom login URL or the specified URL when trying to access wp-admin directly.', 'msc-stealth-login' ); ?>
 									</p>
 								</td>
@@ -407,8 +407,8 @@ class Settings {
 									<label for="wp_admin_redirect"><?php esc_html_e( 'wp-admin Redirect URL', 'msc-stealth-login' ); ?></label>
 								</th>
 								<td>
-									<input type="url" id="wp_admin_redirect" name="wp_admin_redirect" value="<?php echo esc_attr( $options['wp_admin_redirect'] ); ?>" class="regular-text" />
-									<p class="description">
+									<input type="url" id="wp_admin_redirect" name="wp_admin_redirect" value="<?php echo esc_attr( $options['wp_admin_redirect'] ); ?>" class="regular-text" aria-describedby="wp_admin_redirect-description" />
+									<p class="description" id="wp_admin_redirect-description">
 										<?php esc_html_e( 'Where to redirect users when they try to access wp-admin directly. Defaults to homepage.', 'msc-stealth-login' ); ?>
 									</p>
 								</td>
@@ -419,8 +419,8 @@ class Settings {
 									<label for="logout_redirect_url"><?php esc_html_e( 'Logout Redirect URL', 'msc-stealth-login' ); ?></label>
 								</th>
 								<td>
-									<input type="url" id="logout_redirect_url" name="logout_redirect_url" value="<?php echo esc_attr( $options['logout_redirect_url'] ); ?>" class="regular-text" />
-									<p class="description">
+									<input type="url" id="logout_redirect_url" name="logout_redirect_url" value="<?php echo esc_attr( $options['logout_redirect_url'] ); ?>" class="regular-text" aria-describedby="logout_redirect_url-description" />
+									<p class="description" id="logout_redirect_url-description">
 										<?php esc_html_e( 'Where to redirect users after logging out. Defaults to homepage.', 'msc-stealth-login' ); ?>
 									</p>
 								</td>
@@ -457,7 +457,7 @@ class Settings {
 									<button type="button" class="button" id="mscsl-copy-recovery-url">
 										<?php esc_html_e( 'Copy URL', 'msc-stealth-login' ); ?>
 									</button>
-									<span id="mscsl-copy-feedback" data-copied="<?php esc_attr_e( 'Copied!', 'msc-stealth-login' ); ?>" style="margin-left: 10px; color: #2271b1; display: none;"></span>
+									<span id="mscsl-copy-feedback" aria-live="polite" data-copied="<?php esc_attr_e( 'Copied!', 'msc-stealth-login' ); ?>" style="margin-left: 10px; color: #2271b1; display: none;"></span>
 								</p>
 								<p class="description">
 									<?php esc_html_e( 'Bookmark this URL! If you lose access to your custom login URL, use this recovery URL to access wp-login.php and then navigate to settings to find your custom URL.', 'msc-stealth-login' ); ?>
@@ -496,10 +496,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Enable Advanced Security Features', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="advanced_security_enabled">
-									<input id="advanced_security_enabled" type="checkbox" name="advanced_security_enabled" value="1" <?php checked( 1, $options['advanced_security_enabled'] ); ?> />
+									<input id="advanced_security_enabled" type="checkbox" name="advanced_security_enabled" value="1" <?php checked( 1, $options['advanced_security_enabled'] ); ?> aria-describedby="advanced_security_enabled-description" />
 									<?php esc_html_e( 'Enable additional security features including brute force protection, XML-RPC blocking, and REST API protection.', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="advanced_security_enabled-description">
 									<?php esc_html_e( 'When disabled, only the basic stealth login features will be active. Enable this to protect against automated attacks.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -513,10 +513,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Disable XML-RPC', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="disable_xmlrpc">
-									<input id="disable_xmlrpc" type="checkbox" name="disable_xmlrpc" value="1" <?php checked( 1, $options['disable_xmlrpc'] ); ?> />
+									<input id="disable_xmlrpc" type="checkbox" name="disable_xmlrpc" value="1" <?php checked( 1, $options['disable_xmlrpc'] ); ?> aria-describedby="disable_xmlrpc-description" />
 									<?php esc_html_e( 'Block XML-RPC requests', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="disable_xmlrpc-description">
 									<?php esc_html_e( 'Prevents XML-RPC attacks and pingbacks. This also blocks the XML-RPC authentication method. Only available when Advanced Security is enabled.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -526,10 +526,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Disable REST API User Enumeration', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="disable_rest_api">
-									<input id="disable_rest_api" type="checkbox" name="disable_rest_api" value="1" <?php checked( 1, $options['disable_rest_api'] ); ?> />
+									<input id="disable_rest_api" type="checkbox" name="disable_rest_api" value="1" <?php checked( 1, $options['disable_rest_api'] ); ?> aria-describedby="disable_rest_api-description" />
 									<?php esc_html_e( 'Block REST API user enumeration', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="disable_rest_api-description">
 									<?php esc_html_e( 'Prevents attackers from discovering usernames via the REST API by querying ?author=1. Only available when Advanced Security is enabled.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -543,10 +543,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Enable Brute Force Protection', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="brute_force_enabled">
-									<input id="brute_force_enabled" type="checkbox" name="brute_force_enabled" value="1" <?php checked( 1, $options['brute_force_enabled'] ); ?> />
+									<input id="brute_force_enabled" type="checkbox" name="brute_force_enabled" value="1" <?php checked( 1, $options['brute_force_enabled'] ); ?> aria-describedby="brute_force_enabled-description" />
 									<?php esc_html_e( 'Enable login attempt limiting', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="brute_force_enabled-description">
 									<?php esc_html_e( 'Limits login attempts to prevent brute force attacks. Only available when Advanced Security is enabled.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -557,8 +557,8 @@ class Settings {
 								<label for="max_login_attempts"><?php esc_html_e( 'Max Login Attempts', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<input type="number" id="max_login_attempts" name="max_login_attempts" value="<?php echo esc_attr( $options['max_login_attempts'] ); ?>" min="1" max="10" class="small-text" />
-								<p class="description">
+								<input type="number" id="max_login_attempts" name="max_login_attempts" value="<?php echo esc_attr( $options['max_login_attempts'] ); ?>" min="1" max="10" class="small-text" aria-describedby="max_login_attempts-description" />
+								<p class="description" id="max_login_attempts-description">
 									<?php esc_html_e( 'Number of failed attempts before a temporary lockout (1-10).', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -569,9 +569,9 @@ class Settings {
 								<label for="lockout_duration"><?php esc_html_e( 'Lockout Duration', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<input type="number" id="lockout_duration" name="lockout_duration" value="<?php echo esc_attr( $options['lockout_duration'] ); ?>" min="5" max="60" class="small-text" />
+								<input type="number" id="lockout_duration" name="lockout_duration" value="<?php echo esc_attr( $options['lockout_duration'] ); ?>" min="5" max="60" class="small-text" aria-describedby="lockout_duration-description" />
 								<?php esc_html_e( 'minutes', 'msc-stealth-login' ); ?>
-								<p class="description">
+								<p class="description" id="lockout_duration-description">
 									<?php esc_html_e( 'How long the lockout lasts in minutes (5-60).', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -584,10 +584,10 @@ class Settings {
 								<th scope="row"><?php esc_html_e( 'Share Lockouts Across Network', 'msc-stealth-login' ); ?></th>
 								<td>
 									<label for="network_shared_lockout">
-										<input id="network_shared_lockout" type="checkbox" name="network_shared_lockout" value="1" <?php checked( 1, $options['network_shared_lockout'] ); ?> />
+										<input id="network_shared_lockout" type="checkbox" name="network_shared_lockout" value="1" <?php checked( 1, $options['network_shared_lockout'] ); ?> aria-describedby="network_shared_lockout-description" />
 										<?php esc_html_e( 'Count failed login attempts network-wide instead of per site', 'msc-stealth-login' ); ?>
 									</label>
-									<p class="description">
+									<p class="description" id="network_shared_lockout-description">
 										<?php esc_html_e( 'Multisite only. When off, an attacker gets a fresh set of attempts on every site in the network. When on, failed attempts and progressive lockout delays are shared, so a lockout earned on one site applies to all of them. Enable it on each site that should share the count.', 'msc-stealth-login' ); ?>
 									</p>
 								</td>
@@ -602,10 +602,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Enable Login Logging', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="login_logging_enabled">
-									<input id="login_logging_enabled" type="checkbox" name="login_logging_enabled" value="1" <?php checked( 1, $options['login_logging_enabled'] ); ?> />
+									<input id="login_logging_enabled" type="checkbox" name="login_logging_enabled" value="1" <?php checked( 1, $options['login_logging_enabled'] ); ?> aria-describedby="login_logging_enabled-description" />
 									<?php esc_html_e( 'Log all login attempts to database', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="login_logging_enabled-description">
 									<?php esc_html_e( 'When enabled, all login attempts (success, failure, lockout) will be recorded in the database for review in the History tab.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -620,8 +620,8 @@ class Settings {
 								<label for="ip_whitelist"><?php esc_html_e( 'Whitelisted IP Addresses', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<textarea id="ip_whitelist" name="ip_whitelist" rows="5" class="large-text code"><?php echo esc_textarea( $options['ip_whitelist'] ); ?></textarea>
-								<p class="description">
+								<textarea id="ip_whitelist" name="ip_whitelist" rows="5" class="large-text code" aria-describedby="ip_whitelist-description"><?php echo esc_textarea( $options['ip_whitelist'] ); ?></textarea>
+								<p class="description" id="ip_whitelist-description">
 									<?php esc_html_e( 'Enter IP addresses that should bypass brute force protection. Enter one IP per line or separate with commas. Examples:', 'msc-stealth-login' ); ?>
 									<br><code>192.168.1.1</code><br><code>10.0.0.0/8</code>
 								</p>
@@ -631,10 +631,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Trust Proxy Headers', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="trust_proxy">
-									<input id="trust_proxy" type="checkbox" name="trust_proxy" value="1" <?php checked( 1, $options['trust_proxy'] ); ?> />
+									<input id="trust_proxy" type="checkbox" name="trust_proxy" value="1" <?php checked( 1, $options['trust_proxy'] ); ?> aria-describedby="trust_proxy-description" />
 									<?php esc_html_e( 'Trust X-Forwarded-For and similar proxy headers for IP detection', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="trust_proxy-description">
 									<?php esc_html_e( 'Enable this only if your site is behind a trusted reverse proxy (e.g., Cloudflare, Nginx). Disabling this provides stronger brute force protection by preventing IP spoofing.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -648,10 +648,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Progressive Lockout Delays', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="progressive_lockout_enabled">
-									<input id="progressive_lockout_enabled" type="checkbox" name="progressive_lockout_enabled" value="1" <?php checked( 1, $options['progressive_lockout_enabled'] ); ?> />
+									<input id="progressive_lockout_enabled" type="checkbox" name="progressive_lockout_enabled" value="1" <?php checked( 1, $options['progressive_lockout_enabled'] ); ?> aria-describedby="progressive_lockout_enabled-description" />
 									<?php esc_html_e( 'Enable progressive lockout delays', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="progressive_lockout_enabled-description">
 									<?php esc_html_e( 'Each subsequent lockout doubles the wait time. Helps stop persistent attackers. Resets after 24 hours of no attempts.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -662,9 +662,9 @@ class Settings {
 								<label for="max_lockout_duration"><?php esc_html_e( 'Maximum Lockout Duration', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<input type="number" id="max_lockout_duration" name="max_lockout_duration" value="<?php echo esc_attr( $options['max_lockout_duration'] ); ?>" min="60" max="1440" class="small-text" />
+								<input type="number" id="max_lockout_duration" name="max_lockout_duration" value="<?php echo esc_attr( $options['max_lockout_duration'] ); ?>" min="60" max="1440" class="small-text" aria-describedby="max_lockout_duration-description" />
 								<?php esc_html_e( 'minutes', 'msc-stealth-login' ); ?>
-								<p class="description">
+								<p class="description" id="max_lockout_duration-description">
 									<?php esc_html_e( 'Maximum lockout duration even with progressive delays (60-1440 minutes).', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -691,10 +691,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'Enable Email Notifications', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="email_notifications_enabled">
-									<input id="email_notifications_enabled" type="checkbox" name="email_notifications_enabled" value="1" <?php checked( 1, $options['email_notifications_enabled'] ); ?> />
+									<input id="email_notifications_enabled" type="checkbox" name="email_notifications_enabled" value="1" <?php checked( 1, $options['email_notifications_enabled'] ); ?> aria-describedby="email_notifications_enabled-description" />
 									<?php esc_html_e( 'Enable email notification features', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="email_notifications_enabled-description">
 									<?php esc_html_e( 'Master toggle for all email notifications. When enabled, you can configure individual notification types below.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -719,8 +719,8 @@ class Settings {
 								<label for="lockout_email_recipient"><?php esc_html_e( 'Notification Email', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<input type="email" id="lockout_email_recipient" name="lockout_email_recipient" value="<?php echo esc_attr( $options['lockout_email_recipient'] ); ?>" class="regular-text" />
-								<p class="description">
+								<input type="email" id="lockout_email_recipient" name="lockout_email_recipient" value="<?php echo esc_attr( $options['lockout_email_recipient'] ); ?>" class="regular-text" aria-describedby="lockout_email_recipient-description" />
+								<p class="description" id="lockout_email_recipient-description">
 									<?php esc_html_e( 'Email address to receive lockout notifications. Defaults to site admin email.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -731,8 +731,8 @@ class Settings {
 								<label for="lockout_email_subject"><?php esc_html_e( 'Email Subject', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<input type="text" id="lockout_email_subject" name="lockout_email_subject" value="<?php echo esc_attr( $options['lockout_email_subject'] ); ?>" class="regular-text" />
-								<p class="description">
+								<input type="text" id="lockout_email_subject" name="lockout_email_subject" value="<?php echo esc_attr( $options['lockout_email_subject'] ); ?>" class="regular-text" aria-describedby="lockout_email_subject-description" />
+								<p class="description" id="lockout_email_subject-description">
 									<?php esc_html_e( 'Custom email subject. Leave blank for default.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -743,8 +743,8 @@ class Settings {
 								<label for="lockout_email_body"><?php esc_html_e( 'Email Body', 'msc-stealth-login' ); ?></label>
 							</th>
 							<td>
-								<textarea id="lockout_email_body" name="lockout_email_body" rows="5" class="large-text"><?php echo esc_textarea( $options['lockout_email_body'] ); ?></textarea>
-								<p class="description">
+								<textarea id="lockout_email_body" name="lockout_email_body" rows="5" class="large-text" aria-describedby="lockout_email_body-description"><?php echo esc_textarea( $options['lockout_email_body'] ); ?></textarea>
+								<p class="description" id="lockout_email_body-description">
 									<?php esc_html_e( 'Custom email body. Leave blank for default. Available placeholders:', 'msc-stealth-login' ); ?><br>
 									<code>{ip}</code> - <?php esc_html_e( 'IP Address', 'msc-stealth-login' ); ?><br>
 									<code>{attempts}</code> - <?php esc_html_e( 'Number of failed attempts', 'msc-stealth-login' ); ?><br>
@@ -773,10 +773,10 @@ class Settings {
 							<th scope="row"><?php esc_html_e( 'New IP Login Alert', 'msc-stealth-login' ); ?></th>
 							<td>
 								<label for="login_alert_new_ip">
-									<input id="login_alert_new_ip" type="checkbox" name="login_alert_new_ip" value="1" <?php checked( 1, $options['login_alert_new_ip'] ); ?> />
+									<input id="login_alert_new_ip" type="checkbox" name="login_alert_new_ip" value="1" <?php checked( 1, $options['login_alert_new_ip'] ); ?> aria-describedby="login_alert_new_ip-description" />
 									<?php esc_html_e( 'Email user when they login from a new IP address', 'msc-stealth-login' ); ?>
 								</label>
-								<p class="description">
+								<p class="description" id="login_alert_new_ip-description">
 									<?php esc_html_e( 'Users will be notified when their account is accessed from an IP address they have not used before.', 'msc-stealth-login' ); ?>
 								</p>
 							</td>
@@ -1044,17 +1044,27 @@ class Settings {
 				<p><?php esc_html_e( 'No login attempts recorded yet.', 'msc-stealth-login' ); ?></p>
 			<?php else : ?>
 				<p><?php
-				/* translators: %1$d: start number, %2$d: end number, %3$d: total count */
-				printf( esc_html__( 'Showing %1$d to %2$d of %3$d entries', 'msc-stealth-login' ), intval( $offset + 1 ), intval( min( $offset + count( $logs ), $total ) ), intval( $total ) );
+				$total_count = intval( $total );
+				$from_value  = intval( $offset + 1 );
+				$to_value    = intval( min( $offset + count( $logs ), $total ) );
+				printf(
+					esc_html(
+						/* translators: 1: start number, 2: end number, 3: total count */
+						_n( 'Showing %1$d to %2$d of %3$d entry', 'Showing %1$d to %2$d of %3$d entries', $total_count, 'msc-stealth-login' )
+					),
+					$from_value,
+					$to_value,
+					$total_count
+				);
 				?></p>
 
 				<table class="widefat" style="margin-top: 16px;">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'IP Address', 'msc-stealth-login' ); ?></th>
-							<th><?php esc_html_e( 'Username', 'msc-stealth-login' ); ?></th>
-							<th><?php esc_html_e( 'Result', 'msc-stealth-login' ); ?></th>
-							<th><?php esc_html_e( 'Date/Time', 'msc-stealth-login' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'IP Address', 'msc-stealth-login' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Username', 'msc-stealth-login' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Result', 'msc-stealth-login' ); ?></th>
+							<th scope="col"><?php esc_html_e( 'Date/Time', 'msc-stealth-login' ); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -1108,8 +1118,9 @@ class Settings {
 								)
 							);
 							if ( $page_links ) {
+								$total_count = intval( $total );
 								/* translators: %d: total number of items */
-								echo '<span class="displaying-num">' . sprintf( esc_html__( '%d items', 'msc-stealth-login' ), intval( $total ) ) . '</span>';
+								echo '<span class="displaying-num">' . esc_html( sprintf( _n( '%d item', '%d items', $total_count, 'msc-stealth-login' ), $total_count ) ) . '</span>';
 								echo wp_kses_post( $page_links );
 							}
 							?>

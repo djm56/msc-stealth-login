@@ -2,6 +2,16 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.3.3] - 2026-08-28
+
+### Fixed
+
+- Plural forms now correctly handled for the lockout email body, history pagination, and item count strings (affects Russian, Ukrainian, Polish, Arabic, and other multi-plural locales). The lockout email, the "Showing X to Y of Z entries" line, and the "%d items" counter are now wrapped in `_n()` so translators can provide proper singular and plural forms.
+
+### Improved
+
+- Accessibility — added `scope="col"` on the History table column headers, added `aria-live="polite"` to the copy-feedback region so screen readers announce the "Copied!" message, and wired `aria-describedby` between every form control and its `.description` paragraph.
+
 ## [1.3.2] - 2026-08-27
 
 ### Changed

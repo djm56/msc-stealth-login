@@ -1,9 +1,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: MSC Stealth Login 1.3.2\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/msc-stealth-login\n"
-"PO-Revision-Date: 2026-08-27T00:00:00+00:00\n"
+"Project-Id-Version: MSC Stealth Login 1.3.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/msc-stealth-"
+"login\n"
+"POT-Creation-Date: 2026-08-28T14:14:02+00:00\n"
+"PO-Revision-Date: 2026-08-28T16:30:00+00:00\n"
 "Last-Translator: Anomalous Developers <dev@anomalous.com.au>\n"
 "Language-Team: Indonesian <dev@anomalous.com.au>\n"
 "Language: id_ID\n"
@@ -52,20 +54,20 @@ msgstr "ID"
 #: includes/class-msc-stealth-login-settings.php:166
 #: includes/class-msc-stealth-login-settings.php:749
 #: includes/class-msc-stealth-login-settings.php:1000
-#: includes/class-msc-stealth-login-settings.php:1054
+#: includes/class-msc-stealth-login-settings.php:1064
 msgid "IP Address"
 msgstr "Alamat IP"
 
 #: includes/class-msc-stealth-login-database.php:479
 #: includes/class-msc-stealth-login-settings.php:167
 #: includes/class-msc-stealth-login-settings.php:1006
-#: includes/class-msc-stealth-login-settings.php:1055
+#: includes/class-msc-stealth-login-settings.php:1065
 msgid "Username"
 msgstr "Nama Pengguna"
 
 #: includes/class-msc-stealth-login-database.php:480
 #: includes/class-msc-stealth-login-settings.php:168
-#: includes/class-msc-stealth-login-settings.php:1056
+#: includes/class-msc-stealth-login-settings.php:1066
 msgid "Result"
 msgstr "Hasil"
 
@@ -76,7 +78,7 @@ msgstr "User Agent"
 
 #: includes/class-msc-stealth-login-database.php:482
 #: includes/class-msc-stealth-login-settings.php:170
-#: includes/class-msc-stealth-login-settings.php:1057
+#: includes/class-msc-stealth-login-settings.php:1067
 msgid "Date/Time"
 msgstr "Tanggal/Waktu"
 
@@ -91,7 +93,7 @@ msgstr ""
 "pengecualian cache atau keamanan untuk URL login kustom Anda."
 
 #: includes/class-msc-stealth-login-module.php:232
-#: includes/class-msc-stealth-login-module.php:1008
+#: includes/class-msc-stealth-login-module.php:1019
 #: includes/class-msc-stealth-login-settings.php:129
 #: includes/class-msc-stealth-login-settings.php:195
 msgid "You do not have permission to access this page."
@@ -135,39 +137,46 @@ msgstr ""
 msgid "[%s] Brute Force Lockout Alert"
 msgstr "[%s] Peringatan Pemblokiran Brute Force"
 
-#. translators: 1: site name, 2: IP address, 3: number of failed attempts, 4:
-#. time
-#: includes/class-msc-stealth-login-module.php:890
+#. translators: %d: number of failed login attempts
+#: includes/class-msc-stealth-login-module.php:895
+#, php-format
+msgid "Failed Attempt: %d"
+msgid_plural "Failed Attempts: %d"
+msgstr[0] "Upaya Gagal: %d"
+#. translators: 1: site name, 2: IP address, 3: failed attempts line, 4: time
+#: includes/class-msc-stealth-login-module.php:901
 #, php-format
 msgid ""
 "A brute force lockout has occurred on %1$s.\n"
 "\n"
 "IP Address: %2$s\n"
-"Failed Attempts: %3$d\n"
+"%3$s\n"
 "Time: %4$s\n"
 "\n"
 "This IP has been temporarily blocked from making login attempts.\n"
 "\n"
-"If this is not expected behavior, you may want to investigate this IP address."
+"If this is not expected behavior, you may want to investigate this IP "
+"address."
 msgstr ""
 "Pemblokiran brute force telah terjadi pada %1$s.\n"
 "\n"
 "Alamat IP: %2$s\n"
-"Percobaan Gagal: %3$d\n"
+"Percobaan Gagal: %3$s\n"
 "Waktu: %4$s\n"
 "\n"
 "IP ini telah diblokir sementara dari melakukan percobaan login.\n"
 "\n"
-"Jika ini bukan perilaku yang diharapkan, Anda mungkin ingin menyelidiki alamat IP ini."
+"Jika ini bukan perilaku yang diharapkan, Anda mungkin ingin menyelidiki "
+"alamat IP ini."
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1035
+#: includes/class-msc-stealth-login-module.php:1046
 #, php-format
 msgid "[%s] Your Login URL Recovery"
 msgstr "[%s] Pemulihan URL Login Anda"
 
 #. translators: 1: site name, 2: login URL
-#: includes/class-msc-stealth-login-module.php:1041
+#: includes/class-msc-stealth-login-module.php:1052
 #, php-format
 msgid ""
 "You requested a login URL recovery for %1$s. Your stealth login URL is: %2$s"
@@ -175,28 +184,28 @@ msgstr ""
 "Anda meminta pemulihan URL login untuk %1$s. URL login stealth Anda adalah: "
 "%2$s"
 
-#: includes/class-msc-stealth-login-module.php:1081
+#: includes/class-msc-stealth-login-module.php:1092
 msgid "Recovery email sent successfully."
 msgstr "Email pemulihan berhasil dikirim."
 
-#: includes/class-msc-stealth-login-module.php:1083
+#: includes/class-msc-stealth-login-module.php:1094
 msgid "Failed to send recovery email. Please check the email address."
 msgstr "Gagal mengirim email pemulihan. Silakan periksa alamat email."
 
-#: includes/class-msc-stealth-login-module.php:1085
+#: includes/class-msc-stealth-login-module.php:1096
 msgid "Failed to send recovery email."
 msgstr "Gagal mengirim email pemulihan."
 
-#: includes/class-msc-stealth-login-module.php:1115
+#: includes/class-msc-stealth-login-module.php:1126
 msgid "MSC Stealth Login:"
 msgstr "MSC Stealth Login:"
 
 #. translators: %s: Link to plugin settings page
-#: includes/class-msc-stealth-login-module.php:1119
+#: includes/class-msc-stealth-login-module.php:1130
 #, php-format
 msgid ""
-"This plugin collects IP addresses, usernames, user agents, and login attempt"
-" history for security features (brute force protection, login alerts). This "
+"This plugin collects IP addresses, usernames, user agents, and login attempt "
+"history for security features (brute force protection, login alerts). This "
 "data is stored in your WordPress database and is not sent externally. You "
 "can manage settings on the %s page."
 msgstr ""
@@ -205,22 +214,22 @@ msgstr ""
 "login). Data ini disimpan di database WordPress Anda dan tidak dikirim "
 "secara eksternal. Anda dapat mengelola pengaturan di halaman %s."
 
-#: includes/class-msc-stealth-login-module.php:1120
+#: includes/class-msc-stealth-login-module.php:1131
 msgid "plugin settings"
 msgstr "pengaturan plugin"
 
-#: includes/class-msc-stealth-login-module.php:1138
+#: includes/class-msc-stealth-login-module.php:1149
 msgid "Unauthorized"
 msgstr "Tidak Diotorisasi"
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1204
+#: includes/class-msc-stealth-login-module.php:1215
 #, php-format
 msgid "[%s] User Login Alert"
 msgstr "[%s] Peringatan Login Pengguna"
 
 #. translators: 1: username, 2: IP address, 3: time
-#: includes/class-msc-stealth-login-module.php:1210
+#: includes/class-msc-stealth-login-module.php:1221
 #, php-format
 msgid ""
 "User: %1$s\n"
@@ -236,13 +245,13 @@ msgstr ""
 "Ini adalah peringatan otomatis dari plugin keamanan WordPress Anda."
 
 #. translators: %s is the site name
-#: includes/class-msc-stealth-login-module.php:1257
+#: includes/class-msc-stealth-login-module.php:1268
 #, php-format
 msgid "[%s] New Login Location Detected"
 msgstr "[%s] Lokasi Login Baru Terdeteksi"
 
 #. translators: 1: display name, 2: IP address, 3: time
-#: includes/class-msc-stealth-login-module.php:1263
+#: includes/class-msc-stealth-login-module.php:1274
 #, php-format
 msgid ""
 "Hello %1$s,\n"
@@ -346,8 +355,8 @@ msgid ""
 "Where to redirect users when they try to access wp-admin directly. Defaults "
 "to homepage."
 msgstr ""
-"Ke mana mengarahkan pengguna ketika mereka mencoba mengakses wp-admin secara"
-" langsung. Default ke beranda."
+"Ke mana mengarahkan pengguna ketika mereka mencoba mengakses wp-admin secara "
+"langsung. Default ke beranda."
 
 #: includes/class-msc-stealth-login-settings.php:419
 msgid "Logout Redirect URL"
@@ -389,8 +398,8 @@ msgid ""
 "your custom URL."
 msgstr ""
 "Bookmark URL ini! Jika Anda kehilangan akses ke URL login kustom Anda, "
-"gunakan URL pemulihan ini untuk mengakses wp-login.php dan kemudian navigasi"
-" ke pengaturan untuk menemukan URL kustom Anda."
+"gunakan URL pemulihan ini untuk mengakses wp-login.php dan kemudian navigasi "
+"ke pengaturan untuk menemukan URL kustom Anda."
 
 #: includes/class-msc-stealth-login-settings.php:466
 msgid "Are you sure? This will invalidate the current recovery URL."
@@ -412,9 +421,9 @@ msgstr "Simpan Pengaturan"
 
 #: includes/class-msc-stealth-login-settings.php:492
 msgid ""
-"Advanced security features provide additional protection against brute force"
-" attacks, XML-RPC exploitation, and user enumeration via the REST API. These"
-" features are optional and may affect compatibility with some plugins or "
+"Advanced security features provide additional protection against brute force "
+"attacks, XML-RPC exploitation, and user enumeration via the REST API. These "
+"features are optional and may affect compatibility with some plugins or "
 "services that require XML-RPC or REST API access."
 msgstr ""
 "Fitur keamanan lanjutan memberikan perlindungan tambahan terhadap serangan "
@@ -460,8 +469,8 @@ msgid ""
 "Prevents XML-RPC attacks and pingbacks. This also blocks the XML-RPC "
 "authentication method. Only available when Advanced Security is enabled."
 msgstr ""
-"Mencegah serangan XML-RPC dan pingback. Ini juga memblokir metode otentikasi"
-" XML-RPC. Hanya tersedia ketika Keamanan Lanjutan diaktifkan."
+"Mencegah serangan XML-RPC dan pingback. Ini juga memblokir metode otentikasi "
+"XML-RPC. Hanya tersedia ketika Keamanan Lanjutan diaktifkan."
 
 #: includes/class-msc-stealth-login-settings.php:526
 #: includes/class-msc-stealth-login-settings.php:823
@@ -474,8 +483,8 @@ msgstr "Blokir enumerasi pengguna REST API"
 
 #: includes/class-msc-stealth-login-settings.php:533
 msgid ""
-"Prevents attackers from discovering usernames via the REST API by querying "
-"?author=1. Only available when Advanced Security is enabled."
+"Prevents attackers from discovering usernames via the REST API by querying ?"
+"author=1. Only available when Advanced Security is enabled."
 msgstr ""
 "Mencegah penyerang menemukan nama pengguna melalui REST API dengan "
 "menanyakan ?author=1. Hanya tersedia ketika Keamanan Lanjutan diaktifkan."
@@ -528,21 +537,20 @@ msgstr "Bagikan Pemblokiran di Seluruh Jaringan"
 
 #: includes/class-msc-stealth-login-settings.php:588
 msgid "Count failed login attempts network-wide instead of per site"
-msgstr ""
-"Hitung percobaan login yang gagal di seluruh jaringan, bukan per situs"
+msgstr "Hitung percobaan login yang gagal di seluruh jaringan, bukan per situs"
 
 #: includes/class-msc-stealth-login-settings.php:591
 msgid ""
 "Multisite only. When off, an attacker gets a fresh set of attempts on every "
-"site in the network. When on, failed attempts and progressive lockout delays"
-" are shared, so a lockout earned on one site applies to all of them. Enable "
+"site in the network. When on, failed attempts and progressive lockout delays "
+"are shared, so a lockout earned on one site applies to all of them. Enable "
 "it on each site that should share the count."
 msgstr ""
 "Hanya multisite. Saat mati, penyerang mendapatkan set percobaan baru di "
 "setiap situs di jaringan. Saat hidup, percobaan gagal dan penundaan "
-"pemblokiran progresif dibagikan, sehingga pemblokiran yang diperoleh di satu"
-" situs berlaku untuk semuanya. Aktifkan di setiap situs yang harus "
-"membagikan hitungan."
+"pemblokiran progresif dibagikan, sehingga pemblokiran yang diperoleh di satu "
+"situs berlaku untuk semuanya. Aktifkan di setiap situs yang harus membagikan "
+"hitungan."
 
 #: includes/class-msc-stealth-login-settings.php:598
 msgid "Login Logging"
@@ -673,8 +681,7 @@ msgstr "Email Notifikasi"
 
 #: includes/class-msc-stealth-login-settings.php:724
 msgid ""
-"Email address to receive lockout notifications. Defaults to site admin "
-"email."
+"Email address to receive lockout notifications. Defaults to site admin email."
 msgstr ""
 "Alamat email untuk menerima notifikasi pemblokiran. Default ke email admin "
 "situs."
@@ -762,7 +769,8 @@ msgid "Go to the Settings tab above."
 msgstr "Buka tab Pengaturan di atas."
 
 #: includes/class-msc-stealth-login-settings.php:806
-msgid "Enter a custom login slug (e.g., \"my-secret-login\" or \"admin-access\")."
+msgid ""
+"Enter a custom login slug (e.g., \"my-secret-login\" or \"admin-access\")."
 msgstr ""
 "Masukkan slug login kustom (mis., \"login-rahasia-saya\" atau \"akses-"
 "admin\")."
@@ -801,11 +809,11 @@ msgstr ""
 
 #: includes/class-msc-stealth-login-settings.php:818
 msgid ""
-"Blocks direct access to the /wp-admin/ directory and redirects users to your"
-" custom login URL. Prevents unauthorized access attempts."
+"Blocks direct access to the /wp-admin/ directory and redirects users to your "
+"custom login URL. Prevents unauthorized access attempts."
 msgstr ""
-"Memblokir akses langsung ke direktori /wp-admin/ dan mengarahkan pengguna ke"
-" URL login kustom Anda. Mencegah upaya akses tidak sah."
+"Memblokir akses langsung ke direktori /wp-admin/ dan mengarahkan pengguna ke "
+"URL login kustom Anda. Mencegah upaya akses tidak sah."
 
 #: includes/class-msc-stealth-login-settings.php:821
 msgid ""
@@ -819,11 +827,11 @@ msgstr ""
 
 #: includes/class-msc-stealth-login-settings.php:824
 msgid ""
-"Prevents attackers from discovering usernames by querying the REST API with "
-"?author=1, ?author=2, etc."
+"Prevents attackers from discovering usernames by querying the REST API with ?"
+"author=1, ?author=2, etc."
 msgstr ""
-"Mencegah penyerang menemukan nama pengguna dengan menanyakan REST API dengan"
-" ?author=1, ?author=2, dll."
+"Mencegah penyerang menemukan nama pengguna dengan menanyakan REST API "
+"dengan ?author=1, ?author=2, dll."
 
 #: includes/class-msc-stealth-login-settings.php:827
 msgid ""
@@ -835,13 +843,13 @@ msgstr ""
 
 #: includes/class-msc-stealth-login-settings.php:830
 msgid ""
-"A special URL that allows you to access wp-login.php even when the plugin is"
-" active. This is your safety net if you forget your custom login URL. "
+"A special URL that allows you to access wp-login.php even when the plugin is "
+"active. This is your safety net if you forget your custom login URL. "
 "Bookmark this URL and keep it safe!"
 msgstr ""
 "URL khusus yang memungkinkan Anda mengakses wp-login.php bahkan saat plugin "
-"aktif. Ini adalah jaring pengaman Anda jika Anda lupa URL login kustom Anda."
-" Bookmark URL ini dan jaga keamanannya!"
+"aktif. Ini adalah jaring pengaman Anda jika Anda lupa URL login kustom Anda. "
+"Bookmark URL ini dan jaga keamanannya!"
 
 #: includes/class-msc-stealth-login-settings.php:832
 msgid "Frequently Asked Questions"
@@ -872,8 +880,8 @@ msgid ""
 "staging site first. Always bookmark your custom login URL and the recovery "
 "URL before logging out."
 msgstr ""
-"Jika dikonfigurasi dengan benar, tidak. Namun, kami sangat menyarankan untuk"
-" menguji di situs staging terlebih dahulu. Selalu bookmark URL login kustom "
+"Jika dikonfigurasi dengan benar, tidak. Namun, kami sangat menyarankan untuk "
+"menguji di situs staging terlebih dahulu. Selalu bookmark URL login kustom "
 "Anda dan URL pemulihan sebelum logout."
 
 #: includes/class-msc-stealth-login-settings.php:840
@@ -897,8 +905,8 @@ msgid ""
 "Generally yes, but avoid using multiple plugins that modify login URLs or "
 "block wp-admin simultaneously as they may conflict."
 msgstr ""
-"Umumnya ya, tetapi hindari menggunakan banyak plugin yang mengubah URL login"
-" atau memblokir wp-admin secara bersamaan karena dapat menyebabkan konflik."
+"Umumnya ya, tetapi hindari menggunakan banyak plugin yang mengubah URL login "
+"atau memblokir wp-admin secara bersamaan karena dapat menyebabkan konflik."
 
 #: includes/class-msc-stealth-login-settings.php:846
 msgid "Does this work with WooCommerce?"
@@ -976,8 +984,8 @@ msgstr "Kirim URL Login"
 #, php-format
 msgid ""
 "Need a hand? Visit the <a href=\"%s\" target=\"_blank\" rel=\"noopener "
-"noreferrer\">plugin support forum on WordPress.org</a> for help, bug reports"
-" and feature requests."
+"noreferrer\">plugin support forum on WordPress.org</a> for help, bug reports "
+"and feature requests."
 msgstr ""
 "Butuh bantuan? Kunjungi <a href=\"%s\" target=\"_blank\" rel=\"noopener "
 "noreferrer\">forum dukungan plugin di WordPress.org</a> untuk bantuan, "
@@ -1008,22 +1016,22 @@ msgid "All Results"
 msgstr "Semua Hasil"
 
 #: includes/class-msc-stealth-login-settings.php:1016
-#: includes/class-msc-stealth-login-settings.php:1069
+#: includes/class-msc-stealth-login-settings.php:1079
 msgid "Success"
 msgstr "Sukses"
 
 #: includes/class-msc-stealth-login-settings.php:1017
-#: includes/class-msc-stealth-login-settings.php:1072
+#: includes/class-msc-stealth-login-settings.php:1082
 msgid "Failed"
 msgstr "Gagal"
 
 #: includes/class-msc-stealth-login-settings.php:1018
-#: includes/class-msc-stealth-login-settings.php:1075
+#: includes/class-msc-stealth-login-settings.php:1085
 msgid "Locked Out"
 msgstr "Terkunci"
 
 #: includes/class-msc-stealth-login-settings.php:1019
-#: includes/class-msc-stealth-login-settings.php:1078
+#: includes/class-msc-stealth-login-settings.php:1088
 msgid "Whitelisted"
 msgstr "Diizinkan"
 
@@ -1047,42 +1055,42 @@ msgstr "Hapus Filter"
 msgid "No login attempts recorded yet."
 msgstr "Belum ada percobaan login yang dicatat."
 
-#. translators: %1$d: start number, %2$d: end number, %3$d: total count
-#: includes/class-msc-stealth-login-settings.php:1048
+#. translators: 1: start number, 2: end number, 3: total count
+#: includes/class-msc-stealth-login-settings.php:1053
 #, php-format
-msgid "Showing %1$d to %2$d of %3$d entries"
-msgstr "Menampilkan %1$d hingga %2$d dari %3$d entri"
-
-#: includes/class-msc-stealth-login-settings.php:1100
+msgid "Showing %1$d to %2$d of %3$d entry"
+msgid_plural "Showing %1$d to %2$d of %3$d entries"
+msgstr[0] "Menampilkan %1$d sampai %2$d dari %3$d entri"
+#: includes/class-msc-stealth-login-settings.php:1110
 msgid "&laquo; Previous"
 msgstr "&laquo; Sebelumnya"
 
-#: includes/class-msc-stealth-login-settings.php:1101
+#: includes/class-msc-stealth-login-settings.php:1111
 msgid "Next &raquo;"
 msgstr "Selanjutnya &raquo;"
 
 #. translators: %d: total number of items
-#: includes/class-msc-stealth-login-settings.php:1112
+#: includes/class-msc-stealth-login-settings.php:1123
 #, php-format
-msgid "%d items"
-msgstr "%d item"
-
-#: includes/class-msc-stealth-login-settings.php:1122
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d item"
+#: includes/class-msc-stealth-login-settings.php:1133
 msgid "Are you sure you want to clear all login logs?"
 msgstr "Apakah Anda yakin ingin menghapus semua log login?"
 
-#: includes/class-msc-stealth-login-settings.php:1123
+#: includes/class-msc-stealth-login-settings.php:1134
 msgid "Clear All Logs"
 msgstr "Hapus Semua Log"
 
-#: includes/class-msc-stealth-login-settings.php:1126
+#: includes/class-msc-stealth-login-settings.php:1137
 msgid "Export to CSV"
 msgstr "Ekspor ke CSV"
 
 #: includes/class-msc-stealth-login.php:207
 msgid ""
-"Enjoying MSC Stealth Login? A quick review would really help other WordPress"
-" users find it."
+"Enjoying MSC Stealth Login? A quick review would really help other WordPress "
+"users find it."
 msgstr ""
 "Menikmati MSC Stealth Login? Ulasan cepat akan sangat membantu pengguna "
 "WordPress lain untuk menemukannya."

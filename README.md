@@ -1,6 +1,6 @@
 # MSC Stealth Login
 
-![Version](https://img.shields.io/badge/version-1.3.2-blue)
+![Version](https://img.shields.io/badge/version-1.3.3-blue)
 ![License](https://img.shields.io/badge/license-GPL--2.0%2B-green)
 ![PHP](https://img.shields.io/badge/PHP-7.4%2B-purple)
 ![WordPress](https://img.shields.io/badge/WordPress-5.9%2B-blue)
@@ -141,7 +141,7 @@ add_filter( 'mscsl_network_shared_lockout', '__return_true' );
 
 | Constant | Value | Description |
 |----------|-------|-------------|
-| `MSCSL_PLUGIN_VERSION` | `'1.3.2'` | Current plugin version |
+| `MSCSL_PLUGIN_VERSION` | `'1.3.3'` | Current plugin version |
 | `MSCSL_PLUGIN_FILE` | `__FILE__` | Absolute path to main plugin file |
 | `MSCSL_PLUGIN_DIR` | Plugin directory path | Absolute path to plugin directory |
 | `MSCSL_PLUGIN_URL` | Plugin directory URL | URL to plugin directory |
