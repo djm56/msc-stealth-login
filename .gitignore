@@ -3,3 +3,6 @@ vendor
 .DS_Store
 .phpunit.result.cache
 coverage/
+
+# Security scan reports (never committed)
+/scan-reports/

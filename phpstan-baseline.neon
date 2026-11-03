@@ -1,0 +1,175 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to function is_wp_error\(\) with array\<string\> will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: includes/class-msc-stealth-login-database.php
+
+		-
+			message: '#^Access to property \$ID on an unknown class MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 2
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Access to property \$display_name on an unknown class MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Access to property \$user_email on an unknown class MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Access to property \$user_login on an unknown class MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Found usage of constant DOING_AJAX\. Use wp_doing_ajax\(\) instead\.$#'
+			identifier: phpstanWP.wpConstant.fetch
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_ip_whitelist\(\) has invalid return type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_ip_whitelist\(\) has invalid return type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_login_attempts\(\) has invalid return type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_login_attempts\(\) has invalid return type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_login_attempts\(\) should return MSCSL\\WP_Error\|MSCSL\\WP_User\|null but returns WP_Error\.$#'
+			identifier: return.type
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_progressive_lockout\(\) has invalid return type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_progressive_lockout\(\) has invalid return type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Method MSCSL\\Module\:\:check_progressive_lockout\(\) should return MSCSL\\WP_Error\|MSCSL\\WP_User\|null but returns WP_Error\.$#'
+			identifier: return.type
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \#2 \$replace of function str_replace expects array\<string\>\|string, int\<0, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_ip_whitelist\(\) has invalid type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_ip_whitelist\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_login_attempts\(\) has invalid type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_login_attempts\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_progressive_lockout\(\) has invalid type MSCSL\\WP_Error\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:check_progressive_lockout\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:log_successful_login\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:send_admin_login_alert\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Parameter \$user of method MSCSL\\Module\:\:send_new_ip_alert\(\) has invalid type MSCSL\\WP_User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: includes/class-msc-stealth-login-module.php
+
+		-
+			message: '#^Constant MSCSL_PLUGIN_URL not found\.$#'
+			identifier: constant.notFound
+			count: 2
+			path: includes/class-msc-stealth-login-settings.php
+
+		-
+			message: '#^Parameter \#1 \$args of function paginate_links expects array\{base\?\: string, format\?\: string, total\?\: int, current\?\: int, aria_current\?\: string, show_all\?\: bool, end_size\?\: int, mid_size\?\: int, \.\.\.\}, array\{base\: string, format\: '''', prev_text\: string, next_text\: string, total\: float, current\: int\<1, max\>, add_args\: array\{page\: ''msc\-stealth\-login'', tab\: ''history''\}\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: includes/class-msc-stealth-login-settings.php
+
+		-
+			message: '#^Property MSCSL\\Plugin\:\:\$module is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: includes/class-msc-stealth-login.php
+
+		-
+			message: '#^Property MSCSL\\Plugin\:\:\$settings is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: includes/class-msc-stealth-login.php
+
+		-
+			message: '#^Variable \$entry in empty\(\) always exists and is not falsy\.$#'
+			identifier: empty.variable
+			count: 1
+			path: includes/class-msc-stealth-login.php
