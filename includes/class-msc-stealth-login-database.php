@@ -76,11 +76,8 @@ class Database {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$result = dbDelta( $sql );
 
-		// Check for errors in dbDelta result.
-		if ( is_wp_error( $result ) ) {
-			return false;
-		}
-
+		// dbDelta() returns an array of result strings; it never returns WP_Error.
+		// We keep the bool return for backward compatibility.
 		return true;
 	}
 
@@ -250,6 +247,8 @@ class Database {
 
 		$sql = "SELECT * FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql} ORDER BY created_at DESC LIMIT %d OFFSET %d";
 
+		// $where_sql is built from a static allow-list of column fragments in build_where();
+		// no user input reaches this interpolation (values are passed via $wpdb->prepare()).
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, ...$values ), ARRAY_A );
 
@@ -380,6 +379,8 @@ class Database {
 		if ( ! empty( $values ) ) {
 			$sql = "SELECT COUNT(*) FROM {$wpdb->prefix}mscsl_login_attempts WHERE {$where_sql}";
 
+			// $where_sql is built from a static allow-list of column fragments in build_where();
+			// no user input reaches this interpolation (values are passed via $wpdb->prepare()).
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- custom table; caching handled above; $where_sql holds only hard-coded fragments plus placeholders from build_where(), and the matching values are unpacked below, so the sniff cannot count them statically.
 			$count = (int) $wpdb->get_var( $wpdb->prepare( $sql, ...$values ) );
 		} else {

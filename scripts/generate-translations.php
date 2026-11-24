@@ -14,6 +14,7 @@ $lang_dir   = $plugin_dir . '/languages';
 $pot_file   = $lang_dir . '/msc-stealth-login.pot';
 
 if ( ! file_exists( $pot_file ) ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI-only dev script; $pot_file is a local path constructed above, no user input.
 	echo "Error: POT file not found at {$pot_file}\n";
 	exit( 1 );
 }
@@ -1009,6 +1010,7 @@ $translations = array(
 // ==================== PO / MO Generation ====================
 
 // Read POT file to get all msgid entries with their metadata.
+// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- dev-only script reading a local POT file, not a remote URL.
 $pot_content = file_get_contents( $pot_file );
 
 // Parse POT into entries.
@@ -1098,22 +1100,23 @@ if ( null !== $current ) {
 echo "Parsed " . count( $entries ) . " POT entries.\n";
 
 // Resolve inheritance: if a locale's 'strings' is a string (another locale name), copy from that locale.
-foreach ( $translations as $locale => $data ) {
+foreach ( $translations as $locale_code => $data ) {
 	if ( is_string( $data['strings'] ) ) {
 		$parent = $data['strings'];
 		if ( isset( $translations[ $parent ] ) && is_array( $translations[ $parent ]['strings'] ) ) {
-			$translations[ $locale ]['strings'] = $translations[ $parent ]['strings'];
+			$translations[ $locale_code ]['strings'] = $translations[ $parent ]['strings'];
 		} else {
-			echo "Warning: Parent locale '{$parent}' not found for '{$locale}'\n";
-			$translations[ $locale ]['strings'] = array();
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI-only dev script; $parent/$locale_code are internal locale identifiers, no user input.
+			echo "Warning: Parent locale '{$parent}' not found for '{$locale_code}'\n";
+			$translations[ $locale_code ]['strings'] = array();
 		}
 	}
 }
 
 // Generate PO + MO for each locale.
-foreach ( $translations as $locale => $data ) {
-	$po_path = $lang_dir . '/msc-stealth-login-' . $locale . '.po';
-	$mo_path = $lang_dir . '/msc-stealth-login-' . $locale . '.mo';
+foreach ( $translations as $locale_code => $data ) {
+	$po_path = $lang_dir . '/msc-stealth-login-' . $locale_code . '.po';
+	$mo_path = $lang_dir . '/msc-stealth-login-' . $locale_code . '.mo';
 
 	$po_lines = array();
 	$po_lines[] = '# Translation of MSC Stealth Login in ' . $data['language_name'];
@@ -1124,7 +1127,7 @@ foreach ( $translations as $locale => $data ) {
 	$po_lines[] = '"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/msc-stealth-login\n"';
 	$po_lines[] = '"Last-Translator: Anomalous Developers <info@anomalous.co.za>\n"';
 	$po_lines[] = '"Language-Team: ' . $data['language_name'] . ' <info@anomalous.co.za>\n"';
-	$po_lines[] = '"Language: ' . $locale . '\n"';
+	$po_lines[] = '"Language: ' . $locale_code . '\n"';
 	$po_lines[] = '"MIME-Version: 1.0\n"';
 	$po_lines[] = '"Content-Type: text/plain; charset=UTF-8\n"';
 	$po_lines[] = '"Content-Transfer-Encoding: 8bit\n"';
@@ -1152,8 +1155,8 @@ foreach ( $translations as $locale => $data ) {
 		}
 
 		// Write comments.
-		foreach ( $entry['comments'] as $comment ) {
-			$po_lines[] = $comment;
+		foreach ( $entry['comments'] as $entry_comment ) {
+			$po_lines[] = $entry_comment;
 		}
 
 		// msgctxt if present.
@@ -1173,16 +1176,21 @@ foreach ( $translations as $locale => $data ) {
 	}
 
 	// Write PO file.
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents -- dev-only script writing local PO files; WP_Filesystem is not available in this CLI context.
 	file_put_contents( $po_path, implode( "\n", $po_lines ) );
-	echo "Created: msc-stealth-login-{$locale}.po\n";
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI-only dev script; $locale_code is an internal locale identifier, no user input.
+	echo "Created: msc-stealth-login-{$locale_code}.po\n";
 
 	// Compile MO file.
 	$cmd = 'msgfmt -o ' . escapeshellarg( $mo_path ) . ' ' . escapeshellarg( $po_path ) . ' 2>&1';
+	// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.system_calls_shell_exec, Generic.PHP.ForbiddenFunctions.FoundWithAlternative -- intentional dev-tool call to msgfmt in this dist-excluded translation generator.
 	$output = shell_exec( $cmd );
 	if ( file_exists( $mo_path ) ) {
-		echo "Created: msc-stealth-login-{$locale}.mo\n";
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI-only dev script; $locale_code is an internal locale identifier, no user input.
+		echo "Created: msc-stealth-login-{$locale_code}.mo\n";
 	} else {
-		echo "ERROR compiling MO for {$locale}: {$output}\n";
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- CLI-only dev script; $locale_code/$output are internal values, no user input.
+		echo "ERROR compiling MO for {$locale_code}: {$output}\n";
 	}
 }
 

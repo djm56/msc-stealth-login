@@ -1052,9 +1052,9 @@ class Settings {
 						/* translators: 1: start number, 2: end number, 3: total count */
 						_n( 'Showing %1$d to %2$d of %3$d entry', 'Showing %1$d to %2$d of %3$d entries', $total_count, 'msc-stealth-login' )
 					),
-					$from_value,
-					$to_value,
-					$total_count
+					esc_html( (string) $from_value ),
+					esc_html( (string) $to_value ),
+					esc_html( (string) $total_count )
 				);
 				?></p>
 

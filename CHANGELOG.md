@@ -2,6 +2,25 @@
 
 All notable changes to MSC Stealth Login are documented in this file.
 
+## [1.3.4] - 2026-11-05
+
+### Fixed
+
+- Fixed a malformed regex in the default-login blocker that caused a PHP warning ("Unknown modifier '?'") on every wp-login.php load and prevented the custom-slug allow-check from running.
+- Hardened output escaping in the admin history-filter summary (values now pass through `esc_html()` — flagged by PHPCS, WP.org Plugin Check, and semgrep convergence; defense-in-depth).
+- Removed dead `WP_Error` check after `dbDelta()` (`dbDelta()` returns an array, never `WP_Error`).
+- Type-safety cast on a `str_replace()` argument.
+
+### Changed
+
+- Documented rationale plus a targeted `phpcs:ignore` for two Plugin Check DirectDB warnings (static allow-list `WHERE` construction; values remain bound via `$wpdb->prepare()`).
+- Dev tooling security patch — composer dev-dependencies updated to clear CVE-2026-65954 / CVE-2026-67434 / CVE-2026-45293; `composer audit` now clean.
+- Trimmed previous version's upgrade notice to the WordPress.org length limit.
+
+### Notes
+
+- Docblock type-reference corrections (static-analysis baseline burn-down).
+
 ## [1.3.3] - 2026-08-28
 
 ### Fixed

@@ -5,7 +5,7 @@ Tags: hide login, custom login url, block wp-admin, disable xml-rpc, brute force
 Requires at least: 5.9
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -152,6 +152,16 @@ No. Every feature is included in the plugin you download — there is nothing to
 
 == Changelog ==
 
+= 1.3.4 =
+* Fixed: Malformed regex in the default-login blocker caused a PHP warning on every wp-login.php load and prevented the custom-slug allow-check from running.
+* Fixed: Hardened output escaping in the admin history-filter summary (values now pass through `esc_html()` — flagged by PHPCS, WP.org Plugin Check, and semgrep convergence; defense-in-depth).
+* Fixed: Removed dead `WP_Error` check after `dbDelta()` (`dbDelta()` returns an array, never `WP_Error`).
+* Fixed: Type-safety cast on a `str_replace()` argument.
+* Changed: Documented rationale plus a targeted `phpcs:ignore` for two Plugin Check DirectDB warnings (static allow-list `WHERE` construction; values remain bound via `$wpdb->prepare()`).
+* Changed: Dev tooling security patch — composer dev-dependencies updated to clear CVE-2026-65954, CVE-2026-67434, and CVE-2026-45293; `composer audit` is now clean.
+* Changed: Trimmed previous version's upgrade notice to the WordPress.org length limit.
+* Note: Docblock type-reference corrections (static-analysis baseline burn-down).
+
 = 1.3.3 =
 * Fixed: Plural forms now correctly handled for the lockout email body, history pagination, and item count strings (affects Russian, Ukrainian, Polish, Arabic, and other multi-plural locales).
 * Improved: Accessibility — added `scope="col"` on History table headers, `aria-live="polite"` on the copy-feedback region, and `aria-describedby` wiring on controls that have description text.
@@ -264,8 +274,11 @@ No. Every feature is included in the plugin you download — there is nothing to
 
 == Upgrade Notice ==
 
+= 1.3.4 =
+Security scan release: hardened admin escaping, dead-code removal, type-safety fixes, and dev-dependency CVE cleanup. Recommended update.
+
 = 1.3.3 =
-Maintenance release: fixes plural-form strings for the lockout email, history pagination, and item count (translations for Russian, Ukrainian, Polish, Arabic and other multi-plural locales now display correctly), and adds accessibility improvements (`scope="col"`, `aria-live`, `aria-describedby`). No functional changes — safe update.
+Maintenance release: fixes plural-form strings for lockout email, history pagination, and item count for multi-plural locales, plus accessibility improvements. No functional changes — safe update.
 
 = 1.3.2 =
 Translation maintenance release: adds 8 new languages (Russian, Simplified Chinese, Turkish, Polish, Indonesian, Swedish, Ukrainian, Arabic) and refreshes all 20 bundled locales to 100% string coverage. No functional changes — safe update.

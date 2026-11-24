@@ -350,7 +350,7 @@ class Module {
 		}
 
 		// Use precise regex matching for custom slug.
-		$slug_pattern = '/' . preg_quote( $slug, '/' ) . '/?$';
+		$slug_pattern = '#/' . preg_quote( $slug, '#' ) . '/?$#';
 		if ( preg_match( $slug_pattern, $request_path ) ) {
 			return;
 		}
@@ -514,8 +514,8 @@ class Module {
 	/**
 	 * Check if IP is whitelisted - bypass all brute force protection.
 	 *
-	 * @param WP_User|WP_Error|null $user User or error.
-	 * @return WP_User|WP_Error|null
+	 * @param \WP_User|\WP_Error|null $user User or error.
+	 * @return \WP_User|\WP_Error|null
 	 */
 	public function check_ip_whitelist( $user ) {
 		// Only check for unauthenticated users.
@@ -567,8 +567,8 @@ class Module {
 	/**
 	 * Check login attempts for brute force protection.
 	 *
-	 * @param WP_User|WP_Error|null $user     User or error.
-	 * @return WP_User|WP_Error|null
+	 * @param \WP_User|\WP_Error|null $user     User or error.
+	 * @return \WP_User|\WP_Error|null
 	 */
 	public function check_login_attempts( $user ) {
 		// Don't interfere if already an error or user.
@@ -723,8 +723,8 @@ class Module {
 	/**
 	 * Check progressive lockout - increases lockout duration with repeated failures.
 	 *
-	 * @param WP_User|WP_Error|null $user User or error.
-	 * @return WP_User|WP_Error|null
+	 * @param \WP_User|\WP_Error|null $user User or error.
+	 * @return \WP_User|\WP_Error|null
 	 */
 	public function check_progressive_lockout( $user ) {
 		// Don't interfere if already an error or user.
@@ -880,7 +880,7 @@ class Module {
 			// Replace placeholders.
 			$message = $custom_body;
 			$message = str_replace( '{ip}', $ip, $message );
-			$message = str_replace( '{attempts}', absint( $attempts['count'] ), $message );
+			$message = str_replace( '{attempts}', (string) absint( $attempts['count'] ), $message );
 			$message = str_replace( '{time}', current_time( 'mysql' ), $message );
 			$message = str_replace( '{site_name}', get_bloginfo( 'name' ), $message );
 			$message = str_replace( '{site_url}', home_url(), $message );
@@ -1156,7 +1156,7 @@ If this is not expected behavior, you may want to investigate this IP address.',
 	 * Log a successful login.
 	 *
 	 * @param string  $username Username.
-	 * @param WP_User $user     User object.
+	 * @param \WP_User $user     User object.
 	 */
 	public function log_successful_login( $username, $user ) {
 		if ( ! $this->plugin->get_option( 'login_logging_enabled', 1 ) ) {
@@ -1185,7 +1185,7 @@ If this is not expected behavior, you may want to investigate this IP address.',
 	/**
 	 * Send admin login alert email.
 	 *
-	 * @param WP_User $user User object.
+	 * @param \WP_User $user User object.
 	 */
 	private function send_admin_login_alert( $user ) {
 		// Check if email notifications are enabled.
@@ -1239,7 +1239,7 @@ This is an automated alert from your WordPress security plugin.', 'msc-stealth-l
 	/**
 	 * Send new IP login alert email.
 	 *
-	 * @param WP_User $user User object.
+	 * @param \WP_User $user User object.
 	 * @param string  $ip   IP address.
 	 */
 	private function send_new_ip_alert( $user, $ip ) {
